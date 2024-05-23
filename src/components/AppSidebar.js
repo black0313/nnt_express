@@ -36,10 +36,12 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarHeader className="border-bottom">
-        <CSidebarBrand to="/">
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
-        </CSidebarBrand>
+        <img style={{width:'50px', height: '50px'}} src="https://as1.ftcdn.net/v2/jpg/04/33/16/10/1000_F_433161079_0XUHPHcv0nzzyk3w7bgXDDrLtlrDn5Cd.jpg" alt="" />
+        <h6 className={'ms-3'}>WELCOME TO NNT EXPRESS</h6>
+        {/*<CSidebarBrand className={'text-decoration-underline'} to="/">*/}
+        {/*  <h4 className={'form-control'}>NNT EXPRESS</h4>*/}
+        {/*  /!*<CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />*!/*/}
+        {/*</CSidebarBrand>*/}
         <CCloseButton
           className="d-lg-none"
           dark
