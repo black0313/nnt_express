@@ -78,12 +78,12 @@ const Dashboard = () => {
     { title: 'Female', icon: cilUserFemale, value: 43 },
   ]
 
-  const progressGroupExample3 = [
-    { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
-    { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
-    { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
-    { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
-  ]
+  // const progressGroupExample3 = [
+  //   { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
+  //   { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
+  //   { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
+  //   { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
+  // ]
 
   const tableExample = [
     {
@@ -303,21 +303,21 @@ const Dashboard = () => {
 
                   <div className="mb-5"></div>
 
-                  {progressGroupExample3.map((item, index) => (
-                    <div className="progress-group" key={index}>
-                      <div className="progress-group-header">
-                        <CIcon className="me-2" icon={item.icon} size="lg" />
-                        <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">
-                          {item.value}{' '}
-                          <span className="text-body-secondary small">({item.percent}%)</span>
-                        </span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="success" value={item.percent} />
-                      </div>
-                    </div>
-                  ))}
+                  {/*{progressGroupExample3.map((item, index) => (*/}
+                  {/*  <div className="progress-group" key={index}>*/}
+                  {/*    <div className="progress-group-header">*/}
+                  {/*      <CIcon className="me-2" icon={item.icon} size="lg" />*/}
+                  {/*      <span>{item.title}</span>*/}
+                  {/*      <span className="ms-auto fw-semibold">*/}
+                  {/*        {item.value}{' '}*/}
+                  {/*        <span className="text-body-secondary small">({item.percent}%)</span>*/}
+                  {/*      </span>*/}
+                  {/*    </div>*/}
+                  {/*    <div className="progress-group-bars">*/}
+                  {/*      <CProgress thin color="success" value={item.percent} />*/}
+                  {/*    </div>*/}
+                  {/*  </div>*/}
+                  {/*))}*/}
                 </CCol>
               </CRow>
 
