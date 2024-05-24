@@ -46,7 +46,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <Link to={'/'}>
+                        <Link to={'/dashboard'}>
                           <CButton color="primary" className="px-4">
                             Login
                           </CButton>
