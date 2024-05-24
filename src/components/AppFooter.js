@@ -8,7 +8,7 @@ const AppFooter = () => {
         <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
           Youtube
         </a>
-        <span className="ms-1">&copy; If you are feeling boredom join us.</span>
+        <span className="ms-1">&copy; If you are feeling boredom watch youtube</span>
       </div>
       {/*<div className="ms-auto">*/}
       {/*  <span className="me-1">Powered by</span>*/}

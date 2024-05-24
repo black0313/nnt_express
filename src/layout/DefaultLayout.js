@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 
 const DefaultLayout = () => {
+  useEffect(() => {
+    console.log(
+      // location.href === 'http://localhost:3000/#/dashboard' ? console.log(13) : console.log(14),
+      // location.href === 'http://localhost:3000/#/dashboard' ? console.log(13) : console.log(14),
+      console.log(location),
+    )
+  }, [])
+
   return (
     <div>
       <AppSidebar />

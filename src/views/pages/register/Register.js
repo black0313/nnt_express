@@ -13,6 +13,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { Link } from 'react-router-dom'
 
 const Register = () => {
   return (
@@ -23,8 +24,8 @@ const Register = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm>
-                  <h1>Register</h1>
-                  <p className="text-body-secondary">Create your account</p>
+                  <h1>R E S E T </h1>
+                  <p className="text-body-secondary">Reset password</p>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
@@ -55,9 +56,11 @@ const Register = () => {
                       autoComplete="new-password"
                     />
                   </CInputGroup>
-                  <div className="d-grid">
-                    <CButton color="success">Create Account</CButton>
-                  </div>
+                  <Link to={'/*'}>
+                    <div className="d-grid">
+                      <CButton color="success">Create Account</CButton>
+                    </div>
+                  </Link>
                 </CForm>
               </CCardBody>
             </CCard>
