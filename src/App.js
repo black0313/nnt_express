@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
@@ -50,6 +50,7 @@ const App = () => {
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           {/*<Route exact path="/*" name="Home" element={<Login />} />*/}
           <Route exact path="*" name="Home" element={<DefaultLayout />} />
+          <Route exact path="/" name="Login Page" element={<Navigate to={'/login'} />} />
           {/*<Route exact path="*" name="Home" element={<Add />} />*/}
         </Routes>
       </Suspense>
