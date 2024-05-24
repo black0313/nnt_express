@@ -3,17 +3,14 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/inde
 import { useNavigate } from 'react-router-dom'
 
 const DefaultLayout = () => {
-  const navigate = useNavigate();
-
-
   useEffect(() => {
-    console.log(
-      location.href === 'http://localhost:3000/dashboard' ? console.log(13) : console.log(14),
-    )
-    if (location.href == 'http://localhost:3000/dashboard') {
-      navigate('/login')
-      console.log(1333)
-    }
+    // console.log(
+    //   location.href === 'http://localhost:3000/dashboard' ? console.log(13) : console.log(14),
+    // )
+    // if (location.href == 'http://localhost:3000/dashboard') {
+    //   navigate('/login')
+    //   console.log(1333)
+    // }
   }, [])
 
   return (
