@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
@@ -32,14 +32,14 @@ const App = () => {
 
     setColorMode(storedTheme)
 
-    if (location.href == 'http://localhost:3000/#/dashboard') {
-      history.push('/login')
-      console.log(1333)
-    }
+    // if (location.href == 'http://localhost:3000/dashboard') {
+    //   history.push('/login')
+    //   console.log(1333)
+    // }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Suspense
         fallback={
           <div className="pt-3 text-center">
@@ -57,7 +57,7 @@ const App = () => {
           {/*<Route exact path="*" name="Home" element={<Add />} />*/}
         </Routes>
       </Suspense>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
 

@@ -56,7 +56,7 @@ const Register = () => {
                       autoComplete="new-password"
                     />
                   </CInputGroup>
-                  <Link to={'/*'}>
+                  <Link to={'/register'}>
                     <div className="d-grid">
                       <CButton color="success">Create Account</CButton>
                     </div>
