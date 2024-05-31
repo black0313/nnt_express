@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -12,9 +12,37 @@ import {
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import axios from 'axios'
 
 const Accordion = () => {
   const [isModal, setIsModal] = useState(false)
+  const [post, setPost] = useState({
+    title: 'hey',
+    body: '',
+  })
+  useEffect(() => {
+    axios.get('http://192.168.100.11:8081/api/trucks').then((res) => {
+      console.log(res)
+    })
+    axios.get('https://jsonplaceholder.typicode.com/users').then((res) => {
+      console.log(res)
+    })
+  }, [])
+
+  function send() {
+    axios
+      .post('http://192.168.100.11:8081/api/trucks', post, {
+        header: { 'Content-Type': 'application/json' },
+      })
+      .then((r) => {
+        post
+      })
+    console.log(post)
+  }
+  function handleInput(event) {
+    // setPost({ ...post, [event.target.name]: event.target.value })
+    setPost({ ...post, [event.target.name]: event.target.value })
+  }
   const toggle = () => setIsModal(!isModal)
   return (
     <div>
@@ -49,7 +77,13 @@ const Accordion = () => {
             <div className="row">
               <div className="col-6">
                 <label htmlFor="truckNumber">* Truck Number</label>
-                <input type="text" className={'form-control'} required={true} />
+                <input
+                  type="text"
+                  name={'truckNumber'}
+                  className={'form-control'}
+                  required={true}
+                  onChange={handleInput}
+                />
                 <label htmlFor="numberOfLoads">Number Of Loads</label>
                 <input type="text" className={'form-control'} />
                 <label htmlFor="grossRevenue">Gross Revenue</label>
@@ -68,7 +102,9 @@ const Accordion = () => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button className={'btn btn-success text-light w-25'}>Save</button>
+            <button onClick={send} className={'btn btn-success text-light w-25'}>
+              Save
+            </button>
             <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
               Exit
             </button>

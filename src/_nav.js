@@ -57,7 +57,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Truck list',
-        to: '/base/accordion',
+        to: '/accordion',
       },
       {
         component: CNavItem,
