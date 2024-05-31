@@ -1,26 +1,8 @@
-import { legacy_createStore as createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
+import { api } from 'src/middleware'
+import loginReducer from 'src/reducer/loginReducer'
 
-const initialState = {
-  sidebarShow: true,
-  theme: 'light',
-}
-
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return { ...state, ...rest }
-    default:
-      return state
-  }
-}
-
-const store = createStore(changeState)
-export default store
-
-// import api from 'src/reducer/middleware'
-// import { configureStore } from '@reduxjs/toolkit'
-//
-// export default configureStore({
-//   reducer: {},
-//   middleware: [api],
-// })
+export default configureStore({
+  reducer: { loginReducer },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api),
+})

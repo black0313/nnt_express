@@ -51,7 +51,7 @@ const App = () => {
           <Route exact path="*" name="Home" element={<DefaultLayout />} />
           <Route exact path="/" name="Login Page" element={<Navigate to={'/login'} />} />
           {/*<Route exact path="*" name="Home" element={<Add />} />*/}
-        </Routes>
+        </Routes>x
       </Suspense>
     </BrowserRouter>
   )

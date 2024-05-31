@@ -1,13 +1,6 @@
 import axios from 'axios'
 // export const BaseUrl = 'http://192.168.1.24:8090/api'
 export const BaseUrl = 'https://jsonplaceholder.typicode.com/'
-export const axiosCreate = axios.create({
-  baseURL: BaseUrl,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('tokenname') || sessionStorage.getItem('tokenname')}`,
-  },
-})
 export const api =
   ({ dispatch }) =>
   (next) =>
@@ -42,7 +35,6 @@ export const api =
         })
       })
   }
-export default api
 // axios.interceptors.response.use(
 //   (res) => {
 //     return res
