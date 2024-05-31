@@ -6,13 +6,14 @@ import {
   cilChartPie,
   cilCursor,
   cilDescription,
-  cilDrop, cilList,
+  cilDrop,
+  cilList,
   cilNotes,
   cilPencil,
   cilPuzzle,
   cilSpeedometer,
-  cilStar
-} from "@coreui/icons";
+  cilStar,
+} from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -140,12 +141,12 @@ const _nav = [
       // },
     ],
   },
-  {
-    component: CNavItem,
-    name: 'Charts',
-    to: '/charts',
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Charts',
+  //   to: '/charts',
+  //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  // },
   // {
   //   component: CNavGroup,
   //   name: 'Icons',

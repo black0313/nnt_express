@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -15,8 +15,18 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import axios from 'axios'
 
 const Login = () => {
+  const [login, setLogin] = useState('')
+  const [password, setPassword] = useState('123')
+  const notify = () => toast.error('Check login or password')
+
+  useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/posts').then((r) => console.log(r.data))
+  }, [])
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -32,7 +42,12 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        placeholder="Username"
+                        onChange={(e) => setLogin(e.target.value)}
+                        value={login}
+                        autoComplete="username"
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -40,17 +55,33 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
                         placeholder="Password"
                         autoComplete="current-password"
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <Link to={'/dashboard'}>
-                          <CButton color="primary" className="px-4">
+                        {login === 'admin' && password === '123' ? (
+                          <Link to={'/dashboard'}>
+                            <CButton color="primary" className="px-4">
+                              Login
+                            </CButton>
+                          </Link>
+                        ) : (
+                          // <Link to={'/dashboard'}>
+                          <CButton onClick={notify} color="danger" className="px-4">
                             Login
                           </CButton>
-                        </Link>
+                          // </Link>
+                        )}
+                        <ToastContainer />
+                        {/*<Link to={'/dashboard'}>*/}
+                        {/*  <CButton color="primary" className="px-4">*/}
+                        {/*    Login*/}
+                        {/*  </CButton>*/}
+                        {/*</Link>*/}
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <CButton color="link" className="px-0">
@@ -88,3 +119,6 @@ const Login = () => {
 }
 
 export default Login
+
+// doniknegmatov51@gmail.com
+// aa2224848

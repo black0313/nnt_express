@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
@@ -31,7 +31,6 @@ const App = () => {
     }
 
     setColorMode(storedTheme)
-
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

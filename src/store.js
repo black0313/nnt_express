@@ -16,3 +16,11 @@ const changeState = (state = initialState, { type, ...rest }) => {
 
 const store = createStore(changeState)
 export default store
+
+// import api from 'src/reducer/middleware'
+// import { configureStore } from '@reduxjs/toolkit'
+//
+// export default configureStore({
+//   reducer: {},
+//   middleware: [api],
+// })
