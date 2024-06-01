@@ -1,6 +1,6 @@
 import axios from 'axios'
-// export const BaseUrl = 'http://192.168.1.24:8090/api'
-export const BaseUrl = 'https://jsonplaceholder.typicode.com/'
+export const BaseUrl = 'http://192.168.100.11:8081/api'
+// export const BaseUrl = 'https://jsonplaceholder.typicode.com/posts'
 export const api =
   ({ dispatch }) =>
   (next) =>
@@ -15,7 +15,7 @@ export const api =
       baseURL: BaseUrl,
       headers: {
         'Content-Type': contentType ? contentType : 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('tokenname') || sessionStorage.getItem('tokenname')}`,
+        // Authorization: `Bearer ${localStorage.getItem('tokenname') || sessionStorage.getItem('tokenname')}`,
       },
       url,
       method,

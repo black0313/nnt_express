@@ -15,21 +15,18 @@ const Typography = () => {
           + Add
         </button>
       </div>
-      <table className={'table table-bordered bg-primary table-hover cil-cursor'}>
+      <table className={'table rounded text-light bg-primary table-hover table-striped'}>
         <thead>
-          <th>#</th>
-          <th>1</th>
-          <th>2</th>
-          <th>3</th>
-          <th>3</th>
+          <th className={'text-center'}>T/R</th>
+          <th className={'text-center'}>Dispatch team number</th>
+          <th className={'text-center'}>Name</th>
+          <th className={'text-center'}>Gross Revenue</th>
+          <th className={'text-center'}>Miles</th>
+          <th className={'text-center'}>Dead Head</th>
+          <th className={'text-center'}>Revenue Per Mile</th>
         </thead>
-        <tbody>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
-        </tbody>
+        <hr />
+        <tbody></tbody>
       </table>
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>

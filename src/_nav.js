@@ -62,12 +62,12 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Drivers',
-        to: '/base/breadcrumbs',
+        to: '/breadcrumbs',
       },
       {
         component: CNavItem,
         name: 'Trailer',
-        to: '/base/trailer',
+        to: '/trailer',
       },
     ],
   },

@@ -5,9 +5,11 @@ import 'core-js'
 
 import App from './App'
 import store from './store'
+import { ToastContainer } from 'react-toastify'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
+    <ToastContainer />
     <App />
   </Provider>,
 )

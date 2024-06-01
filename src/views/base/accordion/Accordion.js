@@ -1,47 +1,36 @@
 import React, { useEffect, useState } from 'react'
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-  CAccordion,
-  CAccordionBody,
-  CAccordionHeader,
-  CAccordionItem,
-} from '@coreui/react'
-import { DocsExample } from 'src/components'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import TruckReducer, {
+  addTrucks,
+  deleteTrucks,
+  editTrucks,
+  getTrucks,
+} from 'src/reducer/TruckReducer'
 
-const Accordion = () => {
+// eslint-disable-next-line react/prop-types
+const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTrucks }) => {
   const [isModal, setIsModal] = useState(false)
-  const [post, setPost] = useState({
-    title: 'hey',
-    body: '',
-  })
+  const [post, setPost] = useState([])
   useEffect(() => {
-    axios.get('http://192.168.100.11:8081/api/trucks').then((res) => {
-      console.log(res)
-    })
-    axios.get('https://jsonplaceholder.typicode.com/users').then((res) => {
-      console.log(res)
-    })
+    getTrucks()
   }, [])
 
   function send() {
-    axios
-      .post('http://192.168.100.11:8081/api/trucks', post, {
-        header: { 'Content-Type': 'application/json' },
-      })
-      .then((r) => {
-        post
-      })
+    // addTrucks({
+    //   numberOfLoads: 222,
+    //   truckNumber: '2',
+    //   grossRevenue: 13,
+    //   miles: 33,
+    //   emptyMiles: 0,
+    //   revenuePerMile: 1,
+    //   expires: true,
+    // })
     console.log(post)
   }
   function handleInput(event) {
     // setPost({ ...post, [event.target.name]: event.target.value })
-    setPost({ ...post, [event.target.name]: event.target.value })
   }
   const toggle = () => setIsModal(!isModal)
   return (
@@ -52,21 +41,18 @@ const Accordion = () => {
           + Add
         </button>
       </div>
-      <table className={'table table-bordered bg-primary table-hover cil-cursor'}>
+      <table className={'table rounded text-light bg-primary table-hover table-striped'}>
         <thead>
-          <th>#</th>
-          <th>1</th>
-          <th>2</th>
-          <th>3</th>
-          <th>3</th>
+          <th className={'text-center'}>T/R</th>
+          <th className={'text-center'}>Number Truck</th>
+          <th className={'text-center'}>Number of load</th>
+          <th className={'text-center'}>Gross Revenue</th>
+          <th className={'text-center'}>Miles</th>
+          <th className={'text-center'}>Dead Head</th>
+          <th className={'text-center'}>Revenue Per Mile</th>
         </thead>
-        <tbody>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
-        </tbody>
+        <hr />
+        <tbody></tbody>
       </table>
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
@@ -82,22 +68,66 @@ const Accordion = () => {
                   name={'truckNumber'}
                   className={'form-control'}
                   required={true}
-                  onChange={handleInput}
+                  onChange={(event) =>
+                    setPost({ ...post, [event.target.name]: event.target.value })
+                  }
                 />
                 <label htmlFor="numberOfLoads">Number Of Loads</label>
-                <input type="text" className={'form-control'} />
+                <input
+                  type="text"
+                  className={'form-control'}
+                  name={'numberOfLoads'}
+                  onChange={(event) =>
+                    setPost({ ...post, [event.target.name]: event.target.value })
+                  }
+                />
                 <label htmlFor="grossRevenue">Gross Revenue</label>
-                <input type="text" className={'form-control'} />
+                <input
+                  name={'grossRevenue'}
+                  onChange={(event) =>
+                    setPost({ ...post, [event.target.name]: event.target.value })
+                  }
+                  type="text"
+                  className={'form-control'}
+                />
                 <label htmlFor="expires">Expires</label>
-                <input type="text" className={'form-control'} />
+                <input
+                  name={'expires'}
+                  onChange={(event) =>
+                    setPost({ ...post, [event.target.name]: event.target.value })
+                  }
+                  type="text"
+                  className={'form-control'}
+                />
               </div>
               <div className="col-6">
                 <label htmlFor="miles">Miles</label>
-                <input type="text" className={'form-control'} />
+                <input
+                  name={'miles'}
+                  onChange={(event) =>
+                    setPost({ ...post, [event.target.name]: event.target.value })
+                  }
+                  type="text"
+                  className={'form-control'}
+                />
                 <label htmlFor="emptyMiles">Empty Miles</label>
-                <input type="text" className={'form-control'} />
+                <input
+                  name={'emptyMiles'}
+                  onChange={(event) =>
+                    setPost({ ...post, [event.target.name]: event.target.value })
+                  }
+                  type="text"
+                  className={'form-control'}
+                />
                 <label htmlFor="revenuePerMile">Revenue PerMile</label>
-                <input type="text" className={'form-control'} />
+                <input
+                  name={'revenuePerMile'}
+                  onChange={(event) =>
+                    setPost({ ...post, [event.target.name]: event.target.value })
+                  }
+                  type="text"
+                  className={'form-control'}
+                />
               </div>
             </div>
           </ModalBody>
@@ -115,4 +145,5 @@ const Accordion = () => {
   )
 }
 
-export default Accordion
+// export default Accordion
+export default connect(TruckReducer, { getTrucks, addTrucks, editTrucks, deleteTrucks })(Accordion)
