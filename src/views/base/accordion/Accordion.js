@@ -8,6 +8,8 @@ import TruckReducer, {
   editTrucks,
   getTrucks,
 } from 'src/reducer/TruckReducer'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 // eslint-disable-next-line react/prop-types
 const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTrucks }) => {
@@ -15,19 +17,16 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
   const [post, setPost] = useState([])
   useEffect(() => {
     getTrucks()
-  }, [])
+    // eslint-disable-next-line react/prop-types
+  }, [TruckReducer.current])
 
   function send() {
-    // addTrucks({
-    //   numberOfLoads: 222,
-    //   truckNumber: '2',
-    //   grossRevenue: 13,
-    //   miles: 33,
-    //   emptyMiles: 0,
-    //   revenuePerMile: 1,
-    //   expires: true,
-    // })
-    console.log(post)
+    addTrucks(post)
+    // eslint-disable-next-line react/prop-types
+    toggle()
+  }
+  function handleDelete(id) {
+    deleteTrucks(id)
   }
   function handleInput(event) {
     // setPost({ ...post, [event.target.name]: event.target.value })
@@ -41,19 +40,50 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
           + Add
         </button>
       </div>
-      <table className={'table rounded text-light bg-primary table-hover table-striped'}>
-        <thead>
-          <th className={'text-center'}>T/R</th>
-          <th className={'text-center'}>Number Truck</th>
-          <th className={'text-center'}>Number of load</th>
-          <th className={'text-center'}>Gross Revenue</th>
-          <th className={'text-center'}>Miles</th>
-          <th className={'text-center'}>Dead Head</th>
-          <th className={'text-center'}>Revenue Per Mile</th>
-        </thead>
-        <hr />
-        <tbody></tbody>
-      </table>
+      <br />
+      {/* eslint-disable-next-line react/prop-types */}
+      {TruckReducer.trucks ? (
+        <table className={'table rounded table-bordered text-light  table-hover table-striped'}>
+          <thead className={'bg-secondary'}>
+            <th className={'text-center'}>T/R</th>
+            <th className={'text-center'}>Number Truck</th>
+            <th className={'text-center'}>Number of load</th>
+            <th className={'text-center'}>Gross Revenue</th>
+            <th className={'text-center'}>Miles</th>
+            <th className={'text-center'}>Dead Head</th>
+            <th className={'text-center'}>Revenue Per Mile</th>
+            <th className={'text-center'}>Actions</th>
+          </thead>
+          <hr />
+          <tbody>
+            {/* eslint-disable-next-line react/prop-types */}
+            {TruckReducer.trucks.map((item, index) => (
+              <tr key={index}>
+                <td className={'text-center'}>{index + 1}</td>
+                <td className={'text-center'}>{item?.truckNumber}</td>
+                <td className={'text-center'}>{item?.numberOfLoads}</td>
+                <td className={'text-center'}>{item?.grossRevenue}</td>
+                <td className={'text-center'}>{item?.miles}</td>
+                <td className={'text-center'}>{item?.emptyMiles}</td>
+                <td className={'text-center'}>{item?.revenuePerMile}</td>
+                <td className={'text-center'}>
+                  <button className={'btn btn-info text-light'}>Edit</button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className={'btn btn-danger text-light ms-2'}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <h1 className={'text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto'}>
+          TABLE IS EMPTY
+        </h1>
+      )}
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
@@ -74,7 +104,7 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
                 />
                 <label htmlFor="numberOfLoads">Number Of Loads</label>
                 <input
-                  type="text"
+                  type="number"
                   className={'form-control'}
                   name={'numberOfLoads'}
                   onChange={(event) =>
@@ -87,18 +117,11 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
                   onChange={(event) =>
                     setPost({ ...post, [event.target.name]: event.target.value })
                   }
-                  type="text"
+                  type="number"
                   className={'form-control'}
                 />
                 <label htmlFor="expires">Expires</label>
-                <input
-                  name={'expires'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="text"
-                  className={'form-control'}
-                />
+                <input name={'expires'} type="text" className={'form-control'} />
               </div>
               <div className="col-6">
                 <label htmlFor="miles">Miles</label>
@@ -107,7 +130,7 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
                   onChange={(event) =>
                     setPost({ ...post, [event.target.name]: event.target.value })
                   }
-                  type="text"
+                  type="number"
                   className={'form-control'}
                 />
                 <label htmlFor="emptyMiles">Empty Miles</label>
@@ -116,7 +139,7 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
                   onChange={(event) =>
                     setPost({ ...post, [event.target.name]: event.target.value })
                   }
-                  type="text"
+                  type="number"
                   className={'form-control'}
                 />
                 <label htmlFor="revenuePerMile">Revenue PerMile</label>
@@ -125,7 +148,7 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
                   onChange={(event) =>
                     setPost({ ...post, [event.target.name]: event.target.value })
                   }
-                  type="text"
+                  type="number"
                   className={'form-control'}
                 />
               </div>

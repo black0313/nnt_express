@@ -1,10 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import trailerReducer, {
+  addTrailer,
+  deleteTrailer,
+  editTrailer,
+  getTrailer,
+} from 'src/reducer/trailerReducer'
+import { connect } from 'react-redux'
 
-const Cards = () => {
+const Cards = (trailerReducer, getTrailer, addTrailer, editTrailer, deleteTrailer) => {
   const [isModal, setIsModal] = useState(false)
   const toggle = () => setIsModal(!isModal)
   function send() {}
+  useEffect(() => {
+    console.log(trailerReducer.trailer)
+  }, [])
   return (
     <div>
       <h1>Trailer list</h1>
@@ -67,4 +77,4 @@ const Cards = () => {
   )
 }
 
-export default Cards
+export default connect(trailerReducer, { getTrailer, addTrailer, editTrailer, deleteTrailer })(Cards)

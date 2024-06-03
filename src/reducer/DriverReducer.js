@@ -5,11 +5,13 @@ import { toast } from 'react-toastify'
 export const slice = createSlice({
   name: 'driver',
   initialState: {
-    drivers: null,
+    driver: null,
+    current: false,
   },
   reducers: {
     get: (state, action) => {
-      console.log(action.payload)
+      // state.driver = action.payload.object
+      console.log(action.payload.object)
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
@@ -17,6 +19,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
     editFrom: (state, action) => {
       if (action.payload.success) {
@@ -24,6 +27,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
@@ -31,6 +35,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
   },
 })
@@ -44,7 +49,7 @@ export const getDrivers = (data) =>
   })
 export const addDrivers = (data) =>
   apiCall({
-    url: '/drivers',
+    url: '/drivers/',
     data,
     method: 'post',
     onSuccess: slice.actions.saveFrom.type,
@@ -52,14 +57,14 @@ export const addDrivers = (data) =>
   })
 export const editDriver = (data) =>
   apiCall({
-    url: '/drivers' + data,
+    url: '/drivers/' + data,
     method: 'put',
     onSuccess: slice.actions.editFrom.type,
     onFail: slice.actions.editFrom.type,
   })
 export const deleteDriver = (data) =>
   apiCall({
-    url: '/drivers' + data,
+    url: '/drivers/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,

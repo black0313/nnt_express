@@ -6,6 +6,7 @@ export const slice = createSlice({
   name: 'trailer',
   initialState: {
     trailer: null,
+    current: false,
   },
   reducers: {
     get: (state, action) => {
@@ -17,6 +18,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
     editFrom: (state, action) => {
       if (action.payload.success) {
@@ -24,6 +26,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
@@ -31,6 +34,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
   },
 })

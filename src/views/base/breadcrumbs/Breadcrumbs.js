@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import DriverReducer, {
   addDrivers,
@@ -7,23 +7,17 @@ import DriverReducer, {
   getDrivers,
 } from 'src/reducer/DriverReducer'
 import { connect } from 'react-redux'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Breadcrumbs = (getDrivers, addDrivers, editDriver, deleteDriver, DriverReducer) => {
   const [isModal, setIsModal] = useState(false)
   const toggle = () => setIsModal(!isModal)
   const [post, setPost] = useState([])
-  function send() {
-    // addDrivers({
-    //   name: 222,
-    //   numberOfLoads: '2',
-    //   grossRevenue: 13,
-    //   miles: 33,
-    //   emptyMiles: 0,
-    //   revenuePerMile: 1,
-    //   expires: true,
-    // })
-    console.log(post)
-  }
+  function send() {}
+  useEffect(() => {
+    // console.log(DriverReducer.driver)
+    // getDrivers()
+  }, [])
   return (
     <div>
       <h1>Driver list</h1>
@@ -32,19 +26,21 @@ const Breadcrumbs = (getDrivers, addDrivers, editDriver, deleteDriver, DriverRed
           + Add
         </button>
       </div>
-      <table className={'table rounded text-light bg-secondary table-hover table-striped'}>
-        <thead>
-          <th className={'text-center'}>T/R</th>
-          <th className={'text-center'}>Name</th>
-          <th className={'text-center'}>Number of load</th>
-          <th className={'text-center'}>Gross Revenue</th>
-          <th className={'text-center'}>Miles</th>
-          <th className={'text-center'}>Dead Head</th>
-          <th className={'text-center'}>Revenue Per Mile</th>
-        </thead>
-        <hr />
-        <tbody></tbody>
-      </table>
+      {
+        <table className={'table rounded text-light bg-secondary table-hover table-striped'}>
+          <thead>
+            <th className={'text-center'}>T/R</th>
+            <th className={'text-center'}>Name</th>
+            <th className={'text-center'}>Number of load</th>
+            <th className={'text-center'}>Gross Revenue</th>
+            <th className={'text-center'}>Miles</th>
+            <th className={'text-center'}>Dead Head</th>
+            <th className={'text-center'}>Revenue Per Mile</th>
+          </thead>
+          <hr />
+          <tbody></tbody>
+        </table>
+      }
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>

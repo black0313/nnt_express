@@ -6,10 +6,11 @@ export const slice = createSlice({
   name: 'truck',
   initialState: {
     trucks: null,
+    current: false,
   },
   reducers: {
     get: (state, action) => {
-      console.log(action.payload)
+      state.trucks = action.payload.object
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
@@ -17,6 +18,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
     editFrom: (state, action) => {
       if (action.payload.success) {
@@ -31,6 +33,7 @@ export const slice = createSlice({
       } else {
         toast.error(action.payload.message)
       }
+      state.current = !state.current
     },
   },
 })
@@ -59,7 +62,7 @@ export const editTrucks = (data) =>
   })
 export const deleteTrucks = (data) =>
   apiCall({
-    url: '/trucks' + data,
+    url: '/trucks/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,
