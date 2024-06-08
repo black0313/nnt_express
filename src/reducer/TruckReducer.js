@@ -6,11 +6,15 @@ export const slice = createSlice({
   name: 'truck',
   initialState: {
     trucks: null,
+    truck: null,
     current: false,
   },
   reducers: {
     get: (state, action) => {
       state.trucks = action.payload.object
+    },
+    getOne: (state, action) => {
+      state.truck = action.payload.object
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
@@ -44,6 +48,13 @@ export const getTrucks = (data) =>
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
+  })
+export const getTruck = (data) =>
+  apiCall({
+    url: '/trucks/' + data,
+    method: 'get',
+    onSuccess: slice.actions.getOne.type,
+    onFail: slice.actions.getOne.type,
   })
 export const addTrucks = (data) =>
   apiCall({

@@ -10,7 +10,7 @@ export const slice = createSlice({
   },
   reducers: {
     get: (state, action) => {
-      // state.driver = action.payload.object
+      state.driver = action.payload.object
       console.log(action.payload.object)
     },
     saveFrom: (state, action) => {
@@ -49,7 +49,7 @@ export const getDrivers = (data) =>
   })
 export const addDrivers = (data) =>
   apiCall({
-    url: '/drivers/',
+    url: '/drivers',
     data,
     method: 'post',
     onSuccess: slice.actions.saveFrom.type,

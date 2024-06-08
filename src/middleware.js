@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const BaseUrl = 'http://192.168.50.142:8080/api'
+export const BaseUrl = 'http://192.168.100.11:8080/api'
 // export const BaseUrl = 'https://jsonplaceholder.typicode.com/posts'
 export const api =
   ({ dispatch }) =>

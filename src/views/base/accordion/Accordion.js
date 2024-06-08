@@ -6,13 +6,14 @@ import TruckReducer, {
   addTrucks,
   deleteTrucks,
   editTrucks,
+  getTruck,
   getTrucks,
 } from 'src/reducer/TruckReducer'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 // eslint-disable-next-line react/prop-types
-const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTrucks }) => {
+const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks, getTrucks }) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState([])
   useEffect(() => {
@@ -27,9 +28,13 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
   }
   function handleDelete(id) {
     deleteTrucks(id)
+    toggle()
   }
   function handleInput(event) {
     // setPost({ ...post, [event.target.name]: event.target.value })
+  }
+  function edit_(id) {
+    getTruck(id)
   }
   const toggle = () => setIsModal(!isModal)
   return (
@@ -67,7 +72,9 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
                 <td className={'text-center'}>{item?.emptyMiles}</td>
                 <td className={'text-center'}>{item?.revenuePerMile}</td>
                 <td className={'text-center'}>
-                  <button className={'btn btn-info text-light'}>Edit</button>
+                  <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
+                    Edit
+                  </button>
                   <button
                     onClick={() => handleDelete(item.id)}
                     className={'btn btn-danger text-light ms-2'}
@@ -169,4 +176,6 @@ const Accordion = ({ TruckReducer, addTrucks, editTrucks, deleteTrucks, getTruck
 }
 
 // export default Accordion
-export default connect(TruckReducer, { getTrucks, addTrucks, editTrucks, deleteTrucks })(Accordion)
+export default connect(TruckReducer, { getTrucks, getTruck, addTrucks, editTrucks, deleteTrucks })(
+  Accordion,
+)
