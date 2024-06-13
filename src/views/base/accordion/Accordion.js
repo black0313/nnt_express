@@ -15,27 +15,81 @@ import 'react-toastify/dist/ReactToastify.css'
 // eslint-disable-next-line react/prop-types
 const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks, getTrucks }) => {
   const [isModal, setIsModal] = useState(false)
-  const [post, setPost] = useState([])
+  const [post, setPost] = useState({})
+  const [truckId, setTruckId] = useState(null)
   useEffect(() => {
     getTrucks()
     // eslint-disable-next-line react/prop-types
   }, [TruckReducer.current])
 
+  const formInput = [
+    {
+      name: 'truckNumber',
+      title: 'Truck Number',
+      type: 'text',
+    },
+    {
+      name: 'numberOfLoads',
+      title: 'Number Of Loads',
+      type: 'number',
+    },
+    {
+      name: 'grossRevenue',
+      title: 'Gross Revenue',
+      type: 'number',
+    },
+    {
+      name: 'miles',
+      title: 'Miles',
+      type: 'number',
+    },
+    {
+      name: 'emptyMiles',
+      title: 'Empty Miles',
+      type: 'number',
+    },
+    {
+      name: 'revenuePerMile',
+      title: 'Revenue Per Mile',
+      type: 'number',
+    },
+  ]
+
   function send() {
-    addTrucks(post)
+    if (truckId) {
+      editTrucks({ ...post, expires: true, id: truckId })
+    } else {
+      addTrucks({ ...post, expires: true })
+    }
+    setTruckId(null)
     // eslint-disable-next-line react/prop-types
     toggle()
+    setPost({})
   }
+
   function handleDelete(id) {
     deleteTrucks(id)
-    toggle()
   }
+
   function handleInput(event) {
     // setPost({ ...post, [event.target.name]: event.target.value })
   }
+
   function edit_(id) {
     getTruck(id)
+    setTruckId(id)
+    toggle()
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      // eslint-disable-next-line react/prop-types
+      setPost(TruckReducer.truck)
+    }, 100)
+  }, [TruckReducer?.current])
+
+  // eslint-disable-next-line react/prop-types
+  console.log(TruckReducer.truck)
   const toggle = () => setIsModal(!isModal)
   return (
     <div>
@@ -94,78 +148,38 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>Add Truck</h3>
+            <h3 className={'text-info '}>{truckId ? 'Edit Truck' : 'Add Truck'}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">
-              <div className="col-6">
-                <label htmlFor="truckNumber">* Truck Number</label>
-                <input
-                  type="text"
-                  name={'truckNumber'}
-                  className={'form-control'}
-                  required={true}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                />
-                <label htmlFor="numberOfLoads">Number Of Loads</label>
-                <input
-                  type="number"
-                  className={'form-control'}
-                  name={'numberOfLoads'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                />
-                <label htmlFor="grossRevenue">Gross Revenue</label>
-                <input
-                  name={'grossRevenue'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="number"
-                  className={'form-control'}
-                />
-                <label htmlFor="expires">Expires</label>
-                <input name={'expires'} type="text" className={'form-control'} />
-              </div>
-              <div className="col-6">
-                <label htmlFor="miles">Miles</label>
-                <input
-                  name={'miles'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="number"
-                  className={'form-control'}
-                />
-                <label htmlFor="emptyMiles">Empty Miles</label>
-                <input
-                  name={'emptyMiles'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="number"
-                  className={'form-control'}
-                />
-                <label htmlFor="revenuePerMile">Revenue PerMile</label>
-                <input
-                  name={'revenuePerMile'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="number"
-                  className={'form-control'}
-                />
-              </div>
+              {formInput.map((item) => (
+                <div className={'col-6'}>
+                  <label htmlFor={item.name}>{item.title}</label>
+                  <input
+                    type={item.type}
+                    name={item.name}
+                    value={post?.[item.name]}
+                    className={'form-control'}
+                    onChange={(event) =>
+                      setPost({ ...post, [event.target.name]: event.target.value })
+                    }
+                  />
+                </div>
+              ))}
             </div>
           </ModalBody>
           <ModalFooter>
             <button onClick={send} className={'btn btn-success text-light w-25'}>
               Save
             </button>
-            <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
+            <button
+              onClick={() => {
+                toggle()
+                setTruckId(null)
+                setPost({})
+              }}
+              className={'btn btn-danger w-25 text-light'}
+            >
               Exit
             </button>
           </ModalFooter>

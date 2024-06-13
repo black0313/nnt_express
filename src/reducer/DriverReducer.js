@@ -50,8 +50,9 @@ export const getDrivers = (data) =>
 export const addDrivers = (data) =>
   apiCall({
     url: '/drivers',
-    data,
     method: 'post',
+    data,
+    contentType: 'multipart/form-data',
     onSuccess: slice.actions.saveFrom.type,
     onFail: slice.actions.saveFrom.type,
   })

@@ -14,22 +14,32 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
   const [isModal, setIsModal] = useState(false)
   const toggle = () => setIsModal(!isModal)
   const [post, setPost] = useState([])
-  function send() {
-    addDrivers(post)
-    toggle()
-  }
+
   useEffect(() => {
-    // eslint-disable-next-line react/prop-types
-    console.log(DriverReducer.driver)
     getDrivers()
     // eslint-disable-next-line react/prop-types
   }, [DriverReducer.current])
   function handleDelete(id) {
     deleteDriver(id)
   }
+  const [files, setFile] = useState(null)
+  const [fileName, setFilename] = useState('')
+  const [fileSize, setFileSize] = useState('')
   function handleFile(event) {
     console.log(event.target.files[0])
+    setFile(event.target.files[0])
+    setFilename(event.target.files[0].name)
+    setFileSize(event.target.files[0].size)
   }
+
+  function send() {
+    const formData = new FormData()
+    formData.append('file', files)
+    formData.append('driver', JSON.stringify(post))
+    addDrivers(formData)
+    toggle()
+  }
+
   return (
     <div>
       <h1>Driver list</h1>
@@ -114,9 +124,9 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
                 <label htmlFor="expires">Expires</label>
                 <input
                   name={'expires'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
+                  // onChange={(event) =>
+                  //   setPost({ ...post, [event.target.name]: event.target.value })
+                  // }
                   type="text"
                   className={'form-control'}
                 />
