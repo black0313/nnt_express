@@ -86,6 +86,7 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
       // eslint-disable-next-line react/prop-types
       setPost(TruckReducer.truck)
     }, 100)
+    // eslint-disable-next-line react/prop-types
   }, [TruckReducer?.current])
 
   // eslint-disable-next-line react/prop-types
@@ -153,6 +154,7 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
           <ModalBody>
             <div className="row">
               {formInput.map((item) => (
+                // eslint-disable-next-line react/jsx-key
                 <div className={'col-6'}>
                   <label htmlFor={item.name}>{item.title}</label>
                   <input

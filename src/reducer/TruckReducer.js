@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { apiCall } from "../api";
-import { toast } from "react-toastify";
+import { createSlice } from '@reduxjs/toolkit'
+import { apiCall } from '../api'
+import { toast } from 'react-toastify'
 
 export const slice = createSlice({
-  name: "truck",
+  name: 'truck',
   initialState: {
     trucks: null,
     truck: null,
@@ -19,66 +19,66 @@ export const slice = createSlice({
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success("TRUCK ADDED");
+        toast.success('TRUCK ADDED')
       } else {
-        toast.error(action.payload.message);
+        toast.error(action.payload.message)
       }
-      state.current = !state.current;
+      state.current = !state.current
     },
     editFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success("TRUCK EDITED");
+        toast.success('TRUCK EDITED')
       } else {
-        toast.error(action.payload.message);
+        toast.error(action.payload.message)
       }
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success("TRUCK DELETED");
+        toast.success('TRUCK DELETED')
       } else {
-        toast.error(action.payload.message);
+        toast.error(action.payload.message)
       }
-      state.current = !state.current;
-    }
-  }
-});
+      state.current = !state.current
+    },
+  },
+})
 
 export const getTrucks = (data) =>
   apiCall({
-    url: "/trucks",
-    method: "get",
+    url: '/trucks',
+    method: 'get',
     onSuccess: slice.actions.get.type,
-    onFail: slice.actions.get.type
-  });
+    onFail: slice.actions.get.type,
+  })
 export const getTruck = (data) =>
   apiCall({
-    url: "/trucks/" + data,
-    method: "get",
+    url: '/trucks/' + data,
+    method: 'get',
     onSuccess: slice.actions.getOne.type,
-    onFail: slice.actions.getOne.type
-  });
+    onFail: slice.actions.getOne.type,
+  })
 export const addTrucks = (data) =>
   apiCall({
-    url: "/trucks",
+    url: '/trucks',
     data,
-    method: "post",
+    method: 'post',
     onSuccess: slice.actions.saveFrom.type,
-    onFail: slice.actions.saveFrom.type
-  });
+    onFail: slice.actions.saveFrom.type,
+  })
 export const editTrucks = (data) =>
   apiCall({
-    url: "/trucks/" + data.id,
-    method: "put",
+    url: '/trucks/' + data.id,
+    method: 'put',
     data,
     onSuccess: slice.actions.editFrom.type,
-    onFail: slice.actions.editFrom.type
-  });
+    onFail: slice.actions.editFrom.type,
+  })
 export const deleteTrucks = (data) =>
   apiCall({
-    url: "/trucks/" + data,
-    method: "delete",
+    url: '/trucks/' + data,
+    method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
-    onFail: slice.actions.deleteFrom.type
-  });
+    onFail: slice.actions.deleteFrom.type,
+  })
 
-export default slice.reducer;
+export default slice.reducer
