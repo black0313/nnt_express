@@ -3,14 +3,14 @@ import { apiCall } from '../api'
 import { toast } from 'react-toastify'
 
 export const slice = createSlice({
-  name: 'trailer',
+  name: 'trailers',
   initialState: {
-    trailer: null,
+    trailers: null,
     current: false,
   },
   reducers: {
     get: (state, action) => {
-      console.log(action.payload)
+      state.trailers = action.payload.object
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
@@ -41,29 +41,29 @@ export const slice = createSlice({
 
 export const getTrailer = (data) =>
   apiCall({
-    url: '/trailer',
+    url: '/trailers',
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
   })
-export const addTrailer = (data) =>
+export const addTr = (data) =>
   apiCall({
-    url: '/trailer',
-    data,
+    url: '/trailers',
     method: 'post',
+    data,
     onSuccess: slice.actions.saveFrom.type,
     onFail: slice.actions.saveFrom.type,
   })
 export const editTrailer = (data) =>
   apiCall({
-    url: '/trailer' + data,
+    url: '/trailers' + data,
     method: 'put',
     onSuccess: slice.actions.editFrom.type,
     onFail: slice.actions.editFrom.type,
   })
 export const deleteTrailer = (data) =>
   apiCall({
-    url: '/trailer' + data,
+    url: '/trailers' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,

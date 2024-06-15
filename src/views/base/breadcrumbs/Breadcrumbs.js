@@ -15,6 +15,24 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
   const toggle = () => setIsModal(!isModal)
   const [post, setPost] = useState([])
 
+  const formInput = [
+    {
+      name: 'name',
+      title: 'Name',
+      type: 'text',
+    },
+    {
+      name: 'passport',
+      title: 'Passport number',
+      type: 'text',
+    },
+    {
+      name: 'phone',
+      title: 'Phone number',
+      type: 'number',
+    },
+  ]
+
   useEffect(() => {
     getDrivers()
     // eslint-disable-next-line react/prop-types
@@ -43,7 +61,7 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
   return (
     <div>
       <h1>Driver list</h1>
-      <div className="w-25 float-end mb-3">
+      <div className="w-25 float-end mb-5">
         <button onClick={toggle} className={'btn btn-success w-100 text-light float-end'}>
           + Add
         </button>
@@ -54,9 +72,8 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
           <thead>
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Name</th>
-            <th className={'text-center'}>Number of load</th>
-            <th className={'text-center'}>Gross Revenue</th>
-            <th className={'text-center'}>Miles</th>
+            <th className={'text-center'}>Passport</th>
+            <th className={'text-center'}>Phone</th>
             <th className={'text-center'}>Actions</th>
           </thead>
           <hr />
@@ -66,10 +83,9 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
                 <td className={'text-center'}>{item.name}</td>
-                <td className={'text-center'}>{item.numberOfLoads}</td>
-                <td className={'text-center'}>{item.grossRevenue}</td>
-                <td className={'text-center'}>{item.miles}</td>
-                <td className={'text-center'}>
+                <td className={'text-center'}>{item.passport}</td>
+                <td className={'text-center'}>{item.phone}</td>
+                <td className={'text-center d-flex justify-content-around'}>
                   <button className={'btn btn-primary'}>Edit</button>
                   <button
                     onClick={() => handleDelete(item.id)}
@@ -83,7 +99,9 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
           </tbody>
         </table>
       ) : (
-        <h1 className={'text-center text-light mt-5'}>TABLE IS EMPTY</h1>
+        <h1 className={'text-center text-light bg-secondary-subtle mt-5 w-50 mx-auto'}>
+          TABLE IS EMPTY
+        </h1>
       )}
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
@@ -103,22 +121,14 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
                   className={'form-control'}
                   required={true}
                 />
-                <label htmlFor="numberOfLoads">Number Of Loads</label>
+
+                <label htmlFor="grossRevenue">Phone number</label>
                 <input
-                  name={'numberOfLoads'}
+                  name={'phone'}
                   onChange={(event) =>
                     setPost({ ...post, [event.target.name]: event.target.value })
                   }
-                  type="text"
-                  className={'form-control'}
-                />
-                <label htmlFor="grossRevenue">Gross Revenue</label>
-                <input
-                  name={'grossRevenue'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="text"
+                  type="number"
                   className={'form-control'}
                 />
                 <label htmlFor="expires">Expires</label>
@@ -127,32 +137,14 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
                   // onChange={(event) =>
                   //   setPost({ ...post, [event.target.name]: event.target.value })
                   // }
-                  type="text"
+                  type="number"
                   className={'form-control'}
                 />
               </div>
               <div className="col-6">
-                <label htmlFor="miles">Miles</label>
+                <label htmlFor="numberOfLoads">Passport number</label>
                 <input
-                  name={'miles'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="text"
-                  className={'form-control'}
-                />
-                <label htmlFor="emptyMiles">Empty Miles</label>
-                <input
-                  name={'emptyMiles'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="text"
-                  className={'form-control'}
-                />
-                <label htmlFor="revenuePerMile">Revenue PerMile</label>
-                <input
-                  name={'revenuePerMile'}
+                  name={'passport'}
                   onChange={(event) =>
                     setPost({ ...post, [event.target.name]: event.target.value })
                   }

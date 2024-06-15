@@ -1,20 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import trailerReducer, {
-  addTrailer,
-  deleteTrailer,
-  editTrailer,
-  getTrailer,
-} from 'src/reducer/trailerReducer'
+import { addTr, deleteTrailer, editTrailer, getTrailer } from 'src/reducer/TrailerReducer'
 import { connect } from 'react-redux'
+import TrailerReducer from 'src/reducer/TrailerReducer'
 
-const Cards = (trailerReducer, getTrailer, addTrailer, editTrailer, deleteTrailer) => {
+const Trailer = (TrailerReducer, getTrailer, editTrailer, deleteTrailer, addTr) => {
   const [isModal, setIsModal] = useState(false)
+  const [post, setPost] = useState({})
   const toggle = () => setIsModal(!isModal)
-  function send() {}
-  useEffect(() => {
-    console.log(trailerReducer.trailer)
-  }, [])
+  const formInput = [
+    {
+      name: 'truckNumber',
+      title: 'Truck Number',
+      type: 'text',
+    },
+    {
+      name: 'numberOfLoads',
+      title: 'Number Of Loads',
+      type: 'number',
+    },
+    {
+      name: 'grossRevenue',
+      title: 'Gross Revenue',
+      type: 'number',
+    },
+    {
+      name: 'revenuePerMile',
+      title: 'Revenue Per Mile',
+      type: 'number',
+    },
+  ]
+  function send() {
+    addTr({ ...post, expires: true })
+  }
+
   return (
     <div>
       <h1>Trailer list</h1>
@@ -43,24 +62,39 @@ const Cards = (trailerReducer, getTrailer, addTrailer, editTrailer, deleteTraile
           </ModalHeader>
           <ModalBody>
             <div className="row">
-              <div className="col-6">
-                <label htmlFor="truckNumber">* Name</label>
-                <input type="text" className={'form-control'} required={true} />
-                <label htmlFor="numberOfLoads">Number Of Loads</label>
-                <input type="text" className={'form-control'} />
-                <label htmlFor="grossRevenue">Gross Revenue</label>
-                <input type="text" className={'form-control'} />
-                <label htmlFor="expires">Expires</label>
-                <input type="text" className={'form-control'} />
-              </div>
-              <div className="col-6">
-                <label htmlFor="miles">Miles</label>
-                <input type="text" className={'form-control'} />
-                <label htmlFor="emptyMiles">Empty Miles</label>
-                <input type="text" className={'form-control'} />
-                <label htmlFor="revenuePerMile">Revenue PerMile</label>
-                <input type="text" className={'form-control'} />
-              </div>
+              {/*<div className="col-6">*/}
+              {/*  <label htmlFor="truckNumber">* Name</label>*/}
+              {/*  <input type="text" className={'form-control'} required={true} />*/}
+              {/*  <label htmlFor="numberOfLoads">Number Of Loads</label>*/}
+              {/*  <input type="text" className={'form-control'} />*/}
+              {/*  <label htmlFor="grossRevenue">Gross Revenue</label>*/}
+              {/*  <input type="text" className={'form-control'} />*/}
+              {/*  <label htmlFor="expires">Expires</label>*/}
+              {/*  <input type="text" className={'form-control'} />*/}
+              {/*</div>*/}
+              {/*<div className="col-6">*/}
+              {/*  <label htmlFor="miles">Miles</label>*/}
+              {/*  <input type="text" className={'form-control'} />*/}
+              {/*  <label htmlFor="emptyMiles">Empty Miles</label>*/}
+              {/*  <input type="text" className={'form-control'} />*/}
+              {/*  <label htmlFor="revenuePerMile">Revenue PerMile</label>*/}
+              {/*  <input type="text" className={'form-control'} />*/}
+              {/*</div>*/}
+              {formInput.map((item) => (
+                // eslint-disable-next-line react/jsx-key
+                <div className={'col-6'}>
+                  <label htmlFor={item.name}>{item.title}</label>
+                  <input
+                    type={item.type}
+                    name={item.name}
+                    value={post?.[item.name]}
+                    className={'form-control'}
+                    onChange={(event) =>
+                      setPost({ ...post, [event.target.name]: event.target.value })
+                    }
+                  />
+                </div>
+              ))}
             </div>
           </ModalBody>
           <ModalFooter>
@@ -77,4 +111,9 @@ const Cards = (trailerReducer, getTrailer, addTrailer, editTrailer, deleteTraile
   )
 }
 
-export default connect(trailerReducer, { getTrailer, addTrailer, editTrailer, deleteTrailer })(Cards)
+export default connect(TrailerReducer, {
+  getTrailer,
+  editTrailer,
+  addTr,
+  deleteTrailer,
+})(Trailer)
