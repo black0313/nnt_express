@@ -1,13 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import { addTr, deleteTrailer, editTrailer, getTrailer } from 'src/reducer/TrailerReducer'
+import axios from 'axios'
 import { connect } from 'react-redux'
-import TrailerReducer from 'src/reducer/TrailerReducer'
+import TruckReducer, {
+  addTrucks,
+  deleteTrucks,
+  editTrucks,
+  getTruck,
+  getTrucks,
+} from 'src/reducer/TruckReducer'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import TrailerReducer, {
+  addTr,
+  deleteTrailer,
+  editTrailer,
+  getTrailer,
+} from 'src/reducer/TrailerReducer'
 
-const Trailer = (TrailerReducer, getTrailer, editTrailer, deleteTrailer, addTr) => {
+// eslint-disable-next-line react/prop-types
+const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrailer }) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
-  const toggle = () => setIsModal(!isModal)
+  const [truckId, setTruckId] = useState(null)
+  useEffect(() => {
+    getTrucks()
+    // eslint-disable-next-line react/prop-types
+  }, [TrailerReducer.current])
+
   const formInput = [
     {
       name: 'truckNumber',
@@ -30,56 +50,103 @@ const Trailer = (TrailerReducer, getTrailer, editTrailer, deleteTrailer, addTr) 
       type: 'number',
     },
   ]
+
   function send() {
-    addTr({ ...post, expires: true })
+    if (truckId) {
+      editTrucks({ ...post, expires: true, id: truckId })
+    } else {
+      addTrucks({ ...post, expires: true })
+    }
+    setTruckId(null)
+    // eslint-disable-next-line react/prop-types
+    toggle()
+    setPost({})
   }
 
+  function handleDelete(id) {
+    deleteTrucks(id)
+  }
+
+  function handleInput(event) {
+    // setPost({ ...post, [event.target.name]: event.target.value })
+  }
+
+  function edit_(id) {
+    getTruck(id)
+    setTruckId(id)
+    toggle()
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      // eslint-disable-next-line react/prop-types
+      setPost(TrailerReducer.trailers)
+    }, 100)
+    // eslint-disable-next-line react/prop-types
+  }, [TrailerReducer?.current])
+
+  // eslint-disable-next-line react/prop-types
+  console.log(TrailerReducer.trailers)
+  const toggle = () => setIsModal(!isModal)
   return (
     <div>
-      <h1>Trailer list</h1>
+      <h1>Trailer List</h1>
       <div className="w-25 float-end mb-3">
-        <button className={'btn btn-success w-100 text-light float-end'} onClick={toggle}>
+        <button onClick={toggle} className={'btn btn-success w-100 text-light float-end'}>
           + Add
         </button>
       </div>
-      <table className={'table rounded text-light bg-info table-hover table-striped'}>
-        <thead>
-          <th className={'text-center'}>T/R</th>
-          <th className={'text-center'}>Trailer number</th>
-          <th className={'text-center'}>Number of load</th>
-          <th className={'text-center'}>Gross Revenue</th>
-          <th className={'text-center'}>Miles</th>
-          <th className={'text-center'}>Dead Head</th>
-          <th className={'text-center'}>Revenue Per Mile</th>
-        </thead>
-        <hr />
-        <tbody></tbody>
-      </table>
+      <br />
+      {/* eslint-disable-next-line react/prop-types */}
+      {TrailerReducer.trailers ? (
+        <table className={'table rounded table-bordered text-light  table-hover table-striped'}>
+          <thead className={'bg-secondary'}>
+            <th className={'text-center'}>T/R</th>
+            <th className={'text-center'}>Number Truck</th>
+            <th className={'text-center'}>Number of load</th>
+            <th className={'text-center'}>Gross Revenue</th>
+            <th className={'text-center'}>Revenue Per Mile</th>
+            <th className={'text-center'}>Actions</th>
+          </thead>
+          <hr />
+          <tbody>
+            {/* eslint-disable-next-line react/prop-types */}
+            {TrailerReducer.trailers.map((item, index) => (
+              <tr key={index}>
+                <td className={'text-center'}>{index + 1}</td>
+                <td className={'text-center'}>{item?.truckNumber}</td>
+                <td className={'text-center'}>{item?.numberOfLoads}</td>
+                <td className={'text-center'}>{item?.grossRevenue}</td>
+                <td className={'text-center'}>{item?.miles}</td>
+                <td className={'text-center'}>{item?.emptyMiles}</td>
+                <td className={'text-center'}>{item?.revenuePerMile}</td>
+                <td className={'text-center'}>
+                  <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className={'btn btn-danger text-light ms-2'}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <h1 className={'text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto'}>
+          TABLE IS EMPTY
+        </h1>
+      )}
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>Add Driver</h3>
+            <h3 className={'text-info '}>{truckId ? 'Edit Truck' : 'Add Truck'}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">
-              {/*<div className="col-6">*/}
-              {/*  <label htmlFor="truckNumber">* Name</label>*/}
-              {/*  <input type="text" className={'form-control'} required={true} />*/}
-              {/*  <label htmlFor="numberOfLoads">Number Of Loads</label>*/}
-              {/*  <input type="text" className={'form-control'} />*/}
-              {/*  <label htmlFor="grossRevenue">Gross Revenue</label>*/}
-              {/*  <input type="text" className={'form-control'} />*/}
-              {/*  <label htmlFor="expires">Expires</label>*/}
-              {/*  <input type="text" className={'form-control'} />*/}
-              {/*</div>*/}
-              {/*<div className="col-6">*/}
-              {/*  <label htmlFor="miles">Miles</label>*/}
-              {/*  <input type="text" className={'form-control'} />*/}
-              {/*  <label htmlFor="emptyMiles">Empty Miles</label>*/}
-              {/*  <input type="text" className={'form-control'} />*/}
-              {/*  <label htmlFor="revenuePerMile">Revenue PerMile</label>*/}
-              {/*  <input type="text" className={'form-control'} />*/}
-              {/*</div>*/}
               {formInput.map((item) => (
                 // eslint-disable-next-line react/jsx-key
                 <div className={'col-6'}>
@@ -101,7 +168,14 @@ const Trailer = (TrailerReducer, getTrailer, editTrailer, deleteTrailer, addTr) 
             <button onClick={send} className={'btn btn-success text-light w-25'}>
               Save
             </button>
-            <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
+            <button
+              onClick={() => {
+                toggle()
+                setTruckId(null)
+                setPost({})
+              }}
+              className={'btn btn-danger w-25 text-light'}
+            >
               Exit
             </button>
           </ModalFooter>
@@ -111,9 +185,5 @@ const Trailer = (TrailerReducer, getTrailer, editTrailer, deleteTrailer, addTr) 
   )
 }
 
-export default connect(TrailerReducer, {
-  getTrailer,
-  editTrailer,
-  addTr,
-  deleteTrailer,
-})(Trailer)
+// export default Accordion
+export default connect(TrailerReducer, { getTrailer, addTr, editTrailer, deleteTrailer })(Cards)
