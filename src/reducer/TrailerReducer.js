@@ -7,10 +7,15 @@ export const slice = createSlice({
   initialState: {
     trailers: null,
     current: false,
+    trailer: null,
   },
   reducers: {
     get: (state, action) => {
       state.trailers = action.payload.object
+    },
+    getOne: (state, action) => {
+      state.trailer = action.payload.object
+      state.current = !state.current
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
@@ -30,7 +35,7 @@ export const slice = createSlice({
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('TRAILER DELETED')
+        toast.error('TRAILER DELETED')
       } else {
         toast.error(action.payload.message)
       }
@@ -46,7 +51,14 @@ export const getTrailer = (data) =>
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
   })
-export const addTr = (data) =>
+export const getTrailerOne = (data) =>
+  apiCall({
+    url: '/trailers/' + data,
+    method: 'get',
+    onSuccess: slice.actions.getOne.type,
+    onFail: slice.actions.getOne.type,
+  })
+export const addTrailer = (data) =>
   apiCall({
     url: '/trailers',
     method: 'post',
@@ -56,14 +68,15 @@ export const addTr = (data) =>
   })
 export const editTrailer = (data) =>
   apiCall({
-    url: '/trailers' + data,
+    url: '/trailers/' + data.id,
     method: 'put',
+    data,
     onSuccess: slice.actions.editFrom.type,
     onFail: slice.actions.editFrom.type,
   })
 export const deleteTrailer = (data) =>
   apiCall({
-    url: '/trailers' + data,
+    url: '/trailers/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,

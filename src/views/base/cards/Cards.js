@@ -12,17 +12,31 @@ import TruckReducer, {
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TrailerReducer, {
-  addTr,
+  addTrailer,
   deleteTrailer,
   editTrailer,
   getTrailer,
+  getTrailerOne,
 } from 'src/reducer/TrailerReducer'
 
 // eslint-disable-next-line react/prop-types
-const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrailer }) => {
+const Cards = ({
+  // eslint-disable-next-line react/prop-types
+  TrailerReducer,
+  // eslint-disable-next-line react/prop-types
+  getTrailer,
+  // eslint-disable-next-line react/prop-types
+  addTrailer,
+  // eslint-disable-next-line react/prop-types
+  editTrailer,
+  // eslint-disable-next-line react/prop-types
+  deleteTrailer,
+  // eslint-disable-next-line react/prop-types
+  getTrailerOne,
+}) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
-  const [truckId, setTruckId] = useState(null)
+  const [trailerId, setTrailerId] = useState(null)
   useEffect(() => {
     getTrucks()
     // eslint-disable-next-line react/prop-types
@@ -30,8 +44,8 @@ const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrai
 
   const formInput = [
     {
-      name: 'truckNumber',
-      title: 'Truck Number',
+      name: 'trailerNumber',
+      title: 'Trailer Number',
       type: 'text',
     },
     {
@@ -52,41 +66,36 @@ const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrai
   ]
 
   function send() {
-    if (truckId) {
-      editTrucks({ ...post, expires: true, id: truckId })
+    if (trailerId) {
+      editTrailer({ ...post, id: trailerId })
     } else {
-      addTrucks({ ...post, expires: true })
+      addTrailer({ ...post })
     }
-    setTruckId(null)
+    setTrailerId(null)
     // eslint-disable-next-line react/prop-types
     toggle()
     setPost({})
   }
 
   function handleDelete(id) {
-    deleteTrucks(id)
-  }
-
-  function handleInput(event) {
-    // setPost({ ...post, [event.target.name]: event.target.value })
+    deleteTrailer(id)
   }
 
   function edit_(id) {
-    getTruck(id)
-    setTruckId(id)
+    getTrailerOne(id)
+    setTrailerId(id)
     toggle()
   }
 
   useEffect(() => {
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
-      setPost(TrailerReducer.trailers)
+      setPost(TrailerReducer.trailer)
     }, 100)
+    getTrailer()
     // eslint-disable-next-line react/prop-types
   }, [TrailerReducer?.current])
 
-  // eslint-disable-next-line react/prop-types
-  console.log(TrailerReducer.trailers)
   const toggle = () => setIsModal(!isModal)
   return (
     <div>
@@ -114,11 +123,9 @@ const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrai
             {TrailerReducer.trailers.map((item, index) => (
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
-                <td className={'text-center'}>{item?.truckNumber}</td>
+                <td className={'text-center'}>{item?.trailerNumber}</td>
                 <td className={'text-center'}>{item?.numberOfLoads}</td>
                 <td className={'text-center'}>{item?.grossRevenue}</td>
-                <td className={'text-center'}>{item?.miles}</td>
-                <td className={'text-center'}>{item?.emptyMiles}</td>
                 <td className={'text-center'}>{item?.revenuePerMile}</td>
                 <td className={'text-center'}>
                   <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
@@ -143,7 +150,7 @@ const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrai
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>{truckId ? 'Edit Truck' : 'Add Truck'}</h3>
+            <h3 className={'text-info '}>{trailerId ? 'Edit Truck' : 'Add Truck'}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">
@@ -171,7 +178,7 @@ const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrai
             <button
               onClick={() => {
                 toggle()
-                setTruckId(null)
+                setTrailerId(null)
                 setPost({})
               }}
               className={'btn btn-danger w-25 text-light'}
@@ -186,4 +193,10 @@ const Cards = ({ TrailerReducer, getTrailer, addTrailer, editTrailer, deleteTrai
 }
 
 // export default Accordion
-export default connect(TrailerReducer, { getTrailer, addTr, editTrailer, deleteTrailer })(Cards)
+export default connect(TrailerReducer, {
+  getTrailer,
+  addTrailer,
+  editTrailer,
+  deleteTrailer,
+  getTrailerOne,
+})(Cards)

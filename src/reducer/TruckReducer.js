@@ -34,7 +34,7 @@ export const slice = createSlice({
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('TRUCK DELETED')
+        toast.error('TRUCK DELETED')
       } else {
         toast.error(action.payload.message)
       }
