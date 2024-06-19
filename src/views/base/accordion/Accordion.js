@@ -17,6 +17,7 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [truckId, setTruckId] = useState(null)
+  const [statusvalue, setStatusvalue] = useState(false)
   useEffect(() => {
     getTrucks()
     // eslint-disable-next-line react/prop-types
@@ -57,9 +58,9 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
 
   function send() {
     if (truckId) {
-      editTrucks({ ...post, expires: true, id: truckId })
+      editTrucks({ ...post, expires: statusvalue, id: truckId })
     } else {
-      addTrucks({ ...post, expires: true })
+      addTrucks({ ...post, expires: statusvalue })
     }
     setTruckId(null)
     // eslint-disable-next-line react/prop-types
@@ -69,10 +70,6 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
 
   function handleDelete(id) {
     deleteTrucks(id)
-  }
-
-  function handleInput(event) {
-    // setPost({ ...post, [event.target.name]: event.target.value })
   }
 
   function edit_(id) {
@@ -112,6 +109,7 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
             <th className={'text-center'}>Miles</th>
             <th className={'text-center'}>Dead Head</th>
             <th className={'text-center'}>Revenue Per Mile</th>
+            <th className={'text-center'}>Status</th>
             <th className={'text-center'}>Actions</th>
           </thead>
           <hr />
@@ -126,6 +124,13 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
                 <td className={'text-center'}>{item?.miles}</td>
                 <td className={'text-center'}>{item?.emptyMiles}</td>
                 <td className={'text-center'}>{item?.revenuePerMile}</td>
+                <td className={'text-center'}>
+                  {item?.expires === true ? (
+                    <button className="btn btn-outline-success">Active</button>
+                  ) : (
+                    <button className={'btn btn-outline-danger'}>No active</button>
+                  )}
+                </td>
                 <td className={'text-center'}>
                   <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
                     Edit
@@ -168,8 +173,20 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
                   />
                 </div>
               ))}
+              <label htmlFor="status">Status</label>
+              <select
+                onChange={(e) => setStatusvalue(e.target.value)}
+                value={statusvalue}
+                className={'w-50 ms-2 form-control'}
+                name="status"
+                id="status"
+              >
+                <option value="true">Active</option>
+                <option value="false">No active</option>
+              </select>
             </div>
           </ModalBody>
+          {console.log(statusvalue)}
           <ModalFooter>
             <button onClick={send} className={'btn btn-success text-light w-25'}>
               Save

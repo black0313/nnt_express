@@ -8,7 +8,7 @@ const Typography = () => {
   const toggle = () => setIsModal(!isModal)
   return (
     <>
-      <h1>Dispatcher List</h1>
+      <h1>Dispatcher teams</h1>
 
       <div className="w-25 float-end mb-3">
         <button onClick={toggle} className={'btn btn-success w-100 text-light float-end'}>

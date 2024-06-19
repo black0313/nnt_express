@@ -3,23 +3,23 @@ import { apiCall } from '../api'
 import { toast } from 'react-toastify'
 
 export const slice = createSlice({
-  name: 'truck',
+  name: 'dispatchers',
   initialState: {
-    trucks: null,
-    truck: null,
+    dispatchers: null,
+    dispatcher: null,
     current: false,
   },
   reducers: {
     get: (state, action) => {
-      state.trucks = action.payload.object
+      state.dispatchers = action.payload.object
     },
     getOne: (state, action) => {
-      state.truck = action.payload.object
+      state.dispatcher = action.payload.object
       state.current = !state.current
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('TRUCK ADDED')
+        toast.success('DISPATCHER ADDED')
       } else {
         toast.error(action.payload.message)
       }
@@ -27,7 +27,7 @@ export const slice = createSlice({
     },
     editFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('TRUCK EDITED')
+        toast.success('DISPATCHER EDITED')
       } else {
         toast.error(action.payload.message)
       }
@@ -35,7 +35,7 @@ export const slice = createSlice({
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
-        toast.error('TRUCK DELETED')
+        toast.error('DISPATCHER DELETED')
       } else {
         toast.error(action.payload.message)
       }
@@ -44,39 +44,39 @@ export const slice = createSlice({
   },
 })
 
-export const getTrucks = (data) =>
+export const getDispatchers = (data) =>
   apiCall({
-    url: '/trucks',
+    url: '/dispatchers',
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
   })
-export const getTruck = (data) =>
+export const getDispatcher = (data) =>
   apiCall({
-    url: '/trucks/' + data,
+    url: '/dispatchers/' + data,
     method: 'get',
     onSuccess: slice.actions.getOne.type,
     onFail: slice.actions.getOne.type,
   })
-export const addTrucks = (data) =>
+export const addDispatcher = (data) =>
   apiCall({
-    url: '/trucks',
+    url: '/dispatchers',
     data,
     method: 'post',
     onSuccess: slice.actions.saveFrom.type,
     onFail: slice.actions.saveFrom.type,
   })
-export const editTrucks = (data) =>
+export const editDispatcher = (data) =>
   apiCall({
-    url: '/trucks/' + data.id,
+    url: '/dispatchers/' + data.id,
     method: 'put',
     data,
     onSuccess: slice.actions.editFrom.type,
     onFail: slice.actions.editFrom.type,
   })
-export const deleteTrucks = (data) =>
+export const deleteDispatcher = (data) =>
   apiCall({
-    url: '/trucks/' + data,
+    url: '/dispatchers/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,

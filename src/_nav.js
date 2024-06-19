@@ -29,11 +29,11 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Users',
+    name: 'Dispatchers',
   },
   {
     component: CNavItem,
-    name: 'Users',
+    name: 'Dispatchers',
     to: '/theme/colors',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
