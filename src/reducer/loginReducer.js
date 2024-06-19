@@ -15,8 +15,15 @@ export const slice = createSlice({
 
 export const getLogin = (data) =>
   apiCall({
-    url: '/users' + data,
+    url: '/users',
     method: 'get',
+    onSuccess: slice.actions.get.type,
+    onFail: slice.actions.get.type,
+  })
+export const addLogin = (data) =>
+  apiCall({
+    url: '/auth/authenticate',
+    method: 'post',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
   })

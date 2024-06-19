@@ -18,15 +18,36 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import loginReducer, { addLogin } from 'src/reducer/loginReducer'
+import { useNavigate } from 'react-router-dom'
 
-const Login = () => {
-  const [login, setLogin] = useState('')
+// eslint-disable-next-line react/prop-types
+const Login = ({ loginReducer, addLogin }) => {
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('123')
   const notify = () => toast.error('Check login or password')
-
   useEffect(() => {
-    axios.get('https://jsonplaceholder.typicode.com/posts').then((r) => console.log(r.data))
+    // axios.get('https://jsonplaceholder.typicode.com/posts').then((r) => console.log(r.data))
   }, [])
+
+  const navigate = useNavigate()
+  function send() {
+    axios
+      .post('http://192.168.0.139:8080/api/auth/authenticate', {
+        username,
+        password,
+      })
+      .then((res) => {
+        localStorage.setItem('token', res.data.object.token), navigate('/dashboard')
+      })
+      .catch((err) => console.log(err))
+    // addLogin({
+    //   username: username,
+    //   password: password,
+    // })
+  }
+
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -44,11 +65,12 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         placeholder="Username"
-                        onChange={(e) => setLogin(e.target.value)}
-                        value={login}
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
                         autoComplete="username"
                       />
                     </CInputGroup>
+                    {console.log(username, password)}
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
@@ -63,19 +85,23 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        {login === 'admin' && password === '123' ? (
-                          <Link to={'/dashboard'}>
-                            <CButton color="primary" className="px-4">
-                              Login
-                            </CButton>
-                          </Link>
-                        ) : (
-                          // <Link to={'/dashboard'}>
-                          <CButton onClick={notify} color="danger" className="px-4">
-                            Login
-                          </CButton>
-                          // </Link>
-                        )}
+                        <CButton onClick={send} color="primary" className="px-4">
+                          Login
+                        </CButton>
+                        {/*{username === 'admin' && password === '123' ? (*/}
+                        {/*  <Link to={'/dashboard'}>*/}
+                        {/*    <CButton color="primary" className="px-4">*/}
+                        {/*      Login*/}
+                        {/*    </CButton>*/}
+                        {/*  </Link>*/}
+                        {/*) : (*/}
+                        {/*  // <Link to={'/dashboard'}>*/}
+                        {/*  // <CButton onClick={notify} color="danger" className="px-4">*/}
+                        {/*  <CButton onClick={send} color="danger" className="px-4">*/}
+                        {/*    Login*/}
+                        {/*  </CButton>*/}
+                        {/*  // </Link>*/}
+                        {/*)}*/}
                         <ToastContainer />
                         {/*<Link to={'/dashboard'}>*/}
                         {/*  <CButton color="primary" className="px-4">*/}
@@ -118,7 +144,7 @@ const Login = () => {
   )
 }
 
-export default Login
+export default connect(loginReducer, { addLogin })(Login)
 
 // doniknegmatov51@gmail.com
 // aa2224848
