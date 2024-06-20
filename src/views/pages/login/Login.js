@@ -23,7 +23,7 @@ import loginReducer, { addLogin } from 'src/reducer/loginReducer'
 import { useNavigate } from 'react-router-dom'
 
 // eslint-disable-next-line react/prop-types
-const Login = ({ loginReducer, addLogin }) => {
+const Login = ({ loginReducer, addLogin, setUser }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('123')
   const notify = () => toast.error('Check login or password')
@@ -32,16 +32,23 @@ const Login = ({ loginReducer, addLogin }) => {
   }, [])
 
   const navigate = useNavigate()
+
+  const user = { name: 'olim', id: 'ewjofwjef' }
+
   function send() {
-    axios
-      .post('http://192.168.0.139:8080/api/auth/authenticate', {
-        username,
-        password,
-      })
-      .then((res) => {
-        localStorage.setItem('token', res.data.object.token), navigate('/dashboard')
-      })
-      .catch((err) => console.log(err))
+    localStorage.setItem('token', '2132312efewfefw2342fwefwe')
+    localStorage.setItem('user', JSON.stringify(user))
+    // setUser(user)
+    navigate('/dashboard')
+    // axios
+    //   .post('http://192.168.0.139:8080/api/auth/authenticate', {
+    //     username,
+    //     password,
+    //   })
+    //   .then((res) => {
+    //     localStorage.setItem('token', res.data.object.token), navigate('/dashboard')
+    //   })
+    //   .catch((err) => console.log(err))
     // addLogin({
     //   username: username,
     //   password: password,
