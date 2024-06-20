@@ -100,19 +100,46 @@ function Colors({
           + Add
         </button>
       </div>
-      <table className={'table rounded text-light bg-primary table-hover table-striped'}>
-        <thead>
-          <th className={'text-center'}>T/R</th>
-          <th className={'text-center'}>Name</th>
-          <th className={'text-center'}>Dispatch team</th>
-          <th className={'text-center'}>Gross Revenue</th>
-          <th className={'text-center'}>Miles</th>
-          <th className={'text-center'}>Dead Head</th>
-          <th className={'text-center'}>Revenue Per Mile</th>
-        </thead>
-        <hr />
-        <tbody></tbody>
-      </table>
+      {/* eslint-disable-next-line react/prop-types */}
+      {DispatcherReducer.dispatchers ? (
+        <table className={'table rounded text-light bg-primary table-hover table-striped'}>
+          <thead>
+            <th className={'text-center'}>T/R</th>
+            <th className={'text-center'}>Name</th>
+            <th className={'text-center'}>Number of loads</th>
+            <th className={'text-center'}>Open loads</th>
+            <th className={'text-center'}>Net profit</th>
+            <th className={'text-center'}>Gross Revenue</th>
+            <th className={'text-center'}>Actions</th>
+          </thead>
+          <hr />
+          <tbody>
+            {
+              // eslint-disable-next-line react/prop-types
+              DispatcherReducer.dispatchers.map((item, index) => (
+                <tr key={index}>
+                  <td className={'text-center'}>{index + 1}</td>
+                  <td className={'text-center'}>{item.name}</td>
+                  <td className={'text-center'}>{item?.numberOfLoads}</td>
+                  <td className={'text-center'}>{item?.openLoads}</td>
+                  <td className={'text-center'}>{item?.netProfit}</td>
+                  <td className={'text-center'}>{item.grossRevenue}</td>
+                  <td className={'text-center'}>
+                    <button onClick={() => edit_(item.id)} className="btn btn-secondary">
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(item.id)} className="btn ms-2 btn-danger">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      ) : (
+        <h1 className={'text-center w-50 text-light'}>TABLE IS EMPTY</h1>
+      )}
 
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
@@ -139,7 +166,9 @@ function Colors({
             </div>
           </ModalBody>
           <ModalFooter>
-            <button className={'btn btn-success text-light w-25'}>Save</button>
+            <button onClick={send} className={'btn btn-success text-light w-25'}>
+              Save
+            </button>
             <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
               Exit
             </button>

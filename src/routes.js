@@ -65,7 +65,7 @@ const routes = [
   { path: '/trailer', name: 'Breadcrumbs', element: Cards },
   { path: '/base/cards', name: 'Cards', element: Cards },
   { path: '/base/carousels', name: 'Carousel', element: Carousels },
-  { path: '/base/collapses', name: 'Collapse', element: Collapses },
+  { path: '/users', name: 'Collapse', element: Collapses },
   { path: '/base/list-groups', name: 'List Groups', element: ListGroups },
   { path: '/base/navs', name: 'Navs', element: Navs },
   { path: '/base/paginations', name: 'Paginations', element: Paginations },

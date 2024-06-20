@@ -21,27 +21,29 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import loginReducer, { addLogin } from 'src/reducer/loginReducer'
 import { useNavigate } from 'react-router-dom'
+import { BaseUrl } from 'src/middleware'
 
 // eslint-disable-next-line react/prop-types
-const Login = ({ loginReducer, addLogin }) => {
+const Login = ({ loginReducer, addLogin, setUser }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('123')
-  const notify = () => toast.error('Check login or password')
-  useEffect(() => {
-    // axios.get('https://jsonplaceholder.typicode.com/posts').then((r) => console.log(r.data))
-  }, [])
 
   const navigate = useNavigate()
+
   function send() {
     axios
-      .post('http://192.168.0.139:8080/api/auth/authenticate', {
+      .post(`${BaseUrl}/auth/authenticate`, {
         username,
         password,
       })
       .then((res) => {
-        localStorage.setItem('token', res.data.object.token), navigate('/dashboard')
+        localStorage.setItem('user', JSON.stringify(res.data.object))
+        localStorage.setItem('token', res.data.object.token)
+        setUser(res.data.object)
+        navigate('/dashboard')
       })
       .catch((err) => console.log(err))
+      .catch((err) => toast.error('Parol yoki login xato !'))
   }
 
   return (
@@ -98,7 +100,6 @@ const Login = ({ loginReducer, addLogin }) => {
                         {/*  </CButton>*/}
                         {/*  // </Link>*/}
                         {/*)}*/}
-                        <ToastContainer />
                         {/*<Link to={'/dashboard'}>*/}
                         {/*  <CButton color="primary" className="px-4">*/}
                         {/*    Login*/}

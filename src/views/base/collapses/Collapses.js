@@ -1,135 +1,188 @@
-import React, { useState } from 'react'
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CCollapse, CRow } from '@coreui/react'
-import { DocsExample } from 'src/components'
+import React, { useEffect, useState } from 'react'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import axios from 'axios'
+import { connect } from 'react-redux'
+import 'react-toastify/dist/ReactToastify.css'
+import UserReducer, {
+  addUser,
+  deleteUser,
+  editUser,
+  getUser,
+  getUsers,
+} from 'src/reducer/UserReducer'
 
-const Collapses = () => {
-  const [visible, setVisible] = useState(false)
-  const [visibleHorizontal, setVisibleHorizontal] = useState(false)
-  const [visibleA, setVisibleA] = useState(false)
-  const [visibleB, setVisibleB] = useState(false)
+// eslint-disable-next-line react/prop-types
+const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUser }) => {
+  const [isModal, setIsModal] = useState(false)
+  const [post, setPost] = useState({})
+  const [userId, setUserId] = useState(null)
+  useEffect(() => {
+    getUsers()
+    // eslint-disable-next-line react/prop-types
+  }, [UserReducer.current])
 
+  const formInput = [
+    {
+      name: 'firstname',
+      title: 'First Name',
+      type: 'text',
+    },
+    {
+      name: 'lastname',
+      title: 'Last Name',
+      type: 'text',
+    },
+    {
+      name: 'username',
+      title: 'Username',
+      type: 'text',
+    },
+    {
+      name: 'password',
+      title: 'Password',
+      type: 'number',
+    },
+    {
+      name: 'role',
+      title: 'Role',
+      type: 'text',
+    },
+  ]
+
+  function send() {
+    if (userId) {
+      editUser({
+        firstname: post.firstname,
+        lastname: post.lastname,
+        password: post.password,
+        role: post.role,
+        username: post.username,
+        id: userId,
+      })
+    } else {
+      addUser({ ...post })
+    }
+    setUserId(null)
+    // eslint-disable-next-line react/prop-types
+    toggle()
+    setPost({})
+  }
+
+  function handleDelete(id) {
+    deleteUser(id)
+  }
+
+  function edit_(id) {
+    getUser(id)
+    setUserId(id)
+    toggle()
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      // eslint-disable-next-line react/prop-types
+      setPost(UserReducer.user)
+    }, 100)
+    // eslint-disable-next-line react/prop-types
+  }, [UserReducer.current])
+
+  const toggle = () => setIsModal(!isModal)
   return (
-    <CRow>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Collapse</strong>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">You can use a link or a button component.</p>
-            <DocsExample href="components/collapse">
-              <CButton
-                color="primary"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setVisible(!visible)
-                }}
-              >
-                Link
-              </CButton>
-              <CButton color="primary" onClick={() => setVisible(!visible)}>
-                Button
-              </CButton>
-              <CCollapse visible={visible}>
-                <CCard className="mt-3">
-                  <CCardBody>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                    richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
-                    anderson cred nesciunt sapiente ea proident.
-                  </CCardBody>
-                </CCard>
-              </CCollapse>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Collapse</strong> <small> Horizontal</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">You can use a link or a button component.</p>
-            <DocsExample href="components/collapse#horizontal">
-              <CButton
-                className="mb-3"
-                color="primary"
-                onClick={() => setVisibleHorizontal(!visibleHorizontal)}
-                aria-expanded={visibleHorizontal}
-                aria-controls="collapseWidthExample"
-              >
-                Button
-              </CButton>
-              <div style={{ minHeight: '120px' }}>
-                <CCollapse id="collapseWidthExample" horizontal visible={visibleHorizontal}>
-                  <CCard style={{ width: '300px' }}>
-                    <CCardBody>
-                      This is some placeholder content for a horizontal collapse. It&#39;s hidden by
-                      default and shown when triggered.
-                    </CCardBody>
-                  </CCard>
-                </CCollapse>
-              </div>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Collapse</strong> <small> multi target</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              A <code>&lt;CButton&gt;</code> can show and hide multiple elements.
-            </p>
-            <DocsExample href="components/collapse#multiple-targets">
-              <CButton color="primary" onClick={() => setVisibleA(!visibleA)}>
-                Toggle first element
-              </CButton>
-              <CButton color="primary" onClick={() => setVisibleB(!visibleB)}>
-                Toggle second element
-              </CButton>
-              <CButton
-                color="primary"
-                onClick={() => {
-                  setVisibleA(!visibleA)
-                  setVisibleB(!visibleB)
-                }}
-              >
-                Toggle both elements
-              </CButton>
-              <CRow>
-                <CCol xs={6}>
-                  <CCollapse visible={visibleA}>
-                    <CCard className="mt-3">
-                      <CCardBody>
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                        richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
-                        anderson cred nesciunt sapiente ea proident.
-                      </CCardBody>
-                    </CCard>
-                  </CCollapse>
-                </CCol>
-                <CCol xs={6}>
-                  <CCollapse visible={visibleB}>
-                    <CCard className="mt-3">
-                      <CCardBody>
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                        richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
-                        anderson cred nesciunt sapiente ea proident.
-                      </CCardBody>
-                    </CCard>
-                  </CCollapse>
-                </CCol>
-              </CRow>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
+    <div>
+      <h1>User List</h1>
+      <div className="w-25 float-end mb-3">
+        <button onClick={toggle} className={'btn btn-success w-100 text-light float-end'}>
+          + Add
+        </button>
+      </div>
+      <br />
+      {/* eslint-disable-next-line react/prop-types */}
+      {UserReducer.users ? (
+        <table
+          className={
+            'table overflow-scroll rounded table-bordered text-light  table-hover table-striped'
+          }
+        >
+          <thead className={'bg-secondary'}>
+            <th className={'text-center'}>T/R</th>
+            <th className={'text-center'}>Name</th>
+            <th className={'text-center'}>Last name</th>
+            <th className={'text-center'}>Role</th>
+            <th className={'text-center'}>Actions</th>
+          </thead>
+          <hr />
+          <tbody>
+            {/* eslint-disable-next-line react/prop-types */}
+            {UserReducer.users.map((item, index) => (
+              <tr key={index}>
+                <td className={'text-center'}>{index + 1}</td>
+                <td className={'text-center'}>{item?.firstname}</td>
+                <td className={'text-center'}>{item?.lastname}</td>
+                <td className={'text-center'}>{item?.role}</td>
+                <td className={'text-center'}>
+                  <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className={'btn btn-danger text-light ms-2'}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <h1 className={'text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto'}>
+          TABLE IS EMPTY
+        </h1>
+      )}
+      {
+        <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
+          <ModalHeader>
+            <h3 className={'text-info '}>{userId ? 'Edit User' : 'Add User'}</h3>
+          </ModalHeader>
+          <ModalBody>
+            <div className="row">
+              {formInput.map((item) => (
+                // eslint-disable-next-line react/jsx-key
+                <div className={'col-6'}>
+                  <label htmlFor={item.name}>{item.title}</label>
+                  <input
+                    type={item.type}
+                    name={item.name}
+                    value={post?.[item.name]}
+                    className={'form-control'}
+                    onChange={(event) =>
+                      setPost({ ...post, [event.target.name]: event.target.value })
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button onClick={send} className={'btn btn-success text-light w-25'}>
+              Save
+            </button>
+            <button
+              onClick={() => {
+                toggle()
+                setUserId(null)
+                setPost({})
+              }}
+              className={'btn btn-danger w-25 text-light'}
+            >
+              Exit
+            </button>
+          </ModalFooter>
+        </Modal>
+      }
+    </div>
   )
 }
 
-export default Collapses
+// export default Accordion
+export default connect(UserReducer, { getUsers, getUser, addUser, editUser, deleteUser })(Collapses)
