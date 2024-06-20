@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 import { useNavigate } from 'react-router-dom'
 
 const DefaultLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+
   useEffect(() => {
     // console.log(
     //   location.href === 'http://localhost:3000/dashboard' ? console.log(13) : console.log(14),
@@ -15,9 +17,9 @@ const DefaultLayout = () => {
 
   return (
     <div>
-      <AppSidebar />
+      <AppSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="wrapper d-flex flex-column min-vh-100">
-        <AppHeader />
+        <AppHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
         <div className="body flex-grow-1">
           <AppContent />
         </div>
