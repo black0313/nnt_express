@@ -42,10 +42,6 @@ const Login = ({ loginReducer, addLogin }) => {
         localStorage.setItem('token', res.data.object.token), navigate('/dashboard')
       })
       .catch((err) => console.log(err))
-    // addLogin({
-    //   username: username,
-    //   password: password,
-    // })
   }
 
   return (
