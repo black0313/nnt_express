@@ -9,8 +9,13 @@ import DispatcherReducer, {
   getDispatcher,
   getDispatchers,
 } from 'src/reducer/DispatcherReducer'
+import UserReducer, { getUserDispatchers, getUsers } from 'src/reducer/UserReducer'
 // eslint-disable-next-line react/prop-types
 function Colors({
+  // eslint-disable-next-line react/prop-types
+  UserReducer,
+  // eslint-disable-next-line react/prop-types
+  getUsers,
   // eslint-disable-next-line react/prop-types
   DispatcherReducer,
   // eslint-disable-next-line react/prop-types
@@ -23,35 +28,40 @@ function Colors({
   editDispatcher,
   // eslint-disable-next-line react/prop-types
   deleteDispatcher,
+  // eslint-disable-next-line react/prop-types
+  getUserDispatchers,
 }) {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [dispatcherId, setDispatcherId] = useState(null)
   const [statusvalue, setStatusvalue] = useState(false)
+  const [userId, setUserId] = useState(null)
   useEffect(() => {
     getDispatchers()
+    // getUsers()
+    getUserDispatchers()
     // eslint-disable-next-line react/prop-types
   }, [DispatcherReducer.current])
 
   const formInput = [
     {
-      name: 'name',
-      title: 'Name',
-      type: 'text',
-    },
-    {
-      name: 'lastName',
-      title: 'Last name',
-      type: 'text',
-    },
-    {
-      name: 'phone',
+      name: 'phoneNumber',
       title: 'Phone',
       type: 'number',
     },
     {
-      name: 'email',
-      title: 'Email',
+      name: 'numberOfLoads',
+      title: 'Number loads',
+      type: 'text',
+    },
+    {
+      name: 'grossRevenue',
+      title: 'Gross revenue',
+      type: 'text',
+    },
+    {
+      name: 'netProfit',
+      title: 'Profit',
       type: 'text',
     },
     {
@@ -63,9 +73,9 @@ function Colors({
 
   function send() {
     if (dispatcherId) {
-      editDispatcher({ ...post, id: dispatcherId })
+      editDispatcher({ ...post, id: dispatcherId, userId })
     } else {
-      addDispatcher({ ...post })
+      addDispatcher({ ...post, userId })
     }
     setDispatcherId(null)
     // eslint-disable-next-line react/prop-types
@@ -107,6 +117,7 @@ function Colors({
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Name</th>
             <th className={'text-center'}>Number of loads</th>
+            <th className={'text-center'}>Phone</th>
             <th className={'text-center'}>Open loads</th>
             <th className={'text-center'}>Net profit</th>
             <th className={'text-center'}>Gross Revenue</th>
@@ -121,6 +132,7 @@ function Colors({
                   <td className={'text-center'}>{index + 1}</td>
                   <td className={'text-center'}>{item.name}</td>
                   <td className={'text-center'}>{item?.numberOfLoads}</td>
+                  <td className={'text-center'}>{item?.phoneNumber}</td>
                   <td className={'text-center'}>{item?.openLoads}</td>
                   <td className={'text-center'}>{item?.netProfit}</td>
                   <td className={'text-center'}>{item.grossRevenue}</td>
@@ -128,7 +140,10 @@ function Colors({
                     <button onClick={() => edit_(item.id)} className="btn btn-secondary">
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(item.id)} className="btn ms-2 btn-danger">
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="btn text-light ms-2 btn-danger"
+                    >
                       Delete
                     </button>
                   </td>
@@ -163,12 +178,32 @@ function Colors({
                   />
                 </div>
               ))}
+              <div className="col-6">
+                <label htmlFor="">Choose dispatcher</label>
+                <select onChange={(e) => setUserId(e.target.value)} className={'form-control'}>
+                  <option value="Choose">Choose user</option>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    UserReducer.dispatchers?.map((i) => (
+                      // eslint-disable-next-line react/jsx-key
+                      <option value={i.id}>{i.firstname}</option>
+                    ))
+                  }
+                </select>
+              </div>
             </div>
           </ModalBody>
+          {console.log(userId)}
           <ModalFooter>
-            <button onClick={send} className={'btn btn-success text-light w-25'}>
-              Save
-            </button>
+            {userId === '' || userId === 'Choose' ? (
+              <button onClick={send} disabled className={'btn btn-success text-light w-25'}>
+                Save
+              </button>
+            ) : (
+              <button onClick={send} className={'btn btn-success text-light w-25'}>
+                Save
+              </button>
+            )}
             <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
               Exit
             </button>
@@ -179,7 +214,9 @@ function Colors({
   )
 }
 
-export default connect(DispatcherReducer, {
+export default connect((DispatcherReducer, UserReducer), {
+  getUsers,
+  getUserDispatchers,
   getDispatchers,
   getDispatcher,
   addDispatcher,

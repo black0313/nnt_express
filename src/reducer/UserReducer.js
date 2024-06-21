@@ -7,6 +7,7 @@ export const slice = createSlice({
   initialState: {
     users: null,
     user: null,
+    dispatchers: null,
     current: false,
   },
   reducers: {
@@ -16,6 +17,9 @@ export const slice = createSlice({
     getOne: (state, action) => {
       state.user = action.payload.object
       state.current = !state.current
+    },
+    getDispatchers: (state, action) => {
+      state.dispatchers = action.payload.object
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
@@ -50,6 +54,13 @@ export const getUsers = (data) =>
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
+  })
+export const getUserDispatchers = (data) =>
+  apiCall({
+    url: '/users/dispatchers',
+    method: 'get',
+    onSuccess: slice.actions.getDispatchers.type,
+    onFail: slice.actions.getDispatchers.type,
   })
 export const getUser = (data) =>
   apiCall({
