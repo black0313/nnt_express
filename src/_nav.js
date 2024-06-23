@@ -89,16 +89,21 @@ const _nav = [
     to: '/buttons',
     icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Load',
-        to: '/buttons/buttons',
-      },
       // {
       //   component: CNavItem,
-      //   name: 'Buttons groups',
-      //   to: '/buttons/button-groups',
+      //   name: 'Load',
+      //   to: '/buttons/buttons',
       // },
+      {
+        component: CNavItem,
+        name: 'PickUp Adress',
+        to: '/pickup-adress',
+      },
+      {
+        component: CNavItem,
+        name: 'Facility',
+        to: '/facility',
+      },
       // {
       //   component: CNavItem,
       //   name: 'Dropdowns',

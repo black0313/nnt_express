@@ -7,6 +7,8 @@ import TrailerReducer from 'src/reducer/TrailerReducer'
 import DispatcherReducer from 'src/reducer/DispatcherReducer'
 import UserReducer from 'src/reducer/UserReducer'
 import BrokerReducer from 'src/reducer/BrokerReducer'
+import FacilityReducer from 'src/reducer/FacilityReducer'
+import PickUpAdressReducer from 'src/reducer/PickUpAdressReducer'
 
 export default configureStore({
   reducer: {
@@ -17,6 +19,8 @@ export default configureStore({
     DispatcherReducer,
     UserReducer,
     BrokerReducer,
+    FacilityReducer,
+    PickUpAdressReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api),
 })

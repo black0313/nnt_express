@@ -1,397 +1,167 @@
-import React from 'react'
-import {
-  CRow,
-  CCol,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CDropdown,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-  CNav,
-  CNavItem,
-  CNavLink,
-} from '@coreui/react'
-import { DocsExample } from 'src/components'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { connect } from 'react-redux'
+import PickUpAdressReducer, {
+  addPick,
+  deletePick,
+  editPick,
+  getPick,
+  getPicks,
+} from 'src/reducer/PickUpAdressReducer'
+// eslint-disable-next-line react/prop-types
+function Navs({
+  // eslint-disable-next-line react/prop-types
+  PickUpAdressReducer,
+  // eslint-disable-next-line react/prop-types
+  getPicks,
+  // eslint-disable-next-line react/prop-types
+  getPick,
+  // eslint-disable-next-line react/prop-types
+  addPick,
+  // eslint-disable-next-line react/prop-types
+  editPick,
+  // eslint-disable-next-line react/prop-types
+  deletePick,
+}) {
+  const [isModal, setIsModal] = useState(false)
+  const [post, setPost] = useState({})
+  const [pickId, setPickId] = useState(null)
+  const [statusvalue, setStatusvalue] = useState(false)
+  useEffect(() => {
+    getPicks()
+    // eslint-disable-next-line react/prop-types
+  }, [PickUpAdressReducer.current])
 
-const Navs = () => {
+  const formInput = [
+    {
+      name: 'address',
+      title: 'Address',
+      type: 'text',
+    },
+  ]
+
+  function send() {
+    if (pickId) {
+      editPick({ ...post, id: pickId })
+    } else {
+      addPick({ ...post })
+    }
+    setPickId(null)
+    // eslint-disable-next-line react/prop-types
+    toggle()
+    setPost({})
+  }
+
+  function handleDelete(id) {
+    deletePick(id)
+  }
+
+  function edit_(id) {
+    getPick(id)
+    setPickId(id)
+    toggle()
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      // eslint-disable-next-line react/prop-types
+      setPost(PickUpAdressReducer.pickup)
+    }, 100)
+    // eslint-disable-next-line react/prop-types
+  }, [PickUpAdressReducer?.current])
+  const toggle = () => setIsModal(!isModal)
   return (
-    <CRow>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Base navs</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              The base <code>.nav</code> component is built with flexbox and provide a strong
-              foundation for building all types of navigation components. It includes some style
-              overrides (for working with lists), some link padding for larger hit areas, and basic
-              disabled styling.
-            </p>
-            <DocsExample href="components/nav#base-nav">
-              <CNav>
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-            <p className="text-body-secondary small">
-              Classes are used throughout, so your markup can be super flexible. Use{' '}
-              <code>&lt;ul&gt;</code>s like above, <code>&lt;ol&gt;</code> if the order of your
-              items is important, or roll your own with a <code>&lt;nav&gt;</code> element. Because
-              the .nav uses display: flex, the nav links behave the same as nav items would, but
-              without the extra markup.
-            </p>
-            <DocsExample href="components/nav#base-nav">
-              <CNav as="nav">
-                <CNavLink href="#" active>
-                  Active
-                </CNavLink>
-                <CNavLink href="#">Link</CNavLink>
-                <CNavLink href="#">Link</CNavLink>
-                <CNavLink href="#" disabled>
-                  Disabled
-                </CNavLink>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Horizontal alignment</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Change the horizontal alignment of your nav with{' '}
-              <a href="https://coreui.io/docs/layout/grid/#horizontal-alignment">
-                flexbox utilities
-              </a>
-              . By default, navs are left-aligned, but you can easily change them to center or right
-              aligned.
-            </p>
-            <p className="text-body-secondary small">
-              Centered with <code>.justify-content-center</code>:
-            </p>
-            <DocsExample href="components/nav#horizontal-alignment">
-              <CNav className="justify-content-center">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-            <p className="text-body-secondary small">
-              Right-aligned with <code>.justify-content-end</code>:
-            </p>
-            <DocsExample href="components/nav#base-nav">
-              <CNav className="justify-content-end">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Vertical</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Stack your navigation by changing the flex item direction with the{' '}
-              <code>.flex-column</code> utility. Need to stack them on some viewports but not
-              others? Use the responsive versions (e.g., <code>.flex-sm-column</code>).
-            </p>
-            <DocsExample href="components/nav#vertical">
-              <CNav className="flex-column">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Tabs</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Takes the basic nav from above and adds the <code>variant=&#34;tabs&#34;</code> class
-              to generate a tabbed interface
-            </p>
-            <DocsExample href="components/nav#tabs">
-              <CNav variant="tabs">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Pills</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Take that same HTML, but use <code>variant=&#34;pills&#34;</code> instead:
-            </p>
-            <DocsExample href="components/nav#pills">
-              <CNav variant="pills">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Fill and justify</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Force your <code>.nav</code>&#39;s contents to extend the full available width one of
-              two modifier classes. To proportionately fill all available space with your{' '}
-              <code>.nav-item</code>s, use <code>layout=&#34;fill&#34;</code>. Notice that all
-              horizontal space is occupied, but not every nav item has the same width.
-            </p>
-            <DocsExample href="components/nav#fill-and-justify">
-              <CNav variant="pills" layout="fill">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-            <p className="text-body-secondary small">
-              For equal-width elements, use <code>layout=&#34;justified&#34;</code>. All horizontal
-              space will be occupied by nav links, but unlike the .nav-fill above, every nav item
-              will be the same width.
-            </p>
-            <DocsExample href="components/nav#fill-and-justify">
-              <CNav variant="pills" layout="justified">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Working with flex utilities</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              If you need responsive nav variations, consider using a series of{' '}
-              <a href="https://coreui.io/docs/utilities/flex">flexbox utilities</a>. While more
-              verbose, these utilities offer greater customization across responsive breakpoints. In
-              the example below, our nav will be stacked on the lowest breakpoint, then adapt to a
-              horizontal layout that fills the available width starting from the small breakpoint.
-            </p>
-            <DocsExample href="components/nav#working-with-flex-utilities">
-              <CNav as="nav" variant="pills" className="flex-column flex-sm-row">
-                <CNavLink href="#" active>
-                  Active
-                </CNavLink>
-                <CNavLink href="#">Link</CNavLink>
-                <CNavLink href="#">Link</CNavLink>
-                <CNavLink href="#" disabled>
-                  Disabled
-                </CNavLink>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Tabs with dropdowns</small>
-          </CCardHeader>
-          <CCardBody>
-            <DocsExample href="components/nav#tabs-with-dropdowns">
-              <CNav>
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CDropdown variant="nav-item">
-                  <CDropdownToggle color="secondary">Dropdown button</CDropdownToggle>
-                  <CDropdownMenu>
-                    <CDropdownItem href="#">Action</CDropdownItem>
-                    <CDropdownItem href="#">Another action</CDropdownItem>
-                    <CDropdownItem href="#">Something else here</CDropdownItem>
-                  </CDropdownMenu>
-                </CDropdown>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Navs</strong> <small>Pills with dropdowns</small>
-          </CCardHeader>
-          <CCardBody>
-            <DocsExample href="components/nav#pills-with-dropdowns">
-              <CNav variant="pills">
-                <CNavItem>
-                  <CNavLink href="#" active>
-                    Active
-                  </CNavLink>
-                </CNavItem>
-                <CDropdown variant="nav-item">
-                  <CDropdownToggle color="secondary">Dropdown button</CDropdownToggle>
-                  <CDropdownMenu>
-                    <CDropdownItem href="#">Action</CDropdownItem>
-                    <CDropdownItem href="#">Another action</CDropdownItem>
-                    <CDropdownItem href="#">Something else here</CDropdownItem>
-                  </CDropdownMenu>
-                </CDropdown>
-                <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink href="#" disabled>
-                    Disabled
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
+    <div>
+      <h1>Adress List</h1>
+
+      <div className="w-25 float-end mb-3">
+        <button onClick={toggle} className={'btn btn-success w-100 text-light float-end'}>
+          + Add
+        </button>
+      </div>
+      <div className={'table-wrapper-scroll-y my-custom-scrollbar'}>
+        {/* eslint-disable-next-line react/prop-types */}
+        {PickUpAdressReducer.pickups ? (
+          <table className={'table rounded text-light bg-primary table-hover table-striped'}>
+            <thead>
+              <th className={'text-center'}>T/R</th>
+              <th className={'text-center'}>Location</th>
+              <th className={'text-center'}>Actions</th>
+            </thead>
+            <hr />
+            <tbody>
+              {
+                // eslint-disable-next-line react/prop-types
+                PickUpAdressReducer.pickups.map((item, index) => (
+                  <tr key={index}>
+                    <td className={'text-center'}>{index + 1}</td>
+                    <td className={'text-center'}>{item?.address}</td>
+                    <td className={'text-center'}>
+                      <button onClick={() => edit_(item.id)} className="btn btn-secondary">
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        className="btn text-light ms-2 btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        ) : (
+          <h1 className={'text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto'}>
+            TABLE IS EMPTY
+          </h1>
+        )}
+      </div>
+
+      {
+        <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
+          <ModalHeader>
+            <h3 className={'text-info '}>Add Facility</h3>
+          </ModalHeader>
+          <ModalBody>
+            <div className={'row'}>
+              {formInput.map((item) => (
+                // eslint-disable-next-line react/jsx-key
+                <div className={'col-12'}>
+                  <label htmlFor={item.name}>{item.title}</label>
+                  <input
+                    type={item.type}
+                    name={item.name}
+                    value={post?.[item.name]}
+                    className={'form-control'}
+                    onChange={(event) =>
+                      setPost({ ...post, [event.target.name]: event.target.value })
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button onClick={send} className={'btn btn-success text-light w-25'}>
+              Save
+            </button>
+            <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
+              Exit
+            </button>
+          </ModalFooter>
+        </Modal>
+      }
+    </div>
   )
 }
 
-export default Navs
+export default connect(PickUpAdressReducer, {
+  getPicks,
+  getPick,
+  addPick,
+  editPick,
+  deletePick,
+})(Navs)
