@@ -16,6 +16,7 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [userId, setUserId] = useState(null)
+  const [role, setRole] = useState(null)
   useEffect(() => {
     getUsers()
     // eslint-disable-next-line react/prop-types
@@ -42,11 +43,6 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
       title: 'Password',
       type: 'number',
     },
-    {
-      name: 'role',
-      title: 'Role',
-      type: 'text',
-    },
   ]
 
   function send() {
@@ -55,12 +51,12 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
         firstname: post.firstname,
         lastname: post.lastname,
         password: post.password,
-        role: post.role,
+        role,
         username: post.username,
         id: userId,
       })
     } else {
-      addUser({ ...post })
+      addUser({ ...post, role })
     }
     setUserId(null)
     // eslint-disable-next-line react/prop-types
@@ -86,6 +82,13 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
     // eslint-disable-next-line react/prop-types
   }, [UserReducer.current])
 
+  useEffect(() => {
+    setTimeout(() => {
+      // eslint-disable-next-line react/prop-types
+      setRole(UserReducer.user.role)
+    }, 100)
+    // eslint-disable-next-line react/prop-types
+  }, [UserReducer.current])
   const toggle = () => setIsModal(!isModal)
   return (
     <div>
@@ -161,17 +164,37 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
                   />
                 </div>
               ))}
+              <div className="col-6">
+                <label htmlFor="">Choose role</label>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className={'form-control'}
+                >
+                  <option value="Choose">Choose role</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="MANAGER">Manager</option>
+                  <option value="DISPATCHER">Dispatcher</option>
+                </select>
+              </div>
             </div>
           </ModalBody>
           <ModalFooter>
-            <button onClick={send} className={'btn btn-success text-light w-25'}>
-              Save
-            </button>
+            {role === 'Choose' || role === null ? (
+              <button disabled onClick={send} className={'btn btn-success text-light w-25'}>
+                Save
+              </button>
+            ) : (
+              <button onClick={send} className={'btn btn-success text-light w-25'}>
+                Save
+              </button>
+            )}
             <button
               onClick={() => {
                 toggle()
                 setUserId(null)
                 setPost({})
+                setRole(null)
               }}
               className={'btn btn-danger w-25 text-light'}
             >

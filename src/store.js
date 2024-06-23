@@ -6,6 +6,7 @@ import DriverReducer from 'src/reducer/DriverReducer'
 import TrailerReducer from 'src/reducer/TrailerReducer'
 import DispatcherReducer from 'src/reducer/DispatcherReducer'
 import UserReducer from 'src/reducer/UserReducer'
+import BrokerReducer from 'src/reducer/BrokerReducer'
 
 export default configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export default configureStore({
     TrailerReducer,
     DispatcherReducer,
     UserReducer,
+    BrokerReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api),
 })

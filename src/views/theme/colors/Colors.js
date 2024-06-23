@@ -153,7 +153,9 @@ function Colors({
           </tbody>
         </table>
       ) : (
-        <h1 className={'text-center w-50 text-light'}>TABLE IS EMPTY</h1>
+        <h1 className={'text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto'}>
+          TABLE IS EMPTY
+        </h1>
       )}
 
       {
@@ -195,7 +197,7 @@ function Colors({
           </ModalBody>
           {console.log(userId)}
           <ModalFooter>
-            {userId === '' || userId === 'Choose' ? (
+            {userId === null || userId === 'Choose' ? (
               <button onClick={send} disabled className={'btn btn-success text-light w-25'}>
                 Save
               </button>
