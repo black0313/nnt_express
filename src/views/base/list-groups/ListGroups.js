@@ -2,13 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import TruckReducer, {
-  addTrucks,
-  deleteTrucks,
-  editTrucks,
-  getTruck,
-  getTrucks,
-} from 'src/reducer/TruckReducer'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import BrokerReducer, {
@@ -45,7 +38,7 @@ const ListGroup = ({
 
   const formInput = [
     {
-      name: 'name',
+      name: 'customerName',
       title: 'Name',
       type: 'text',
     },
@@ -97,6 +90,7 @@ const ListGroup = ({
           <thead className={'bg-secondary'}>
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Name</th>
+            <th className={'text-center'}>Created</th>
             <th className={'text-center'}>Status</th>
             <th className={'text-center'}>Actions</th>
           </thead>
@@ -106,7 +100,8 @@ const ListGroup = ({
             {BrokerReducer.brokers.map((item, index) => (
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
-                <td className={'text-center'}>{item?.name}</td>
+                <td className={'text-center'}>{item?.customerName}</td>
+                <td className={'text-center'}>{item?.createdAt}</td>
                 <td className={'text-center'}>
                   {item?.expires === true ? (
                     <button className="btn btn-outline-success">Active</button>
@@ -137,7 +132,7 @@ const ListGroup = ({
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>{brokerId ? 'Edit Truck' : 'Add Truck'}</h3>
+            <h3 className={'text-info '}>{brokerId ? 'Edit Broker' : 'Add Broker'}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">

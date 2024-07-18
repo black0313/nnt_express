@@ -45,29 +45,29 @@ function Colors({
 
   const formInput = [
     {
-      name: 'phoneNumber',
+      name: 'phone',
       title: 'Phone',
       type: 'number',
     },
     {
-      name: 'numberOfLoads',
-      title: 'Number loads',
+      name: 'email',
+      title: 'Email',
       type: 'text',
     },
     {
-      name: 'grossRevenue',
-      title: 'Gross revenue',
+      name: 'postalCode',
+      title: 'Postal code',
       type: 'text',
     },
     {
-      name: 'netProfit',
-      title: 'Profit',
+      name: 'city',
+      title: 'City',
       type: 'text',
     },
     {
-      name: 'openLoads',
-      title: 'Loads',
-      type: 'number',
+      name: 'country',
+      title: 'country',
+      type: 'text',
     },
   ]
 
@@ -116,11 +116,11 @@ function Colors({
           <thead>
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Name</th>
-            <th className={'text-center'}>Number of loads</th>
+            <th className={'text-center'}>Last name</th>
             <th className={'text-center'}>Phone</th>
-            <th className={'text-center'}>Open loads</th>
-            <th className={'text-center'}>Net profit</th>
-            <th className={'text-center'}>Gross Revenue</th>
+            <th className={'text-center'}>Email</th>
+            <th className={'text-center'}>City</th>
+            <th className={'text-center'}>Country</th>
             <th className={'text-center'}>Actions</th>
           </thead>
           <hr />
@@ -130,12 +130,12 @@ function Colors({
               DispatcherReducer.dispatchers.map((item, index) => (
                 <tr key={index}>
                   <td className={'text-center'}>{index + 1}</td>
-                  <td className={'text-center'}>{item.name}</td>
-                  <td className={'text-center'}>{item?.numberOfLoads}</td>
-                  <td className={'text-center'}>{item?.phoneNumber}</td>
-                  <td className={'text-center'}>{item?.openLoads}</td>
-                  <td className={'text-center'}>{item?.netProfit}</td>
-                  <td className={'text-center'}>{item.grossRevenue}</td>
+                  <td className={'text-center'}>{item.firstname}</td>
+                  <td className={'text-center'}>{item.lastname}</td>
+                  <td className={'text-center'}>{item?.phone}</td>
+                  <td className={'text-center'}>{item?.email}</td>
+                  <td className={'text-center'}>{item?.address?.city}</td>
+                  <td className={'text-center'}>{item?.address?.country}</td>
                   <td className={'text-center'}>
                     <button onClick={() => edit_(item.id)} className="btn btn-secondary">
                       Edit
@@ -161,7 +161,7 @@ function Colors({
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>Add Truck</h3>
+            <h3 className={'text-info '}>Add Dispatcher</h3>
           </ModalHeader>
           <ModalBody>
             <div className={'row'}>

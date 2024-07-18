@@ -17,6 +17,7 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [truckId, setTruckId] = useState(null)
+  const [owner, setOwner] = useState(null)
   const [statusvalue, setStatusvalue] = useState(false)
   useEffect(() => {
     getTrucks()
@@ -30,37 +31,27 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
       type: 'text',
     },
     {
-      name: 'numberOfLoads',
-      title: 'Number Of Loads',
-      type: 'number',
+      name: 'truckType',
+      title: 'Truck type',
+      type: 'text',
     },
     {
-      name: 'grossRevenue',
-      title: 'Gross Revenue',
-      type: 'number',
+      name: 'plateExpiry',
+      title: 'Plate Expiry',
+      type: 'date',
     },
     {
-      name: 'miles',
-      title: 'Miles',
-      type: 'number',
-    },
-    {
-      name: 'emptyMiles',
-      title: 'Empty Miles',
-      type: 'number',
-    },
-    {
-      name: 'revenuePerMile',
-      title: 'Revenue Per Mile',
-      type: 'number',
+      name: 'description',
+      title: 'Description',
+      type: 'text',
     },
   ]
 
   function send() {
     if (truckId) {
-      editTrucks({ ...post, expires: statusvalue, id: truckId })
+      editTrucks({ ...post, active: statusvalue, ownershipIsPrivate: owner, id: truckId })
     } else {
-      addTrucks({ ...post, expires: statusvalue })
+      addTrucks({ ...post, active: statusvalue, ownershipIsPrivate: owner })
     }
     setTruckId(null)
     // eslint-disable-next-line react/prop-types
@@ -82,6 +73,10 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
       setPost(TruckReducer.truck)
+      // eslint-disable-next-line react/prop-types
+      setOwner(TruckReducer.truck?.ownershipIsPrivate)
+      // eslint-disable-next-line react/prop-types
+      setStatusvalue(TruckReducer.truck?.active)
     }, 100)
     // eslint-disable-next-line react/prop-types
   }, [TruckReducer?.current])
@@ -104,11 +99,10 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
           <thead className={'bg-secondary'}>
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Number Truck</th>
-            <th className={'text-center'}>Number of load</th>
-            <th className={'text-center'}>Gross Revenue</th>
-            <th className={'text-center'}>Miles</th>
-            <th className={'text-center'}>Dead Head</th>
-            <th className={'text-center'}>Revenue Per Mile</th>
+            <th className={'text-center'}>Truck type</th>
+            <th className={'text-center'}>Expiry</th>
+            <th className={'text-center'}>Owner</th>
+            <th className={'text-center'}>Description</th>
             <th className={'text-center'}>Status</th>
             <th className={'text-center'}>Actions</th>
           </thead>
@@ -119,13 +113,12 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
                 <td className={'text-center'}>{item?.truckNumber}</td>
-                <td className={'text-center'}>{item?.numberOfLoads}</td>
-                <td className={'text-center'}>{item?.grossRevenue}</td>
-                <td className={'text-center'}>{item?.miles}</td>
-                <td className={'text-center'}>{item?.emptyMiles}</td>
-                <td className={'text-center'}>{item?.revenuePerMile}</td>
+                <td className={'text-center'}>{item?.truckType}</td>
+                <td className={'text-center'}>{item?.plateExpiry}</td>
+                <td className={'text-center'}>{item?.ownershipIsPrivate ? 'OWNER' : 'COMPANY'}</td>
+                <td className={'text-center'}>{item?.description}</td>
                 <td className={'text-center'}>
-                  {item?.expires === true ? (
+                  {item?.active === true ? (
                     <button className="btn btn-outline-success">Active</button>
                   ) : (
                     <button className={'btn btn-outline-danger'}>No active</button>
@@ -183,6 +176,17 @@ const Accordion = ({ TruckReducer, getTruck, addTrucks, editTrucks, deleteTrucks
               >
                 <option value="true">Active</option>
                 <option value="false">No active</option>
+              </select>
+              <label htmlFor="status">Owner</label>
+              <select
+                onChange={(e) => setOwner(e.target.value)}
+                value={owner}
+                className={'w-50 ms-2 form-control'}
+                name="status"
+                id="status"
+              >
+                <option value="false">Not owner</option>
+                <option value="true">Owner</option>
               </select>
             </div>
           </ModalBody>

@@ -42,8 +42,8 @@ const Login = ({ loginReducer, addLogin, setUser }) => {
         setUser(res.data.object)
         navigate('/dashboard')
       })
-      .catch((err) => console.log(err))
-      .catch((err) => toast.error('Parol yoki login xato !'))
+      // .catch((err) => console.log(err))
+      .catch((err) => toast.error('Check username or password !'))
   }
 
   return (

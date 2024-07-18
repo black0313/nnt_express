@@ -3,27 +3,31 @@ import { apiCall } from '../api'
 import { toast } from 'react-toastify'
 
 export const slice = createSlice({
-  name: 'drivers',
+  name: 'loads',
   initialState: {
-    drivers: null,
+    loads: null,
+    load: null,
     current: false,
   },
   reducers: {
     get: (state, action) => {
-      state.driver = action.payload.object
-      console.log(action.payload.object)
+      state.loads = action.payload.object
+    },
+    getOne: (state, action) => {
+      state.load = action.payload.object
+      state.current = !state.current
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('DRIVER ADDED')
+        toast.success('LOAD ADDED')
       } else {
-        toast.error('SERVER ERROR')
+        toast.error(action.payload.message)
       }
       state.current = !state.current
     },
     editFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('DRIVER EDITED')
+        toast.success('LOAD EDITED')
       } else {
         toast.error(action.payload.message)
       }
@@ -31,7 +35,7 @@ export const slice = createSlice({
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
-        toast.error('DRIVER DELETED')
+        toast.error('LOAD DELETED')
       } else {
         toast.error(action.payload.message)
       }
@@ -40,32 +44,39 @@ export const slice = createSlice({
   },
 })
 
-export const getDrivers = (data) =>
+export const getLoads = (data) =>
   apiCall({
-    url: '/drivers',
+    url: '/loads',
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
   })
-export const addDrivers = (data) =>
+export const getLoad = (data) =>
   apiCall({
-    url: '/drivers',
-    method: 'post',
+    url: '/loads/' + data,
+    method: 'get',
+    onSuccess: slice.actions.getOne.type,
+    onFail: slice.actions.getOne.type,
+  })
+export const addLoad = (data) =>
+  apiCall({
+    url: '/loads',
     data,
-    contentType: 'multipart/form-data',
+    method: 'post',
     onSuccess: slice.actions.saveFrom.type,
     onFail: slice.actions.saveFrom.type,
   })
-export const editDriver = (data) =>
+export const editLoad = (data) =>
   apiCall({
-    url: '/drivers/' + data,
+    url: '/loads/' + data.id,
     method: 'put',
+    data,
     onSuccess: slice.actions.editFrom.type,
     onFail: slice.actions.editFrom.type,
   })
-export const deleteDriver = (data) =>
+export const deleteLoad = (data) =>
   apiCall({
-    url: '/drivers/' + data,
+    url: '/loads/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,

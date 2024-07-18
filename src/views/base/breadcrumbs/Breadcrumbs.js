@@ -17,19 +17,29 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
 
   const formInput = [
     {
-      name: 'name',
+      name: 'driverName',
       title: 'Name',
       type: 'text',
     },
     {
-      name: 'passport',
-      title: 'Passport number',
+      name: 'driverPhone',
+      title: 'Phone',
+      type: 'number',
+    },
+    {
+      name: 'driverEmail',
+      title: 'Email',
       type: 'text',
     },
     {
-      name: 'phone',
-      title: 'Phone number',
+      name: 'zipCode',
+      title: 'Zip code',
       type: 'number',
+    },
+    {
+      name: 'DateOfBirth',
+      title: 'Birthdate',
+      type: 'date',
     },
   ]
 
@@ -67,7 +77,7 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
         </button>
       </div>
       {/* eslint-disable-next-line react/prop-types */}
-      {DriverReducer.driver ? (
+      {DriverReducer.drivers ? (
         <table className={'table rounded text-light bg-secondary table-hover table-striped'}>
           <thead>
             <th className={'text-center'}>T/R</th>
@@ -79,12 +89,9 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
           <hr />
           <tbody>
             {/* eslint-disable-next-line react/prop-types */}
-            {DriverReducer.driver.map((item, index) => (
+            {DriverReducer.drivers?.map((item, index) => (
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
-                <td className={'text-center'}>{item.name}</td>
-                <td className={'text-center'}>{item.passport}</td>
-                <td className={'text-center'}>{item.phone}</td>
                 <td className={'text-center d-flex justify-content-around'}>
                   <button className={'btn btn-primary'}>Edit</button>
                   <button
@@ -110,47 +117,22 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
           </ModalHeader>
           <ModalBody>
             <div className="row">
+              {formInput.map((item) => (
+                // eslint-disable-next-line react/jsx-key
+                <div className={'col-6'}>
+                  <label htmlFor={item.name}>{item.title}</label>
+                  <input
+                    type={item.type}
+                    name={item.name}
+                    value={post?.[item.name]}
+                    className={'form-control'}
+                    onChange={(event) =>
+                      setPost({ ...post, [event.target.name]: event.target.value })
+                    }
+                  />
+                </div>
+              ))}
               <div className="col-6">
-                <label htmlFor="name">* Name</label>
-                <input
-                  name={'name'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="text"
-                  className={'form-control'}
-                  required={true}
-                />
-
-                <label htmlFor="grossRevenue">Phone number</label>
-                <input
-                  name={'phone'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="number"
-                  className={'form-control'}
-                />
-                <label htmlFor="expires">Expires</label>
-                <input
-                  name={'expires'}
-                  // onChange={(event) =>
-                  //   setPost({ ...post, [event.target.name]: event.target.value })
-                  // }
-                  type="number"
-                  className={'form-control'}
-                />
-              </div>
-              <div className="col-6">
-                <label htmlFor="numberOfLoads">Passport number</label>
-                <input
-                  name={'passport'}
-                  onChange={(event) =>
-                    setPost({ ...post, [event.target.name]: event.target.value })
-                  }
-                  type="text"
-                  className={'form-control'}
-                />
                 <label htmlFor="medical">Medical card</label>
                 <input className={'form-control'} type="file" onChange={handleFile} />
               </div>

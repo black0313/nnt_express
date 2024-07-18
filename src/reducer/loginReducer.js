@@ -9,12 +9,12 @@ export const slice = createSlice({
   },
   reducers: {
     get: (state, action) => {
-      console.log(action.payload.success);
+      console.log(action.payload.success)
       if (action.payload.success) {
         localStorage.setItem('user', JSON.stringify(action.payload.object))
         window.href('/dashboard')
       } else {
-        toast.warning('Parol yoki login xato!')
+        toast.error(action.payload.message)
       }
     },
   },
