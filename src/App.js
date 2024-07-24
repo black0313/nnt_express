@@ -73,7 +73,8 @@ export default App
 
 // eslint-disable-next-line react/prop-types
 function ProtectedRoute({ user, children }) {
-  if (!user) {
+  const authUser = user || sessionStorage.getItem('user')
+  if (!authUser) {
     return <Navigate to="/login" replace />
   }
   return children

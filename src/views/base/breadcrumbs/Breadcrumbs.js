@@ -8,12 +8,28 @@ import DriverReducer, {
 } from 'src/reducer/DriverReducer'
 import { connect } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css'
+import TruckReducer, { getTrucks } from 'src/reducer/TruckReducer'
 
 // eslint-disable-next-line react/prop-types
-const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverReducer }) => {
+const Breadcrumbs = ({
+  // eslint-disable-next-line react/prop-types
+  getDrivers,
+  // eslint-disable-next-line react/prop-types
+  addDrivers,
+  // eslint-disable-next-line react/prop-types
+  TruckReducer,
+  editDriver,
+  // eslint-disable-next-line react/prop-types
+  deleteDriver,
+  // eslint-disable-next-line react/prop-types
+  DriverReducer,
+  // eslint-disable-next-line react/prop-types
+  getTrucks,
+}) => {
   const [isModal, setIsModal] = useState(false)
+  const [truckId, setTruckId] = useState(null)
   const toggle = () => setIsModal(!isModal)
-  const [post, setPost] = useState([])
+  const [post, setPost] = useState({})
 
   const formInput = [
     {
@@ -45,14 +61,18 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
 
   useEffect(() => {
     getDrivers()
+    getTrucks()
     // eslint-disable-next-line react/prop-types
   }, [DriverReducer.current])
+
   function handleDelete(id) {
     deleteDriver(id)
   }
+
   const [files, setFile] = useState(null)
   const [fileName, setFilename] = useState('')
   const [fileSize, setFileSize] = useState('')
+
   function handleFile(event) {
     console.log(event.target.files[0])
     setFile(event.target.files[0])
@@ -63,8 +83,9 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
   function send() {
     const formData = new FormData()
     formData.append('file', files)
-    formData.append('driver', JSON.stringify(post))
-    addDrivers(formData)
+    const data = { ...post, truckId }
+    formData.append('driver', JSON.stringify(data))
+    addDrivers(data)
     toggle()
   }
 
@@ -119,7 +140,7 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
             <div className="row">
               {formInput.map((item) => (
                 // eslint-disable-next-line react/jsx-key
-                <div className={'col-6'}>
+                <div className={'col-6'} key={item.name}>
                   <label htmlFor={item.name}>{item.title}</label>
                   <input
                     type={item.type}
@@ -135,6 +156,29 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
               <div className="col-6">
                 <label htmlFor="medical">Medical card</label>
                 <input className={'form-control'} type="file" onChange={handleFile} />
+              </div>
+              <div className={'p-2'}>
+                <label htmlFor="">Truck</label>
+                <select
+                  value={truckId}
+                  onChange={(e) => setTruckId(e.target.value)}
+                  id=""
+                  className={'form-control'}
+                >
+                  <option value="choose">Choose truck</option>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    TruckReducer.trucks ? (
+                      // eslint-disable-next-line react/prop-types
+                      TruckReducer?.trucks.map((item) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={item.id}>{item?.truckNumber}</option>
+                      ))
+                    ) : (
+                      <option value="">NOT FIEND</option>
+                    )
+                  }
+                </select>
               </div>
             </div>
           </ModalBody>
@@ -153,6 +197,10 @@ const Breadcrumbs = ({ getDrivers, addDrivers, editDriver, deleteDriver, DriverR
 }
 
 // export default Breadcrumbs
-export default connect(DriverReducer, { getDrivers, addDrivers, editDriver, deleteDriver })(
-  Breadcrumbs,
-)
+export default connect((DriverReducer, TruckReducer), {
+  getDrivers,
+  addDrivers,
+  editDriver,
+  deleteDriver,
+  getTrucks,
+})(Breadcrumbs)

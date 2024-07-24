@@ -37,8 +37,8 @@ const Login = ({ loginReducer, addLogin, setUser }) => {
         password,
       })
       .then((res) => {
-        localStorage.setItem('user', JSON.stringify(res.data.object))
-        localStorage.setItem('token', res.data.object.token)
+        sessionStorage.setItem('user', JSON.stringify(res.data.object))
+        sessionStorage.setItem('token', res.data.object.token)
         setUser(res.data.object)
         navigate('/dashboard')
       })

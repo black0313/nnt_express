@@ -8,20 +8,25 @@ export const slice = createSlice({
     roles: null,
     role: null,
     current: false,
+    roleBoolean: false,
   },
   reducers: {
     get: (state, action) => {
       state.roles = action.payload.object
+      state.roleBoolean = false
     },
     getOne: (state, action) => {
       state.role = action.payload.object
       state.current = !state.current
+      state.roleBoolean = false
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
         toast.success('ROLE ADDED')
+        state.roleBoolean = true
       } else {
         toast.error(action.payload.message)
+        state.roleBoolean = false
       }
       state.current = !state.current
     },

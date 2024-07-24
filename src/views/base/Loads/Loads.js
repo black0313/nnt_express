@@ -10,12 +10,57 @@ import LoadReducer, {
   getLoad,
   getLoads,
 } from 'src/reducer/LoadReducer'
+import DriverReducer, { getDrivers } from 'src/reducer/DriverReducer'
+import TruckReducer, { getTrucks } from 'src/reducer/TruckReducer'
+import TrailerReducer, { getTrailer } from 'src/reducer/TrailerReducer'
+import DispatcherReducer, { getDispatchers } from 'src/reducer/DispatcherReducer'
+import BrokerReducer, { getBroker, getBrokers } from 'src/reducer/BrokerReducer'
 
 // eslint-disable-next-line react/prop-types
-const Loads = ({ LoadReducer, getLoads, addLoad, editLoad, deleteLoad, getLoad }) => {
+const Loads = ({
+  // eslint-disable-next-line react/prop-types
+  LoadReducer,
+  // eslint-disable-next-line react/prop-types
+  getLoads,
+  // eslint-disable-next-line react/prop-types
+  addLoad,
+  // eslint-disable-next-line react/prop-types
+  editLoad,
+  // eslint-disable-next-line react/prop-types
+  deleteLoad,
+  // eslint-disable-next-line react/prop-types
+  getLoad,
+  // eslint-disable-next-line react/prop-types
+  getTrucks,
+  // eslint-disable-next-line react/prop-types
+  getTrailer,
+  // eslint-disable-next-line react/prop-types
+  getBrokers,
+  // eslint-disable-next-line react/prop-types
+  getDispatchers,
+  // eslint-disable-next-line react/prop-types
+  getDrivers,
+  // eslint-disable-next-line react/prop-types
+  DriverReducer,
+  // eslint-disable-next-line react/prop-types
+  TruckReducer,
+  // eslint-disable-next-line react/prop-types
+  TrailerReducer,
+  // eslint-disable-next-line react/prop-types
+  DispatcherReducer,
+  // eslint-disable-next-line react/prop-types
+  BrokerReducer,
+}) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [loadId, setLoadId] = useState(null)
+  const [loadNumber, setLoadNumber] = useState('')
+  const [driverId, setDriverId] = useState(null)
+  const [truckId, setTruckId] = useState(null)
+  const [trailerId, setTrailerId] = useState(null)
+  const [dispatcherId, setDispatcherId] = useState(null)
+  const [customsBrokerId, setCustomerBrokerId] = useState(null)
+  const [shipperConsigneeDtoList, setShipperConsigneeDtoList] = useState([])
   useEffect(() => {
     getLoads()
     // eslint-disable-next-line react/prop-types
@@ -23,13 +68,53 @@ const Loads = ({ LoadReducer, getLoads, addLoad, editLoad, deleteLoad, getLoad }
 
   const formInput = [
     {
-      name: 'loadNumber',
-      title: 'Load number',
+      name: 'name',
+      title: 'Name',
       type: 'text',
     },
     {
-      name: 'address',
-      title: 'Address',
+      name: 'location',
+      title: 'Location',
+      type: 'text',
+    },
+    {
+      name: 'date',
+      title: 'Date',
+      type: 'date',
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+    },
+    {
+      name: 'type',
+      title: 'Type',
+      type: 'text',
+    },
+    {
+      name: 'quantity',
+      title: 'Quantity',
+      type: 'number',
+    },
+    {
+      name: 'weight',
+      title: 'Weight',
+      type: 'number',
+    },
+    {
+      name: 'value',
+      title: 'Price $',
+      type: 'number',
+    },
+    {
+      name: 'notes',
+      title: 'Note',
+      type: 'text',
+    },
+    {
+      name: 'poNumbers',
+      title: 'P.O. Numbers',
       type: 'text',
     },
   ]
@@ -66,6 +151,11 @@ const Loads = ({ LoadReducer, getLoads, addLoad, editLoad, deleteLoad, getLoad }
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
       setPost(LoadReducer.load)
+      getTrucks()
+      getBrokers()
+      getTrailer()
+      getDispatchers()
+      getDrivers()
     }, 100)
     // eslint-disable-next-line react/prop-types
   }, [LoadReducer.current])
@@ -122,12 +212,118 @@ const Loads = ({ LoadReducer, getLoads, addLoad, editLoad, deleteLoad, getLoad }
         </h1>
       )}
       {
-        <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
+        <Modal isOpen={isModal} toggle={toggle} size={'xl'} scrollable={true}>
           <ModalHeader>
             <h3 className={'text-info '}>{loadId ? 'Edit Load' : 'Add Load'}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">
+              <div className="p-3 d-flex justify-content-between align-items-center">
+                <div className={'col-4'}>
+                  <label htmlFor="">Load number</label>
+                  <input
+                    type="text"
+                    className={'form-control mt-2'}
+                    value={loadNumber}
+                    onChange={(e) => setLoadNumber(e.target.value)}
+                  />
+                </div>
+                <div className="col-3">
+                  <label htmlFor="">Driver</label>
+                  <select name="" id="" className={'form-control mt-2'}>
+                    <option value="choose">Choose driver</option>
+                    {/* eslint-disable-next-line react/prop-types */}
+                    {DriverReducer?.drivers ? (
+                      // eslint-disable-next-line react/prop-types
+                      DriverReducer?.drivers.map((item) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={item.id}>{item.name}</option>
+                      ))
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )}
+                  </select>
+                </div>
+                <div className="col-3">
+                  <label htmlFor="">Truck</label>
+                  <select name="" className={'form-control mt-2'}>
+                    <option value="choose">Choose truck</option>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      TruckReducer.trucks ? (
+                        // eslint-disable-next-line react/prop-types
+                        TruckReducer?.trucks.map((item) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <option value={item.id}>{item.truckNumber}</option>
+                        ))
+                      ) : (
+                        <option value="choose">NOT FOUND</option>
+                      )
+                    }
+                  </select>
+                </div>
+              </div>
+              <div className={'d-flex justify-content-between'}>
+                <div className="col-3">
+                  <label htmlFor="">Trailer</label>
+                  <select name="" className={'form-control mt-2'}>
+                    <option value="choose">Choose trailer</option>
+                    {/* eslint-disable-next-line react/prop-types */}
+                    {TrailerReducer.trailers ? (
+                      // eslint-disable-next-line react/prop-types
+                      TrailerReducer?.trailers.map((item) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={item.id}>{item?.trailerNumber}</option>
+                      ))
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )}
+                  </select>
+                </div>
+                <div className="col-3">
+                  <label htmlFor="">Broker</label>
+                  <select name="" className={'form-control mt-2'}>
+                    <option value="choose">Choose broker</option>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      BrokerReducer.brokers ? (
+                        // eslint-disable-next-line react/prop-types
+                        BrokerReducer?.brokers.map((item) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <option value={item.id}>{item.name}</option>
+                        ))
+                      ) : (
+                        <option value="choose">NOT FOUND</option>
+                      )
+                    }
+                  </select>
+                </div>
+                <div className="col-2">
+                  <label htmlFor="">Shipper</label>
+                  <select name="" className={'form-control mt-2'}>
+                    <option value="true">Shipper</option>
+                    <option value="false">Consignee</option>
+                  </select>
+                </div>
+                <div className="col-3">
+                  <label htmlFor="">Dispatcher</label>
+                  <select name="" className={'form-control mt-2'}>
+                    <option value="choose">Choose dispatcher</option>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      DispatcherReducer.dispatchers ? (
+                        // eslint-disable-next-line react/prop-types
+                        DispatcherReducer?.dispatchers.map((item) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <option value={item.id}>{item.name}</option>
+                        ))
+                      ) : (
+                        <option value="choose">NOT FOUND</option>
+                      )
+                    }
+                  </select>
+                </div>
+              </div>
               {formInput.map((item) => (
                 // eslint-disable-next-line react/jsx-key
                 <div className={'col-6'}>
@@ -167,4 +363,18 @@ const Loads = ({ LoadReducer, getLoads, addLoad, editLoad, deleteLoad, getLoad }
 }
 
 // export default Accordion
-export default connect(LoadReducer, { getLoads, getLoad, addLoad, editLoad, deleteLoad })(Loads)
+export default connect(
+  (LoadReducer, DriverReducer, TruckReducer, TrailerReducer, DispatcherReducer, BrokerReducer),
+  {
+    getLoads,
+    getLoad,
+    addLoad,
+    editLoad,
+    deleteLoad,
+    getDrivers,
+    getTrucks,
+    getTrailer,
+    getDispatchers,
+    getBrokers,
+  },
+)(Loads)
