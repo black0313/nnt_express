@@ -1,5 +1,7 @@
 import React from 'react'
 import Loads from 'src/views/base/Loads/Loads'
+import Roles from "src/views/base/roles/Roles";
+import Role from "src/views/base/Role/Role";
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -67,6 +69,8 @@ const routes = [
   { path: '/base/cards', name: 'Cards', element: Cards },
   { path: '/base/carousels', name: 'Carousel', element: Carousels },
   { path: '/users', name: 'Collapse', element: Collapses },
+  { path: '/roles', name: 'Roles', element: Roles },
+  { path: '/role', name: 'Role', element: Role },
   { path: '/loads', name: 'Loads', element: Loads },
   { path: '/brokers', name: 'List Groups', element: ListGroups },
   // { path: '/base/navs', name: 'Navs', element: Navs },

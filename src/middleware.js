@@ -1,6 +1,6 @@
 import axios from 'axios'
-export const BaseUrl = 'http://localhost:8080/api'
-// export const BaseUrl = 'http://192.168.0.139:8080/api'
+// export const BaseUrl = 'http://localhost:8080/api'
+export const BaseUrl = 'http://192.168.1.50:8080/api'
 // export const BaseUrl = 'https://nnt-bafe777cb128.herokuapp.com/swagger-ui/index.html#'
 // export const BaseUrl = 'https://jsonplaceholder.typicode.com/posts'
 export const api =
