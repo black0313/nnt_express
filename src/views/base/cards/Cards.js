@@ -49,19 +49,19 @@ const Cards = ({
       type: 'text',
     },
     {
-      name: 'numberOfLoads',
-      title: 'Number Of Loads',
-      type: 'number',
+      name: 'trailerType',
+      title: 'Trailer type',
+      type: 'text',
     },
     {
-      name: 'grossRevenue',
-      title: 'Gross Revenue',
-      type: 'number',
+      name: 'expiryDate',
+      title: 'Expiry date',
+      type: 'date',
     },
     {
-      name: 'revenuePerMile',
-      title: 'Revenue Per Mile',
-      type: 'number',
+      name: 'description',
+      title: 'Description',
+      type: 'text',
     },
   ]
 
@@ -112,9 +112,9 @@ const Cards = ({
           <thead className={'bg-secondary'}>
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Number Truck</th>
-            <th className={'text-center'}>Number of load</th>
-            <th className={'text-center'}>Gross Revenue</th>
-            <th className={'text-center'}>Revenue Per Mile</th>
+            <th className={'text-center'}>Truck type</th>
+            <th className={'text-center'}>Expiry date</th>
+            <th className={'text-center'}>Description</th>
             <th className={'text-center'}>Actions</th>
           </thead>
           <hr />
@@ -124,9 +124,9 @@ const Cards = ({
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
                 <td className={'text-center'}>{item?.trailerNumber}</td>
-                <td className={'text-center'}>{item?.numberOfLoads}</td>
-                <td className={'text-center'}>{item?.grossRevenue}</td>
-                <td className={'text-center'}>{item?.revenuePerMile}</td>
+                <td className={'text-center'}>{item?.trailerType}</td>
+                <td className={'text-center'}>{item?.expiryDate}</td>
+                <td className={'text-center'}>{item?.description}</td>
                 <td className={'text-center'}>
                   <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
                     Edit
