@@ -10,15 +10,34 @@ import UserReducer, {
   getUser,
   getUsers,
 } from 'src/reducer/UserReducer'
+import RoleReducer, { getRoles } from 'src/reducer/RoleReducer'
 
 // eslint-disable-next-line react/prop-types
-const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUser }) => {
+const Collapses = ({
+  // eslint-disable-next-line react/prop-types
+  UserReducer,
+  // eslint-disable-next-line react/prop-types
+  getUsers,
+  // eslint-disable-next-line react/prop-types
+  addUser,
+  // eslint-disable-next-line react/prop-types
+  editUser,
+  // eslint-disable-next-line react/prop-types
+  deleteUser,
+  // eslint-disable-next-line react/prop-types
+  getUser,
+  // eslint-disable-next-line react/prop-types
+  getRoles,
+  // eslint-disable-next-line react/prop-types
+  RoleReducer,
+}) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [userId, setUserId] = useState(null)
-  const [role, setRole] = useState(null)
+  const [roleId, setRoleId] = useState(null)
   useEffect(() => {
     getUsers()
+    getRoles()
     // eslint-disable-next-line react/prop-types
   }, [UserReducer.current])
 
@@ -51,12 +70,12 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
         firstname: post.firstname,
         lastname: post.lastname,
         password: post.password,
-        role,
+        roleId,
         username: post.username,
         id: userId,
       })
     } else {
-      addUser({ ...post, role })
+      addUser({ ...post, roleId })
     }
     setUserId(null)
     // eslint-disable-next-line react/prop-types
@@ -85,7 +104,7 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
   useEffect(() => {
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
-      setRole(UserReducer.user.role)
+      setRoleId(UserReducer.user.role)
     }, 100)
     // eslint-disable-next-line react/prop-types
   }, [UserReducer.current])
@@ -121,7 +140,7 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
                 <td className={'text-center'}>{index + 1}</td>
                 <td className={'text-center'}>{item?.firstname}</td>
                 <td className={'text-center'}>{item?.lastname}</td>
-                <td className={'text-center'}>{item?.role}</td>
+                <td className={'text-center'}>{item?.role?.name}</td>
                 <td className={'text-center'}>
                   <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
                     Edit
@@ -167,20 +186,26 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
               <div className="col-6">
                 <label htmlFor="">Choose role</label>
                 <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+                  value={roleId}
+                  onChange={(e) => setRoleId(e.target.value)}
                   className={'form-control'}
                 >
-                  <option value="Choose">Choose role</option>
-                  <option value="ADMIN">Admin</option>
-                  <option value="MANAGER">Manager</option>
-                  <option value="DISPATCHER">Dispatcher</option>
+                  <option value="choose">Choose role</option>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    RoleReducer.roles ? (
+                      // eslint-disable-next-line react/prop-types,react/jsx-key
+                      RoleReducer.roles.map((item) => <option value={item.id}>{item.name}</option>)
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )
+                  }
                 </select>
               </div>
             </div>
           </ModalBody>
           <ModalFooter>
-            {role === 'Choose' || role === null ? (
+            {roleId === 'Choose' || roleId === null ? (
               <button disabled onClick={send} className={'btn btn-success text-light w-25'}>
                 Save
               </button>
@@ -194,7 +219,7 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
                 toggle()
                 setUserId(null)
                 setPost({})
-                setRole(null)
+                setRoleId(null)
               }}
               className={'btn btn-danger w-25 text-light'}
             >
@@ -208,4 +233,11 @@ const Collapses = ({ UserReducer, getUsers, addUser, editUser, deleteUser, getUs
 }
 
 // export default Accordion
-export default connect(UserReducer, { getUsers, getUser, addUser, editUser, deleteUser })(Collapses)
+export default connect((UserReducer, RoleReducer), {
+  getRoles,
+  getUsers,
+  getUser,
+  addUser,
+  editUser,
+  deleteUser,
+})(Collapses)

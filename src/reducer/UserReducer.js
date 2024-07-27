@@ -50,7 +50,7 @@ export const slice = createSlice({
 
 export const getUsers = (data) =>
   apiCall({
-    url: '/users',
+    url: '/user',
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
@@ -64,14 +64,14 @@ export const getUserDispatchers = (data) =>
   })
 export const getUser = (data) =>
   apiCall({
-    url: '/users/' + data,
+    url: '/user/' + data,
     method: 'get',
     onSuccess: slice.actions.getOne.type,
     onFail: slice.actions.getOne.type,
   })
 export const addUser = (data) =>
   apiCall({
-    url: '/users',
+    url: '/user',
     data,
     method: 'post',
     onSuccess: slice.actions.saveFrom.type,
@@ -79,7 +79,7 @@ export const addUser = (data) =>
   })
 export const editUser = (data) =>
   apiCall({
-    url: '/users/' + data.id,
+    url: '/user/' + data.id,
     method: 'put',
     data,
     onSuccess: slice.actions.editFrom.type,
@@ -87,7 +87,7 @@ export const editUser = (data) =>
   })
 export const deleteUser = (data) =>
   apiCall({
-    url: '/users/' + data,
+    url: '/user/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,
