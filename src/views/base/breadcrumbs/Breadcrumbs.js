@@ -9,6 +9,7 @@ import DriverReducer, {
 import { connect } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css'
 import TruckReducer, { getTrucks } from 'src/reducer/TruckReducer'
+import AttachmentReducer, { addFile } from 'src/reducer/AttachmentReducer'
 
 // eslint-disable-next-line react/prop-types
 const Breadcrumbs = ({
@@ -18,6 +19,7 @@ const Breadcrumbs = ({
   addDrivers,
   // eslint-disable-next-line react/prop-types
   TruckReducer,
+  // eslint-disable-next-line react/prop-types
   editDriver,
   // eslint-disable-next-line react/prop-types
   deleteDriver,
@@ -25,6 +27,10 @@ const Breadcrumbs = ({
   DriverReducer,
   // eslint-disable-next-line react/prop-types
   getTrucks,
+  // eslint-disable-next-line react/prop-types
+  AttachmentReducer,
+  // eslint-disable-next-line react/prop-types
+  addFile,
 }) => {
   const [isModal, setIsModal] = useState(false)
   const [truckId, setTruckId] = useState(null)
@@ -53,9 +59,34 @@ const Breadcrumbs = ({
       type: 'number',
     },
     {
-      name: 'DateOfBirth',
+      name: 'dateOfBirth',
       title: 'Birthdate',
       type: 'date',
+    },
+    {
+      name: 'country',
+      title: 'Country',
+      type: 'text',
+    },
+    {
+      name: 'city',
+      title: 'City',
+      type: 'text',
+    },
+    {
+      name: 'state',
+      title: 'State',
+      type: 'text',
+    },
+    {
+      name: 'street',
+      title: 'Street',
+      type: 'text',
+    },
+    {
+      name: 'postalCode',
+      title: 'PostalCode',
+      type: 'text',
     },
   ]
 
@@ -78,15 +109,31 @@ const Breadcrumbs = ({
     setFile(event.target.files[0])
     setFilename(event.target.files[0].name)
     setFileSize(event.target.files[0].size)
+    const data = new FormData()
+    data.append('file', event.target.files[0])
+    addFile(data)
   }
 
   function send() {
     const formData = new FormData()
-    formData.append('file', files)
-    const data = { ...post, truckId }
-    formData.append('driver', JSON.stringify(data))
+    // formData.append("file", files);
+    const data = {
+      ...post,
+      truckId,
+      // eslint-disable-next-line react/prop-types
+      photoId: AttachmentReducer.fileId,
+      addressDto: {
+        country: post.country,
+        city: post.city,
+        postalCode: post.postalCode,
+        state: post.state,
+        street: post.street,
+      },
+    }
+    // formData.append("driverDto", JSON.stringify(data));
     addDrivers(data)
     toggle()
+    console.log(files)
   }
 
   return (
@@ -103,8 +150,9 @@ const Breadcrumbs = ({
           <thead>
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Name</th>
-            <th className={'text-center'}>Passport</th>
+            <th className={'text-center'}>Email</th>
             <th className={'text-center'}>Phone</th>
+            <th className={'text-center'}>Zip code</th>
             <th className={'text-center'}>Actions</th>
           </thead>
           <hr />
@@ -113,6 +161,10 @@ const Breadcrumbs = ({
             {DriverReducer.drivers?.map((item, index) => (
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
+                <td className={'text-center'}>{item?.driverName}</td>
+                <td className={'text-center'}>{item?.driverEmail}</td>
+                <td className={'text-center'}>{item?.driverPhone}</td>
+                <td className={'text-center'}>{item?.zipCode}</td>
                 <td className={'text-center d-flex justify-content-around'}>
                   <button className={'btn btn-primary'}>Edit</button>
                   <button
@@ -183,9 +235,15 @@ const Breadcrumbs = ({
             </div>
           </ModalBody>
           <ModalFooter>
-            <button onClick={send} className={'btn btn-success text-light w-25'}>
-              Save
-            </button>
+            {truckId !== null && truckId !== 'choose' ? (
+              <button onClick={send} className={'btn btn-success text-light w-25'}>
+                Save
+              </button>
+            ) : (
+              <button disabled onClick={send} className={'btn btn-warning text-light w-25'}>
+                Save
+              </button>
+            )}
             <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
               Exit
             </button>
@@ -197,10 +255,11 @@ const Breadcrumbs = ({
 }
 
 // export default Breadcrumbs
-export default connect((DriverReducer, TruckReducer), {
+export default connect((DriverReducer, TruckReducer, AttachmentReducer), {
   getDrivers,
   addDrivers,
   editDriver,
   deleteDriver,
   getTrucks,
+  addFile,
 })(Breadcrumbs)

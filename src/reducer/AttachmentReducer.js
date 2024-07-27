@@ -3,27 +3,30 @@ import { apiCall } from '../api'
 import { toast } from 'react-toastify'
 
 export const slice = createSlice({
-  name: 'drivers',
+  name: 'file',
   initialState: {
-    drivers: null,
+    file: null,
     current: false,
+    fileId: null,
   },
   reducers: {
     get: (state, action) => {
-      state.drivers = action.payload.object
+      state.file = action.payload.object
       console.log(action.payload.object)
     },
     saveFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('DRIVER ADDED')
+        toast.success('FILE ADDED')
+        state.fileId = action.payload.object.id
       } else {
         toast.error('SERVER ERROR')
+        state.fileId = null
       }
       state.current = !state.current
     },
     editFrom: (state, action) => {
       if (action.payload.success) {
-        toast.success('DRIVER EDITED')
+        toast.success('FILE EDITED')
       } else {
         toast.error(action.payload.message)
       }
@@ -31,7 +34,7 @@ export const slice = createSlice({
     },
     deleteFrom: (state, action) => {
       if (action.payload.success) {
-        toast.error('DRIVER DELETED')
+        toast.error('FILE DELETED')
       } else {
         toast.error(action.payload.message)
       }
@@ -40,19 +43,19 @@ export const slice = createSlice({
   },
 })
 
-export const getDrivers = (data) =>
+export const getFile = (data) =>
   apiCall({
-    url: '/drivers',
+    url: '/attachment/info',
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
   })
-export const addDrivers = (data) =>
+export const addFile = (data) =>
   apiCall({
-    url: '/drivers',
+    url: '/attachment/upload',
     method: 'post',
     data,
-    // contentType: 'multipart/form-data',
+    contentType: 'multipart/form-data',
     onSuccess: slice.actions.saveFrom.type,
     onFail: slice.actions.saveFrom.type,
   })
@@ -63,9 +66,9 @@ export const editDriver = (data) =>
     onSuccess: slice.actions.editFrom.type,
     onFail: slice.actions.editFrom.type,
   })
-export const deleteDriver = (data) =>
+export const deleteFile = (data) =>
   apiCall({
-    url: '/drivers/' + data,
+    url: '/attachment/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,

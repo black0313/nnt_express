@@ -11,6 +11,7 @@ import FacilityReducer from 'src/reducer/FacilityReducer'
 import PickUpAdressReducer from 'src/reducer/PickUpAdressReducer'
 import LoadReducer from 'src/reducer/LoadReducer'
 import RoleReducer from 'src/reducer/RoleReducer'
+import AttachmentReducer from 'src/reducer/AttachmentReducer'
 
 export default configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export default configureStore({
     PickUpAdressReducer,
     LoadReducer,
     RoleReducer,
+    AttachmentReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api),
 })
