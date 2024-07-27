@@ -237,7 +237,7 @@ const Loads = ({
                       // eslint-disable-next-line react/prop-types
                       DriverReducer?.drivers.map((item) => (
                         // eslint-disable-next-line react/jsx-key
-                        <option value={item.id}>{item.name}</option>
+                        <option value={item.id}>{item?.driverName}</option>
                       ))
                     ) : (
                       <option value="choose">NOT FOUND</option>

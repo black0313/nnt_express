@@ -45,6 +45,16 @@ function Colors({
 
   const formInput = [
     {
+      name: 'firstName',
+      title: 'First name',
+      type: 'text',
+    },
+    {
+      name: 'lastName',
+      title: 'Last name',
+      type: 'text',
+    },
+    {
       name: 'phone',
       title: 'Phone',
       type: 'number',
@@ -67,6 +77,16 @@ function Colors({
     {
       name: 'country',
       title: 'country',
+      type: 'text',
+    },
+    {
+      name: 'state',
+      title: 'State',
+      type: 'text',
+    },
+    {
+      name: 'street',
+      title: 'Street',
       type: 'text',
     },
   ]
@@ -197,15 +217,18 @@ function Colors({
           </ModalBody>
           {console.log(userId)}
           <ModalFooter>
-            {userId === null || userId === 'Choose' ? (
-              <button onClick={send} disabled className={'btn btn-success text-light w-25'}>
-                Save
-              </button>
-            ) : (
-              <button onClick={send} className={'btn btn-success text-light w-25'}>
-                Save
-              </button>
-            )}
+            {/*{userId === null || userId === 'Choose' ? (*/}
+            {/*  <button onClick={send} disabled className={'btn btn-success text-light w-25'}>*/}
+            {/*    Save*/}
+            {/*  </button>*/}
+            {/*) : (*/}
+            {/*  <button onClick={send} className={'btn btn-success text-light w-25'}>*/}
+            {/*    Save*/}
+            {/*  </button>*/}
+            {/*)}*/}
+            <button onClick={send} className={'btn btn-success text-light w-25'}>
+              Save
+            </button>
             <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
               Exit
             </button>
