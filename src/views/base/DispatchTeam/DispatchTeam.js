@@ -11,56 +11,46 @@ import UserReducer, {
   getUsers,
 } from 'src/reducer/UserReducer'
 import RoleReducer, { getRoles } from 'src/reducer/RoleReducer'
+import DispatchTeamReducer, {
+  addDispatchTeam,
+  deleteDispatchTeam,
+  editDispatchTeam,
+  getDispatchTeams,
+} from 'src/reducer/DispatchTeamReducer'
+import DispatcherReducer, { getDispatchers } from 'src/reducer/DispatcherReducer'
 
 // eslint-disable-next-line react/prop-types
 const Collapses = ({
   // eslint-disable-next-line react/prop-types
-  UserReducer,
+  getDispatchTeams,
   // eslint-disable-next-line react/prop-types
-  getUsers,
+  addDispatchTeam,
   // eslint-disable-next-line react/prop-types
-  addUser,
+  editDispatchTeam,
   // eslint-disable-next-line react/prop-types
-  editUser,
+  deleteDispatchTeam,
   // eslint-disable-next-line react/prop-types
-  deleteUser,
+  DispatchTeamReducer,
   // eslint-disable-next-line react/prop-types
-  getUser,
+  getDispatchers,
   // eslint-disable-next-line react/prop-types
-  getRoles,
-  // eslint-disable-next-line react/prop-types
-  RoleReducer,
+  DispatcherReducer,
 }) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [userId, setUserId] = useState(null)
   const [roleId, setRoleId] = useState(null)
   useEffect(() => {
-    getUsers()
-    getRoles()
+    getDispatchers()
+    getDispatchTeams()
     // eslint-disable-next-line react/prop-types
-  }, [UserReducer.current])
+  }, [DispatchTeamReducer.current])
 
   const formInput = [
     {
-      name: 'firstname',
-      title: 'First Name',
+      name: 'name',
+      title: 'Name',
       type: 'text',
-    },
-    {
-      name: 'lastname',
-      title: 'Last Name',
-      type: 'text',
-    },
-    {
-      name: 'username',
-      title: 'Username',
-      type: 'text',
-    },
-    {
-      name: 'password',
-      title: 'Password',
-      type: 'number',
     },
   ]
 
@@ -75,7 +65,7 @@ const Collapses = ({
         id: userId,
       })
     } else {
-      addUser({ ...post, roleId })
+      addDispatchTeam({ ...post })
     }
     setUserId(null)
     // eslint-disable-next-line react/prop-types
@@ -84,11 +74,11 @@ const Collapses = ({
   }
 
   function handleDelete(id) {
-    deleteUser(id)
+    deleteDispatchTeam(id)
   }
 
   function edit_(id) {
-    getUser(id)
+    // getUser(id)
     setUserId(id)
     toggle()
   }
@@ -96,22 +86,22 @@ const Collapses = ({
   useEffect(() => {
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
-      setPost(UserReducer.user)
+      setPost(DispatchTeamReducer.user)
     }, 100)
     // eslint-disable-next-line react/prop-types
-  }, [UserReducer.current])
+  }, [DispatchTeamReducer.current])
 
   useEffect(() => {
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
-      setRoleId(UserReducer?.user?.role)
+      // setRoleId(UserReducer?.user?.role)
     }, 100)
     // eslint-disable-next-line react/prop-types
-  }, [UserReducer.current])
+  }, [DispatchTeamReducer.current])
   const toggle = () => setIsModal(!isModal)
   return (
     <div>
-      <h1>User List</h1>
+      <h1>Dispatcher Team List</h1>
       <div className="w-25 float-end mb-3">
         <button onClick={toggle} className={'btn btn-success w-100 text-light float-end'}>
           + Add
@@ -119,7 +109,7 @@ const Collapses = ({
       </div>
       <br />
       {/* eslint-disable-next-line react/prop-types */}
-      {UserReducer.users ? (
+      {DispatchTeamReducer.teams ? (
         <div>
           <table
             className={
@@ -129,19 +119,15 @@ const Collapses = ({
             <thead className={'bg-secondary'}>
               <th className={'text-center'}>T/R</th>
               <th className={'text-center'}>Name</th>
-              <th className={'text-center'}>Last name</th>
-              <th className={'text-center'}>Role</th>
               <th className={'text-center'}>Actions</th>
             </thead>
             <hr />
             <tbody>
               {/* eslint-disable-next-line react/prop-types */}
-              {UserReducer.users.map((item, index) => (
+              {DispatchTeamReducer.teams.map((item, index) => (
                 <tr key={index}>
                   <td className={'text-center'}>{index + 1}</td>
-                  <td className={'text-center'}>{item?.firstname}</td>
-                  <td className={'text-center'}>{item?.lastname}</td>
-                  <td className={'text-center'}>{item?.role?.name}</td>
+                  <td className={'text-center'}>{item?.name}</td>
                   <td className={'text-center'}>
                     <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
                       Edit
@@ -166,13 +152,13 @@ const Collapses = ({
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>{userId ? 'Edit User' : 'Add User'}</h3>
+            <h3 className={'text-info '}>{userId ? 'Edit Team' : 'Add Team'}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">
               {formInput.map((item) => (
                 // eslint-disable-next-line react/jsx-key
-                <div className={'col-6'}>
+                <div className={'col-12'}>
                   <label htmlFor={item.name}>{item.title}</label>
                   <input
                     type={item.type}
@@ -185,37 +171,12 @@ const Collapses = ({
                   />
                 </div>
               ))}
-              <div className="col-6">
-                <label htmlFor="">Choose role</label>
-                <select
-                  value={roleId}
-                  onChange={(e) => setRoleId(e.target.value)}
-                  className={'form-control'}
-                >
-                  <option value="choose">Choose role</option>
-                  {
-                    // eslint-disable-next-line react/prop-types
-                    RoleReducer.roles ? (
-                      // eslint-disable-next-line react/prop-types,react/jsx-key
-                      RoleReducer.roles.map((item) => <option value={item.id}>{item.name}</option>)
-                    ) : (
-                      <option value="choose">NOT FOUND</option>
-                    )
-                  }
-                </select>
-              </div>
             </div>
           </ModalBody>
           <ModalFooter>
-            {roleId === 'Choose' || roleId === null ? (
-              <button disabled onClick={send} className={'btn btn-success text-light w-25'}>
-                Save
-              </button>
-            ) : (
-              <button onClick={send} className={'btn btn-success text-light w-25'}>
-                Save
-              </button>
-            )}
+            <button onClick={send} className={'btn btn-success text-light w-25'}>
+              Save
+            </button>
             <button
               onClick={() => {
                 toggle()
@@ -235,11 +196,10 @@ const Collapses = ({
 }
 
 // export default Accordion
-export default connect((UserReducer, RoleReducer), {
-  getRoles,
-  getUsers,
-  getUser,
-  addUser,
-  editUser,
-  deleteUser,
+export default connect((UserReducer, DispatchTeamReducer, DispatcherReducer), {
+  getDispatchTeams,
+  addDispatchTeam,
+  editDispatchTeam,
+  deleteDispatchTeam,
+  getDispatchers,
 })(Collapses)

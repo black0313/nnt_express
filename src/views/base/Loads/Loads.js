@@ -68,8 +68,8 @@ const Loads = ({
 
   const formInput = [
     {
-      name: 'name',
-      title: 'Name',
+      name: 'address',
+      title: 'Adress',
       type: 'text',
     },
     {
@@ -79,23 +79,18 @@ const Loads = ({
     },
     {
       name: 'date',
-      title: 'Date',
+      title: 'Date ( UP )',
+      type: 'date',
+    },
+    {
+      name: 'date',
+      title: 'Date ( DOWN )',
       type: 'date',
     },
     {
       name: 'description',
-      title: 'Description',
+      title: 'Description P.O NUMBERS',
       type: 'text',
-    },
-    {
-      name: 'type',
-      title: 'Type',
-      type: 'text',
-    },
-    {
-      name: 'quantity',
-      title: 'Quantity',
-      type: 'number',
     },
     {
       name: 'weight',
@@ -106,16 +101,6 @@ const Loads = ({
       name: 'value',
       title: 'Price $',
       type: 'number',
-    },
-    {
-      name: 'notes',
-      title: 'Note',
-      type: 'text',
-    },
-    {
-      name: 'poNumbers',
-      title: 'P.O. Numbers',
-      type: 'text',
     },
   ]
 
@@ -129,7 +114,7 @@ const Loads = ({
         id: loadId,
       })
     } else {
-      addLoad({ ...post })
+      addLoad({ ...post, trailerId, truckId, dispatcherId, customsBrokerId })
     }
     setLoadId(null)
     // eslint-disable-next-line react/prop-types
@@ -230,7 +215,13 @@ const Loads = ({
                 </div>
                 <div className="col-3">
                   <label htmlFor="">Driver</label>
-                  <select name="" id="" className={'form-control mt-2'}>
+                  <select
+                    value={driverId}
+                    onChange={(e) => setDriverId(e.target.value)}
+                    name=""
+                    id=""
+                    className={'form-control' + ' mt-2'}
+                  >
                     <option value="choose">Choose driver</option>
                     {/* eslint-disable-next-line react/prop-types */}
                     {DriverReducer?.drivers ? (
@@ -246,7 +237,11 @@ const Loads = ({
                 </div>
                 <div className="col-3">
                   <label htmlFor="">Truck</label>
-                  <select name="" className={'form-control mt-2'}>
+                  <select
+                    value={truckId}
+                    onChange={(e) => setTruckId(e.target.value)}
+                    className={'form-control mt-2'}
+                  >
                     <option value="choose">Choose truck</option>
                     {
                       // eslint-disable-next-line react/prop-types
@@ -266,7 +261,12 @@ const Loads = ({
               <div className={'d-flex justify-content-between'}>
                 <div className="col-3">
                   <label htmlFor="">Trailer</label>
-                  <select name="" className={'form-control mt-2'}>
+                  <select
+                    value={trailerId}
+                    onChange={(e) => setTrailerId(e.target.value)}
+                    name=""
+                    className={'form-control mt-2'}
+                  >
                     <option value="choose">Choose trailer</option>
                     {/* eslint-disable-next-line react/prop-types */}
                     {TrailerReducer.trailers ? (
@@ -282,7 +282,11 @@ const Loads = ({
                 </div>
                 <div className="col-3">
                   <label htmlFor="">Broker</label>
-                  <select name="" className={'form-control mt-2'}>
+                  <select
+                    value={customsBrokerId}
+                    onChange={(e) => setCustomerBrokerId(e.target.value)}
+                    className={'form-control mt-2'}
+                  >
                     <option value="choose">Choose broker</option>
                     {
                       // eslint-disable-next-line react/prop-types
@@ -290,7 +294,7 @@ const Loads = ({
                         // eslint-disable-next-line react/prop-types
                         BrokerReducer?.brokers.map((item) => (
                           // eslint-disable-next-line react/jsx-key
-                          <option value={item.id}>{item.name}</option>
+                          <option value={item.id}>{item?.customerName}</option>
                         ))
                       ) : (
                         <option value="choose">NOT FOUND</option>
@@ -307,7 +311,11 @@ const Loads = ({
                 </div>
                 <div className="col-3">
                   <label htmlFor="">Dispatcher</label>
-                  <select name="" className={'form-control mt-2'}>
+                  <select
+                    value={dispatcherId}
+                    onChange={(e) => setDispatcherId(e.target.value)}
+                    className={'form-control mt-2'}
+                  >
                     <option value="choose">Choose dispatcher</option>
                     {
                       // eslint-disable-next-line react/prop-types
@@ -315,7 +323,7 @@ const Loads = ({
                         // eslint-disable-next-line react/prop-types
                         DispatcherReducer?.dispatchers.map((item) => (
                           // eslint-disable-next-line react/jsx-key
-                          <option value={item.id}>{item.name}</option>
+                          <option value={item.id}>{item?.firstname}</option>
                         ))
                       ) : (
                         <option value="choose">NOT FOUND</option>
@@ -342,7 +350,7 @@ const Loads = ({
             </div>
           </ModalBody>
           <ModalFooter>
-            <button disabled onClick={send} className={'btn btn-success text-light w-25'}>
+            <button onClick={send} className={'btn btn-success text-light w-25'}>
               Save
             </button>
             <button

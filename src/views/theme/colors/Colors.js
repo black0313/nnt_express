@@ -10,6 +10,7 @@ import DispatcherReducer, {
   getDispatchers,
 } from 'src/reducer/DispatcherReducer'
 import UserReducer, { getUserDispatchers, getUsers } from 'src/reducer/UserReducer'
+import DispatchTeamReducer, { getDispatchTeams } from 'src/reducer/DispatchTeamReducer'
 // eslint-disable-next-line react/prop-types
 function Colors({
   // eslint-disable-next-line react/prop-types
@@ -29,17 +30,21 @@ function Colors({
   // eslint-disable-next-line react/prop-types
   deleteDispatcher,
   // eslint-disable-next-line react/prop-types
-  getUserDispatchers,
+  getDispatchTeams,
+  // eslint-disable-next-line react/prop-types
+  DispatchTeamReducer,
 }) {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
   const [dispatcherId, setDispatcherId] = useState(null)
   const [statusvalue, setStatusvalue] = useState(false)
   const [userId, setUserId] = useState(null)
+  const [dispatchersTeamId, setDispatchersTeamId] = useState(null)
   useEffect(() => {
     getDispatchers()
     // getUsers()
-    getUserDispatchers()
+    getDispatchTeams()
+    getUsers()
     // eslint-disable-next-line react/prop-types
   }, [DispatcherReducer.current])
 
@@ -93,9 +98,9 @@ function Colors({
 
   function send() {
     if (dispatcherId) {
-      editDispatcher({ ...post, id: dispatcherId, userId })
+      editDispatcher({ ...post, id: dispatcherId, userId, dispatchersTeamId })
     } else {
-      addDispatcher({ ...post, userId })
+      addDispatcher({ ...post, userId, dispatchersTeamId })
     }
     setDispatcherId(null)
     // eslint-disable-next-line react/prop-types
@@ -137,6 +142,7 @@ function Colors({
             <th className={'text-center'}>T/R</th>
             <th className={'text-center'}>Name</th>
             <th className={'text-center'}>Last name</th>
+            <th className={'text-center'}>Team</th>
             <th className={'text-center'}>Phone</th>
             <th className={'text-center'}>Email</th>
             <th className={'text-center'}>City</th>
@@ -152,6 +158,7 @@ function Colors({
                   <td className={'text-center'}>{index + 1}</td>
                   <td className={'text-center'}>{item.firstname}</td>
                   <td className={'text-center'}>{item.lastname}</td>
+                  <td className={'text-center'}>{item?.dispatchersTeam?.name}</td>
                   <td className={'text-center'}>{item?.phone}</td>
                   <td className={'text-center'}>{item?.email}</td>
                   <td className={'text-center'}>{item?.address?.city}</td>
@@ -203,13 +210,40 @@ function Colors({
               <div className="col-6">
                 <label htmlFor="">Choose dispatcher</label>
                 <select onChange={(e) => setUserId(e.target.value)} className={'form-control'}>
-                  <option value="Choose">Choose user</option>
+                  <option value="choose">Choose user</option>
                   {
                     // eslint-disable-next-line react/prop-types
-                    UserReducer.dispatchers?.map((i) => (
-                      // eslint-disable-next-line react/jsx-key
-                      <option value={i.id}>{i.firstname}</option>
-                    ))
+                    UserReducer.users ? (
+                      // eslint-disable-next-line react/prop-types
+                      UserReducer.users?.map((i) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={i.id}>{i.firstname}</option>
+                      ))
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )
+                  }
+                </select>
+              </div>
+              <div className="col-6">
+                <label htmlFor="">Choose Team</label>
+                <select
+                  value={dispatchersTeamId}
+                  onChange={(e) => setDispatchersTeamId(e.target.value)}
+                  className={'form-control'}
+                >
+                  <option value="choose">Choose team</option>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    DispatchTeamReducer.teams ? (
+                      // eslint-disable-next-line react/prop-types
+                      DispatchTeamReducer.teams?.map((i) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={i.id}>{i.name}</option>
+                      ))
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )
                   }
                 </select>
               </div>
@@ -217,18 +251,18 @@ function Colors({
           </ModalBody>
           {console.log(userId)}
           <ModalFooter>
-            {/*{userId === null || userId === 'Choose' ? (*/}
-            {/*  <button onClick={send} disabled className={'btn btn-success text-light w-25'}>*/}
-            {/*    Save*/}
-            {/*  </button>*/}
-            {/*) : (*/}
-            {/*  <button onClick={send} className={'btn btn-success text-light w-25'}>*/}
-            {/*    Save*/}
-            {/*  </button>*/}
-            {/*)}*/}
-            <button onClick={send} className={'btn btn-success text-light w-25'}>
-              Save
-            </button>
+            {userId === null || userId === 'choose' ? (
+              <button onClick={send} disabled className={'btn btn-success text-light w-25'}>
+                Save
+              </button>
+            ) : (
+              <button onClick={send} className={'btn btn-success text-light w-25'}>
+                Save
+              </button>
+            )}
+            {/*<button onClick={send} className={'btn btn-success text-light w-25'}>*/}
+            {/*  Save*/}
+            {/*</button>*/}
             <button onClick={toggle} className={'btn btn-danger w-25 text-light'}>
               Exit
             </button>
@@ -239,7 +273,7 @@ function Colors({
   )
 }
 
-export default connect((DispatcherReducer, UserReducer), {
+export default connect((DispatcherReducer, UserReducer, DispatchTeamReducer), {
   getUsers,
   getUserDispatchers,
   getDispatchers,
@@ -247,4 +281,5 @@ export default connect((DispatcherReducer, UserReducer), {
   addDispatcher,
   editDispatcher,
   deleteDispatcher,
+  getDispatchTeams,
 })(Colors)
