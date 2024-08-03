@@ -1,116 +1,116 @@
-import React, { useEffect, useState } from 'react'
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import axios from 'axios'
-import { connect } from 'react-redux'
-import 'react-toastify/dist/ReactToastify.css'
+import React, { useEffect, useState } from "react";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import axios from "axios";
+import { connect } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 import LoadReducer, {
   addLoad,
   deleteLoad,
   editLoad,
   getLoad,
-  getLoads,
-} from 'src/reducer/LoadReducer'
-import DriverReducer, { getDrivers } from 'src/reducer/DriverReducer'
-import TruckReducer, { getTrucks } from 'src/reducer/TruckReducer'
-import TrailerReducer, { getTrailer } from 'src/reducer/TrailerReducer'
-import DispatcherReducer, { getDispatchers } from 'src/reducer/DispatcherReducer'
-import BrokerReducer, { getBroker, getBrokers } from 'src/reducer/BrokerReducer'
-import PickUpAdressReducer, { getPicks } from 'src/reducer/PickUpAdressReducer'
-import FacilityReducer, { getFacilities } from 'src/reducer/FacilityReducer'
+  getLoads
+} from "src/reducer/LoadReducer";
+import DriverReducer, { getDrivers } from "src/reducer/DriverReducer";
+import TruckReducer, { getTrucks } from "src/reducer/TruckReducer";
+import TrailerReducer, { getTrailer } from "src/reducer/TrailerReducer";
+import DispatcherReducer, { getDispatchers } from "src/reducer/DispatcherReducer";
+import BrokerReducer, { getBroker, getBrokers } from "src/reducer/BrokerReducer";
+import PickUpAdressReducer, { getPicks } from "src/reducer/PickUpAdressReducer";
+import FacilityReducer, { getFacilities } from "src/reducer/FacilityReducer";
 
 // eslint-disable-next-line react/prop-types
 const Loads = ({
-  // eslint-disable-next-line react/prop-types
-  LoadReducer,
-  // eslint-disable-next-line react/prop-types
-  getLoads,
-  // eslint-disable-next-line react/prop-types
-  addLoad,
-  // eslint-disable-next-line react/prop-types
-  editLoad,
-  // eslint-disable-next-line react/prop-types
-  deleteLoad,
-  // eslint-disable-next-line react/prop-types
-  getLoad,
-  // eslint-disable-next-line react/prop-types
-  getTrucks,
-  // eslint-disable-next-line react/prop-types
-  getTrailer,
-  // eslint-disable-next-line react/prop-types
-  getBrokers,
-  // eslint-disable-next-line react/prop-types
-  getDispatchers,
-  // eslint-disable-next-line react/prop-types
-  getDrivers,
-  // eslint-disable-next-line react/prop-types
-  DriverReducer,
-  // eslint-disable-next-line react/prop-types
-  TruckReducer,
-  // eslint-disable-next-line react/prop-types
-  TrailerReducer,
-  // eslint-disable-next-line react/prop-types
-  DispatcherReducer,
-  // eslint-disable-next-line react/prop-types
-  BrokerReducer,
-  // eslint-disable-next-line react/prop-types
-  getPicks,
-  // eslint-disable-next-line react/prop-types
-  PickUpAdressReducer,
-  // eslint-disable-next-line react/prop-types
-  getFacilities,
-  // eslint-disable-next-line react/prop-types
-  FacilityReducer,
-}) => {
-  const [isModal, setIsModal] = useState(false)
-  const [post, setPost] = useState({})
-  const [loadId, setLoadId] = useState(null)
-  const [loadNumber, setLoadNumber] = useState('')
-  const [driverId, setDriverId] = useState(null)
-  const [truckId, setTruckId] = useState(null)
-  const [trailerId, setTrailerId] = useState(null)
-  const [dispatcherId, setDispatcherId] = useState(null)
-  const [customsBrokerId, setCustomerBrokerId] = useState(null)
-  const [addressId, setAdressId] = useState(null)
-  const [facilityId, setFacilityId] = useState(null)
-  const [shipperConsigneeDtoList, setShipperConsigneeDtoList] = useState([])
+                 // eslint-disable-next-line react/prop-types
+                 LoadReducer,
+                 // eslint-disable-next-line react/prop-types
+                 getLoads,
+                 // eslint-disable-next-line react/prop-types
+                 addLoad,
+                 // eslint-disable-next-line react/prop-types
+                 editLoad,
+                 // eslint-disable-next-line react/prop-types
+                 deleteLoad,
+                 // eslint-disable-next-line react/prop-types
+                 getLoad,
+                 // eslint-disable-next-line react/prop-types
+                 getTrucks,
+                 // eslint-disable-next-line react/prop-types
+                 getTrailer,
+                 // eslint-disable-next-line react/prop-types
+                 getBrokers,
+                 // eslint-disable-next-line react/prop-types
+                 getDispatchers,
+                 // eslint-disable-next-line react/prop-types
+                 getDrivers,
+                 // eslint-disable-next-line react/prop-types
+                 DriverReducer,
+                 // eslint-disable-next-line react/prop-types
+                 TruckReducer,
+                 // eslint-disable-next-line react/prop-types
+                 TrailerReducer,
+                 // eslint-disable-next-line react/prop-types
+                 DispatcherReducer,
+                 // eslint-disable-next-line react/prop-types
+                 BrokerReducer,
+                 // eslint-disable-next-line react/prop-types
+                 getPicks,
+                 // eslint-disable-next-line react/prop-types
+                 PickUpAdressReducer,
+                 // eslint-disable-next-line react/prop-types
+                 getFacilities,
+                 // eslint-disable-next-line react/prop-types
+                 FacilityReducer
+               }) => {
+  const [isModal, setIsModal] = useState(false);
+  const [post, setPost] = useState({});
+  const [loadId, setLoadId] = useState(null);
+  const [loadNumber, setLoadNumber] = useState("");
+  const [driverId, setDriverId] = useState(null);
+  const [truckId, setTruckId] = useState(null);
+  const [trailerId, setTrailerId] = useState(null);
+  const [dispatcherId, setDispatcherId] = useState(null);
+  const [customsBrokerId, setCustomerBrokerId] = useState(null);
+  const [addressId, setAdressId] = useState(null);
+  const [facilityId, setFacilityId] = useState(null);
+  const [shipperConsigneeDtoList, setShipperConsigneeDtoList] = useState([]);
   useEffect(() => {
-    getLoads()
-    getPicks()
-    getFacilities()
+    getLoads();
+    getPicks();
+    getFacilities();
     // eslint-disable-next-line react/prop-types
-  }, [LoadReducer.current])
+  }, [LoadReducer.current]);
 
   const [data, setData] = useState([
-    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '' },
-  ])
+    { pickDate: "", deliveryDate: "", description: "", weight: "", value: "" }
+  ]);
 
   const formInput = [
     {
-      name: 'date',
-      title: 'Date ( GET )',
-      type: 'date',
+      name: "date",
+      title: "Date ( GET )",
+      type: "date"
     },
     {
-      name: 'date',
-      title: 'Date ( DELIVERY )',
-      type: 'date',
+      name: "date",
+      title: "Date ( DELIVERY )",
+      type: "date"
     },
     {
-      name: 'description',
-      title: 'Description P.O NUMBERS',
-      type: 'text',
+      name: "description",
+      title: "Description P.O NUMBERS",
+      type: "text"
     },
     {
-      name: 'weight',
-      title: 'Weight',
-      type: 'number',
+      name: "weight",
+      title: "Weight",
+      type: "number"
     },
     {
-      name: 'value',
-      title: 'Price $',
-      type: 'number',
-    },
-  ]
+      name: "value",
+      title: "Price $",
+      type: "number"
+    }
+  ];
 
   function send() {
     if (loadId) {
@@ -119,65 +119,73 @@ const Loads = ({
         lastname: post.lastname,
         password: post.password,
         username: post.username,
-        id: loadId,
-      })
+        id: loadId
+      });
     } else {
-      addLoad({ ...post, trailerId, truckId, dispatcherId, customsBrokerId })
+      addLoad({ ...post, trailerId, truckId, dispatcherId, customsBrokerId });
     }
-    setLoadId(null)
+    setLoadId(null);
     // eslint-disable-next-line react/prop-types
-    toggle()
-    setPost({})
+    toggle();
+    setPost({});
   }
 
   function handleChange(e, i) {
-    const { name, value } = e.target
-    const onChangeVal = [...data]
-    onChangeVal[i][name] = value
-    setData(onChangeVal)
+    const { name, value } = e.target;
+    const onChangeVal = [...data];
+    onChangeVal[i][name] = value;
+    setData(onChangeVal);
   }
+
   function handleDelete(id) {
-    deleteLoad(id)
+    deleteLoad(id);
   }
 
   function handleClick() {
-    setData(
-      { ...data },
-      { pickDate: null, deliveryDate: null, description: null, weight: null, value: null },
-    )
+    const newData = [
+      ...data,
+      {
+        pickDate: null,
+        deliveryDate: null,
+        description: null,
+        weight: null,
+        value: null
+      }
+    ];
+    setData(newData);
   }
 
   function handleDeleteInput(i) {
-    const deleteVal = [...data]
-    deleteVal.splice(i, 1)
-    setData(deleteVal)
+    const deleteVal = [...data];
+    deleteVal.splice(i, 1);
+    setData(deleteVal);
   }
 
   function edit_(id) {
-    getLoad(id)
-    setLoadId(id)
-    toggle()
+    getLoad(id);
+    setLoadId(id);
+    toggle();
   }
 
   useEffect(() => {
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
-      setPost(LoadReducer.load)
-      getTrucks()
-      getBrokers()
-      getTrailer()
-      getDispatchers()
-      getDrivers()
-    }, 100)
+      setPost(LoadReducer.load);
+      getTrucks();
+      getBrokers();
+      getTrailer();
+      getDispatchers();
+      getDrivers();
+    }, 100);
     // eslint-disable-next-line react/prop-types
-  }, [LoadReducer.current])
+  }, [LoadReducer.current]);
 
-  const toggle = () => setIsModal(!isModal)
+  const toggle = () => setIsModal(!isModal);
   return (
     <div>
       <h1>Load List</h1>
       <div className="w-25 float-end mb-3">
-        <button onClick={toggle} className={'btn btn-success w-100 text-light float-end'}>
+        <button onClick={toggle} className={"btn btn-success w-100 text-light float-end"}>
           + Add
         </button>
       </div>
@@ -186,56 +194,56 @@ const Loads = ({
       {LoadReducer.loads ? (
         <table
           className={
-            'table overflow-scroll rounded table-bordered text-light  table-hover table-striped'
+            "table overflow-scroll rounded table-bordered text-light  table-hover table-striped"
           }
         >
-          <thead className={'bg-secondary'}>
-            <th className={'text-center'}>T/R</th>
-            <th className={'text-center'}>Name</th>
-            <th className={'text-center'}>Last name</th>
-            <th className={'text-center'}>Actions</th>
+          <thead className={"bg-secondary"}>
+          <th className={"text-center"}>T/R</th>
+          <th className={"text-center"}>Name</th>
+          <th className={"text-center"}>Last name</th>
+          <th className={"text-center"}>Actions</th>
           </thead>
           <hr />
           <tbody>
-            {/* eslint-disable-next-line react/prop-types */}
-            {LoadReducer.loads.map((item, index) => (
-              <tr key={index}>
-                <td className={'text-center'}>{index + 1}</td>
-                <td className={'text-center'}>{item?.firstname}</td>
-                <td className={'text-center'}>{item?.lastname}</td>
-                <td className={'text-center'}>
-                  <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className={'btn btn-danger text-light ms-2'}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+          {/* eslint-disable-next-line react/prop-types */}
+          {LoadReducer.loads.map((item, index) => (
+            <tr key={index}>
+              <td className={"text-center"}>{index + 1}</td>
+              <td className={"text-center"}>{item?.firstname}</td>
+              <td className={"text-center"}>{item?.lastname}</td>
+              <td className={"text-center"}>
+                <button onClick={() => edit_(item.id)} className={"btn btn-info text-light"}>
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className={"btn btn-danger text-light ms-2"}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
           </tbody>
         </table>
       ) : (
-        <h1 className={'text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto'}>
+        <h1 className={"text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto"}>
           TABLE IS EMPTY
         </h1>
       )}
       {
-        <Modal isOpen={isModal} toggle={toggle} size={'xl'} scrollable={true}>
+        <Modal isOpen={isModal} toggle={toggle} size={"xl"} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>{loadId ? 'Edit Load' : 'Add Load'}</h3>
+            <h3 className={"text-info "}>{loadId ? "Edit Load" : "Add Load"}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">
               <div className="p-3 d-flex justify-content-between align-items-center">
-                <div className={'col-4'}>
+                <div className={"col-4"}>
                   <label htmlFor="">Load number</label>
                   <input
                     type="text"
-                    className={'form-control mt-2'}
+                    className={"form-control mt-2"}
                     value={loadNumber}
                     onChange={(e) => setLoadNumber(e.target.value)}
                   />
@@ -247,7 +255,7 @@ const Loads = ({
                     onChange={(e) => setDriverId(e.target.value)}
                     name=""
                     id=""
-                    className={'form-control' + ' mt-2'}
+                    className={"form-control" + " mt-2"}
                   >
                     <option value="choose">Choose driver</option>
                     {/* eslint-disable-next-line react/prop-types */}
@@ -267,7 +275,7 @@ const Loads = ({
                   <select
                     value={truckId}
                     onChange={(e) => setTruckId(e.target.value)}
-                    className={'form-control mt-2'}
+                    className={"form-control mt-2"}
                   >
                     <option value="choose">Choose truck</option>
                     {
@@ -285,14 +293,14 @@ const Loads = ({
                   </select>
                 </div>
               </div>
-              <div className={'d-flex justify-content-between'}>
+              <div className={"d-flex justify-content-between"}>
                 <div className="col-3">
                   <label htmlFor="">Trailer</label>
                   <select
                     value={trailerId}
                     onChange={(e) => setTrailerId(e.target.value)}
                     name=""
-                    className={'form-control mt-2'}
+                    className={"form-control mt-2"}
                   >
                     <option value="choose">Choose trailer</option>
                     {/* eslint-disable-next-line react/prop-types */}
@@ -312,7 +320,7 @@ const Loads = ({
                   <select
                     value={customsBrokerId}
                     onChange={(e) => setCustomerBrokerId(e.target.value)}
-                    className={'form-control mt-2'}
+                    className={"form-control mt-2"}
                   >
                     <option value="choose">Choose broker</option>
                     {
@@ -331,7 +339,7 @@ const Loads = ({
                 </div>
                 <div className="col-2">
                   <label htmlFor="">Shipper</label>
-                  <select name="" className={'form-control mt-2'}>
+                  <select name="" className={"form-control mt-2"}>
                     <option value="true">Shipper</option>
                     <option value="false">Consignee</option>
                   </select>
@@ -341,7 +349,7 @@ const Loads = ({
                   <select
                     value={dispatcherId}
                     onChange={(e) => setDispatcherId(e.target.value)}
-                    className={'form-control mt-2'}
+                    className={"form-control mt-2"}
                   >
                     <option value="choose">Choose dispatcher</option>
                     {
@@ -359,8 +367,8 @@ const Loads = ({
                   </select>
                 </div>
               </div>
-              <hr className={'mt-4'} />
-              <div className={'d-flex'}>
+              <hr className={"mt-4"} />
+              <div className={"d-flex"}>
                 <h3>Shipper</h3>
                 <button
                   onClick={handleClick}
@@ -374,7 +382,7 @@ const Loads = ({
                 <select
                   value={addressId}
                   onChange={(e) => setAdressId(e.target.value)}
-                  className={'form-control mt-2'}
+                  className={"form-control mt-2"}
                 >
                   <option value="choose">Choose address</option>
                   {
@@ -396,7 +404,7 @@ const Loads = ({
                 <select
                   value={facilityId}
                   onChange={(e) => setAdressId(e.target.value)}
-                  className={'form-control mt-2'}
+                  className={"form-control mt-2"}
                 >
                   <option value="choose">Choose facility</option>
                   {
@@ -418,46 +426,46 @@ const Loads = ({
                 // eslint-disable-next-line react/jsx-key
                 data?.map((val, i) => (
                   // eslint-disable-next-line react/jsx-key
-                  <div className={'col-12'}>
+                  <div className={"col-12"}>
                     <div className="row">
                       <div className="col-3">
                         <label htmlFor="">Pick date</label>
                         <input
-                          name={'pickDate'}
+                          name={"pickDate"}
                           value={val.pickDate}
                           onChange={(e) => handleChange(e, i)}
                           type="text"
-                          className={'form-control'}
+                          className={"form-control"}
                         />
                       </div>
                       <div className="col-3">
                         <label htmlFor="">Delivery date</label>
                         <input
                           value={val.deliveryDate}
-                          name={'deliveryDate'}
+                          name={"deliveryDate"}
                           onChange={(e) => handleChange(e, i)}
                           type="text"
-                          className={'form-control'}
+                          className={"form-control"}
                         />
                       </div>
                       <div className="col-3">
                         <label htmlFor="">Description</label>
                         <input
                           value={val.description}
-                          name={'description'}
+                          name={"description"}
                           onChange={(e) => handleChange(e, i)}
                           type="text"
-                          className={'form-control'}
+                          className={"form-control"}
                         />
                       </div>
                       <div className="col-3">
                         <label htmlFor="">Weight</label>
                         <input
                           value={val.weight}
-                          name={'weight'}
+                          name={"weight"}
                           onChange={(e) => handleChange(e, i)}
                           type="text"
-                          className={'form-control'}
+                          className={"form-control"}
                         />
                       </div>
                       <div className="col-3">
@@ -466,10 +474,10 @@ const Loads = ({
                           name={val.value}
                           onChange={(e) => handleChange(e, i)}
                           type="text"
-                          className={'form-control'}
+                          className={"form-control"}
                         />
                       </div>
-                      <button onClick={() => handleDeleteInput(i)} className={'btn btn-danger'}>
+                      <button onClick={() => handleDeleteInput(i)} className={"btn btn-danger"}>
                         Delete
                       </button>
                     </div>
@@ -478,13 +486,13 @@ const Loads = ({
               }
               {formInput.map((item) => (
                 // eslint-disable-next-line react/jsx-key
-                <div className={'col-6'}>
+                <div className={"col-6"}>
                   <label htmlFor={item.name}>{item.title}</label>
                   <input
                     type={item.type}
                     name={item.name}
                     value={post?.[item.name]}
-                    className={'form-control'}
+                    className={"form-control"}
                     onChange={(event) =>
                       setPost({ ...post, [event.target.name]: event.target.value })
                     }
@@ -494,16 +502,16 @@ const Loads = ({
             </div>
           </ModalBody>
           <ModalFooter>
-            <button onClick={send} className={'btn btn-success text-light w-25'}>
+            <button onClick={send} className={"btn btn-success text-light w-25"}>
               Save
             </button>
             <button
               onClick={() => {
-                toggle()
-                setLoadId(null)
-                setPost({})
+                toggle();
+                setLoadId(null);
+                setPost({});
               }}
-              className={'btn btn-danger w-25 text-light'}
+              className={"btn btn-danger w-25 text-light"}
             >
               Exit
             </button>
@@ -511,19 +519,19 @@ const Loads = ({
         </Modal>
       }
     </div>
-  )
-}
+  );
+};
 
 // export default Accordion
 export default connect(
   (LoadReducer,
-  DriverReducer,
-  TruckReducer,
-  TrailerReducer,
-  DispatcherReducer,
-  BrokerReducer,
-  FacilityReducer,
-  PickUpAdressReducer),
+    DriverReducer,
+    TruckReducer,
+    TrailerReducer,
+    DispatcherReducer,
+    BrokerReducer,
+    FacilityReducer,
+    PickUpAdressReducer),
   {
     getLoads,
     getLoad,
@@ -536,6 +544,6 @@ export default connect(
     getDispatchers,
     getBrokers,
     getPicks,
-    getFacilities,
-  },
-)(Loads)
+    getFacilities
+  }
+)(Loads);

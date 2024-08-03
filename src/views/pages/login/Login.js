@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -11,39 +11,39 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import axios from 'axios'
-import { connect } from 'react-redux'
-import loginReducer, { addLogin } from 'src/reducer/loginReducer'
-import { useNavigate } from 'react-router-dom'
-import { BaseUrl } from 'src/middleware'
+  CRow
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilLockLocked, cilUser } from "@coreui/icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { connect } from "react-redux";
+import loginReducer, { addLogin } from "src/reducer/loginReducer";
+import { useNavigate } from "react-router-dom";
+import { BaseUrl } from "src/middleware";
 
 // eslint-disable-next-line react/prop-types
 const Login = ({ loginReducer, addLogin, setUser }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('123')
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("123");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function send() {
     axios
       .post(`${BaseUrl}/auth/authenticate`, {
         username,
-        password,
+        password
       })
       .then((res) => {
-        sessionStorage.setItem('user', JSON.stringify(res.data.object))
-        sessionStorage.setItem('token', res.data.object.token)
-        setUser(res.data.object)
-        navigate('/dashboard')
+        sessionStorage.setItem("user", JSON.stringify(res.data.object));
+        sessionStorage.setItem("token", res.data.object.token);
+        setUser(res.data?.object);
+        navigate("/dashboard");
       })
       // .catch((err) => console.log(err))
-      .catch((err) => toast.error('Check username or password !'))
+      .catch((err) => toast.error("Check username or password !"));
   }
 
   return (
@@ -115,7 +115,7 @@ const Login = ({ loginReducer, addLogin, setUser }) => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              <CCard className="text-white bg-primary py-5" style={{ width: "44%" }}>
                 <CCardBody className="text-center">
                   <div>
                     <h4>Forget password ?</h4>
@@ -138,10 +138,10 @@ const Login = ({ loginReducer, addLogin, setUser }) => {
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default connect(loginReducer, { addLogin })(Login)
+export default connect(loginReducer, { addLogin })(Login);
 
 // doniknegmatov51@gmail.com
 // aa2224848
