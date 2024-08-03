@@ -15,6 +15,8 @@ import TruckReducer, { getTrucks } from 'src/reducer/TruckReducer'
 import TrailerReducer, { getTrailer } from 'src/reducer/TrailerReducer'
 import DispatcherReducer, { getDispatchers } from 'src/reducer/DispatcherReducer'
 import BrokerReducer, { getBroker, getBrokers } from 'src/reducer/BrokerReducer'
+import PickUpAdressReducer, { getPicks } from 'src/reducer/PickUpAdressReducer'
+import FacilityReducer, { getFacilities } from 'src/reducer/FacilityReducer'
 
 // eslint-disable-next-line react/prop-types
 const Loads = ({
@@ -50,6 +52,14 @@ const Loads = ({
   DispatcherReducer,
   // eslint-disable-next-line react/prop-types
   BrokerReducer,
+  // eslint-disable-next-line react/prop-types
+  getPicks,
+  // eslint-disable-next-line react/prop-types
+  PickUpAdressReducer,
+  // eslint-disable-next-line react/prop-types
+  getFacilities,
+  // eslint-disable-next-line react/prop-types
+  FacilityReducer,
 }) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
@@ -60,31 +70,29 @@ const Loads = ({
   const [trailerId, setTrailerId] = useState(null)
   const [dispatcherId, setDispatcherId] = useState(null)
   const [customsBrokerId, setCustomerBrokerId] = useState(null)
+  const [addressId, setAdressId] = useState(null)
+  const [facilityId, setFacilityId] = useState(null)
   const [shipperConsigneeDtoList, setShipperConsigneeDtoList] = useState([])
   useEffect(() => {
     getLoads()
+    getPicks()
+    getFacilities()
     // eslint-disable-next-line react/prop-types
   }, [LoadReducer.current])
 
+  const [data, setData] = useState([
+    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '' },
+  ])
+
   const formInput = [
     {
-      name: 'address',
-      title: 'Adress',
-      type: 'text',
-    },
-    {
-      name: 'location',
-      title: 'Location',
-      type: 'text',
-    },
-    {
       name: 'date',
-      title: 'Date ( UP )',
+      title: 'Date ( GET )',
       type: 'date',
     },
     {
       name: 'date',
-      title: 'Date ( DOWN )',
+      title: 'Date ( DELIVERY )',
       type: 'date',
     },
     {
@@ -122,8 +130,27 @@ const Loads = ({
     setPost({})
   }
 
+  function handleChange(e, i) {
+    const { name, value } = e.target
+    const onChangeVal = [...data]
+    onChangeVal[i][name] = value
+    setData(onChangeVal)
+  }
   function handleDelete(id) {
     deleteLoad(id)
+  }
+
+  function handleClick() {
+    setData(
+      { ...data },
+      { pickDate: null, deliveryDate: null, description: null, weight: null, value: null },
+    )
+  }
+
+  function handleDeleteInput(i) {
+    const deleteVal = [...data]
+    deleteVal.splice(i, 1)
+    setData(deleteVal)
   }
 
   function edit_(id) {
@@ -332,6 +359,123 @@ const Loads = ({
                   </select>
                 </div>
               </div>
+              <hr className={'mt-4'} />
+              <div className={'d-flex'}>
+                <h3>Shipper</h3>
+                <button
+                  onClick={handleClick}
+                  className="btn ms-2 rounded rounded-bottom-circle btn-secondary"
+                >
+                  +
+                </button>
+              </div>
+              <div className="col-6">
+                <label htmlFor="">Address</label>
+                <select
+                  value={addressId}
+                  onChange={(e) => setAdressId(e.target.value)}
+                  className={'form-control mt-2'}
+                >
+                  <option value="choose">Choose address</option>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    PickUpAdressReducer?.pickups ? (
+                      // eslint-disable-next-line react/prop-types
+                      PickUpAdressReducer?.pickups.map((item) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={item.id}>{item?.address}</option>
+                      ))
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )
+                  }
+                </select>
+              </div>
+              <div className="col-6">
+                <label htmlFor="">Facility</label>
+                <select
+                  value={facilityId}
+                  onChange={(e) => setAdressId(e.target.value)}
+                  className={'form-control mt-2'}
+                >
+                  <option value="choose">Choose facility</option>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    FacilityReducer?.facilities ? (
+                      // eslint-disable-next-line react/prop-types
+                      FacilityReducer?.facilities.map((item) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={item.id}>{item?.name}</option>
+                      ))
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )
+                  }
+                </select>
+              </div>
+              {console.log(data)}
+              {
+                // eslint-disable-next-line react/jsx-key
+                data?.map((val, i) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <div className={'col-12'}>
+                    <div className="row">
+                      <div className="col-3">
+                        <label htmlFor="">Pick date</label>
+                        <input
+                          name={'pickDate'}
+                          value={val.pickDate}
+                          onChange={(e) => handleChange(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="">Delivery date</label>
+                        <input
+                          value={val.deliveryDate}
+                          name={'deliveryDate'}
+                          onChange={(e) => handleChange(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="">Description</label>
+                        <input
+                          value={val.description}
+                          name={'description'}
+                          onChange={(e) => handleChange(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="">Weight</label>
+                        <input
+                          value={val.weight}
+                          name={'weight'}
+                          onChange={(e) => handleChange(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label>Price $</label>
+                        <input
+                          name={val.value}
+                          onChange={(e) => handleChange(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <button onClick={() => handleDeleteInput(i)} className={'btn btn-danger'}>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              }
               {formInput.map((item) => (
                 // eslint-disable-next-line react/jsx-key
                 <div className={'col-6'}>
@@ -372,7 +516,14 @@ const Loads = ({
 
 // export default Accordion
 export default connect(
-  (LoadReducer, DriverReducer, TruckReducer, TrailerReducer, DispatcherReducer, BrokerReducer),
+  (LoadReducer,
+  DriverReducer,
+  TruckReducer,
+  TrailerReducer,
+  DispatcherReducer,
+  BrokerReducer,
+  FacilityReducer,
+  PickUpAdressReducer),
   {
     getLoads,
     getLoad,
@@ -384,5 +535,7 @@ export default connect(
     getTrailer,
     getDispatchers,
     getBrokers,
+    getPicks,
+    getFacilities,
   },
 )(Loads)
