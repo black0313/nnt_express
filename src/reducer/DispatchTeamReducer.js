@@ -65,8 +65,8 @@ export const getDispatchTeam = (data) =>
   })
 export const addDispatchTeam = (data) =>
   apiCall({
-    url: '/dispatchers-team',
-    // url: `/dispatchers-team/name=${data.name}`,
+    // url: '/dispatchers-team',
+    url: `/dispatchers-team?name=${data.name}`,
     data,
     method: 'post',
     onSuccess: slice.actions.saveFrom.type,

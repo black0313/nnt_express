@@ -17,6 +17,7 @@ import DispatcherReducer, { getDispatchers } from 'src/reducer/DispatcherReducer
 import BrokerReducer, { getBroker, getBrokers } from 'src/reducer/BrokerReducer'
 import PickUpAdressReducer, { getPicks } from 'src/reducer/PickUpAdressReducer'
 import FacilityReducer, { getFacilities } from 'src/reducer/FacilityReducer'
+import DispatchTeamReducer, { getDispatchTeams } from 'src/reducer/DispatchTeamReducer'
 
 // eslint-disable-next-line react/prop-types
 const Loads = ({
@@ -60,6 +61,10 @@ const Loads = ({
   getFacilities,
   // eslint-disable-next-line react/prop-types
   FacilityReducer,
+  // eslint-disable-next-line react/prop-types
+  DispatchTeamReducer,
+  // eslint-disable-next-line react/prop-types
+  getDispatchTeams,
 }) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
@@ -72,16 +77,19 @@ const Loads = ({
   const [customsBrokerId, setCustomerBrokerId] = useState(null)
   const [addressId, setAdressId] = useState(null)
   const [facilityId, setFacilityId] = useState(null)
+  const [shipper, setShipper] = useState('true')
+  const [dispatcherTeamId, setDispatcherTeamId] = useState(null)
   const [shipperConsigneeDtoList, setShipperConsigneeDtoList] = useState([])
   useEffect(() => {
     getLoads()
     getPicks()
     getFacilities()
+    getDispatchTeams()
     // eslint-disable-next-line react/prop-types
   }, [LoadReducer.current])
 
   const [data, setData] = useState([
-    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '' },
+    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '', shipper: 'true' },
   ])
 
   const formInput = [
@@ -115,9 +123,21 @@ const Loads = ({
         password: post.password,
         username: post.username,
         id: loadId,
+        brokerId: customsBrokerId,
       })
     } else {
-      addLoad({ ...post, trailerId, truckId, dispatcherId, customsBrokerId })
+      addLoad({
+        shipperConsigneeDtoList: { ...data },
+        trailerId,
+        truckId,
+        dispatcherId,
+        brokerId: customsBrokerId,
+        facilityId,
+        addressId,
+        dispatcherTeamId,
+        driverId,
+        internalLoadNumber: loadNumber,
+      })
     }
     setLoadId(null)
     // eslint-disable-next-line react/prop-types
@@ -130,6 +150,7 @@ const Loads = ({
     const onChangeVal = [...data]
     onChangeVal[i][name] = value
     setData(onChangeVal)
+    console.log(onChangeVal)
   }
 
   function handleDelete(id) {
@@ -332,13 +353,13 @@ const Loads = ({
                     }
                   </select>
                 </div>
-                <div className="col-2">
-                  <label htmlFor="">Shipper</label>
-                  <select name="" className={'form-control mt-2'}>
-                    <option value="true">Shipper</option>
-                    <option value="false">Consignee</option>
-                  </select>
-                </div>
+                {/*<div className="col-2">*/}
+                {/*  <label htmlFor="">Shipper</label>*/}
+                {/*  <select name="" className={'form-control mt-2'}>*/}
+                {/*    <option value="true">Shipper</option>*/}
+                {/*    <option value="false">Consignee</option>*/}
+                {/*  </select>*/}
+                {/*</div>*/}
                 <div className="col-3">
                   <label htmlFor="">Dispatcher</label>
                   <select
@@ -361,6 +382,28 @@ const Loads = ({
                     }
                   </select>
                 </div>
+              </div>
+              <div className="col-8 offset-2">
+                <label htmlFor="">Dispatcher</label>
+                <select
+                  value={dispatcherTeamId}
+                  onChange={(e) => setDispatcherTeamId(e.target.value)}
+                  className={'form-control mt-2'}
+                >
+                  <option value="choose">Choose Team</option>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    DispatchTeamReducer.teams ? (
+                      // eslint-disable-next-line react/prop-types
+                      DispatchTeamReducer?.teams.map((item) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <option value={item.id}>{item?.name}</option>
+                      ))
+                    ) : (
+                      <option value="choose">NOT FOUND</option>
+                    )
+                  }
+                </select>
               </div>
               <hr className={'mt-4'} />
               <div className={'d-flex'}>
@@ -398,7 +441,7 @@ const Loads = ({
                 <label htmlFor="">Facility</label>
                 <select
                   value={facilityId}
-                  onChange={(e) => setAdressId(e.target.value)}
+                  onChange={(e) => setFacilityId(e.target.value)}
                   className={'form-control mt-2'}
                 >
                   <option value="choose">Choose facility</option>
@@ -466,11 +509,24 @@ const Loads = ({
                       <div className="col-3">
                         <label>Price $</label>
                         <input
-                          name={val.value}
+                          name={'value'}
+                          value={val.value}
                           onChange={(e) => handleChange(e, i)}
                           type="text"
                           className={'form-control'}
                         />
+                      </div>
+                      <div className="col-3">
+                        <label>Shipper</label>
+                        <select
+                          name={'shipper'}
+                          value={shipper}
+                          onChange={(e) => setShipper(e.target.value)}
+                          className={'form-control'}
+                        >
+                          <option value="true">SHIPPER</option>
+                          <option value="false">CONSIGNEE</option>
+                        </select>
                       </div>
                       <div className="col-4">
                         <button
@@ -531,6 +587,7 @@ export default connect(
   DispatcherReducer,
   BrokerReducer,
   FacilityReducer,
+  DispatchTeamReducer,
   PickUpAdressReducer),
   {
     getLoads,
@@ -545,5 +602,6 @@ export default connect(
     getBrokers,
     getPicks,
     getFacilities,
+    getDispatchTeams,
   },
 )(Loads)

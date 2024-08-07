@@ -38,7 +38,7 @@ const Collapses = ({
 }) => {
   const [isModal, setIsModal] = useState(false)
   const [post, setPost] = useState({})
-  const [userId, setUserId] = useState(null)
+  const [teamId, setTeamId] = useState(null)
   const [roleId, setRoleId] = useState(null)
   useEffect(() => {
     getDispatchers()
@@ -52,22 +52,22 @@ const Collapses = ({
       title: 'Name',
       type: 'text',
     },
+    {
+      name: 'groupId ',
+      title: 'Group',
+      type: 'text',
+    },
   ]
 
   function send() {
-    if (userId) {
-      editUser({
-        firstname: post.firstname,
-        lastname: post.lastname,
-        password: post.password,
-        roleId,
-        username: post.username,
-        id: userId,
+    if (teamId) {
+      editDispatchTeam({
+        id: teamId,
       })
     } else {
       addDispatchTeam({ ...post })
     }
-    setUserId(null)
+    setTeamId(null)
     // eslint-disable-next-line react/prop-types
     toggle()
     setPost({})
@@ -78,8 +78,8 @@ const Collapses = ({
   }
 
   function edit_(id) {
-    // getUser(id)
-    setUserId(id)
+    editDispatchTeam(id)
+    setTeamId(id)
     toggle()
   }
 
@@ -152,7 +152,7 @@ const Collapses = ({
       {
         <Modal isOpen={isModal} toggle={toggle} size={'lg'} scrollable={true}>
           <ModalHeader>
-            <h3 className={'text-info '}>{userId ? 'Edit Team' : 'Add Team'}</h3>
+            <h3 className={'text-info '}>{teamId ? 'Edit Team' : 'Add Team'}</h3>
           </ModalHeader>
           <ModalBody>
             <div className="row">
@@ -180,7 +180,7 @@ const Collapses = ({
             <button
               onClick={() => {
                 toggle()
-                setUserId(null)
+                setTeamId(null)
                 setPost({})
                 setRoleId(null)
               }}

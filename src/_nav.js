@@ -59,7 +59,7 @@ const _nav = [
     component: CNavItem,
     name: 'Dispatcher - teams',
     to: '/dispatcher-teams',
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilList} size="xl" customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -67,13 +67,13 @@ const _nav = [
     to: '/brokers',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Dispatcher Team',
-    to: '/theme/typography',
-    // icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-    icon: <CIcon icon={cilList} size="xl" customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Dispatcher Team',
+  //   to: '/theme/typography',
+  //   // icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  //   icon: <CIcon icon={cilList} size="xl" customClassName="nav-icon" />,
+  // },
   {
     component: CNavTitle,
     name: 'Components',
