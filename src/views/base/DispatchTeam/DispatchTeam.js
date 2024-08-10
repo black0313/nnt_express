@@ -15,6 +15,7 @@ import DispatchTeamReducer, {
   addDispatchTeam,
   deleteDispatchTeam,
   editDispatchTeam,
+  getDispatchTeam,
   getDispatchTeams,
 } from 'src/reducer/DispatchTeamReducer'
 import DispatcherReducer, { getDispatchers } from 'src/reducer/DispatcherReducer'
@@ -33,6 +34,8 @@ const Collapses = ({
   DispatchTeamReducer,
   // eslint-disable-next-line react/prop-types
   getDispatchers,
+  // eslint-disable-next-line react/prop-types
+  getDispatchTeam,
   // eslint-disable-next-line react/prop-types
   DispatcherReducer,
 }) => {
@@ -63,6 +66,8 @@ const Collapses = ({
     if (teamId) {
       editDispatchTeam({
         id: teamId,
+        name: post.name,
+        groupId: post.groupId,
       })
     } else {
       addDispatchTeam({ ...post })
@@ -78,7 +83,7 @@ const Collapses = ({
   }
 
   function edit_(id) {
-    editDispatchTeam(id)
+    getDispatchTeam(id)
     setTeamId(id)
     toggle()
   }
@@ -86,7 +91,7 @@ const Collapses = ({
   useEffect(() => {
     setTimeout(() => {
       // eslint-disable-next-line react/prop-types
-      setPost(DispatchTeamReducer.user)
+      setPost(DispatchTeamReducer.team)
     }, 100)
     // eslint-disable-next-line react/prop-types
   }, [DispatchTeamReducer.current])
@@ -202,4 +207,5 @@ export default connect((UserReducer, DispatchTeamReducer, DispatcherReducer), {
   editDispatchTeam,
   deleteDispatchTeam,
   getDispatchers,
+  getDispatchTeam,
 })(Collapses)

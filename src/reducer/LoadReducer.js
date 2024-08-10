@@ -60,7 +60,7 @@ export const getLoad = (data) =>
   })
 export const addLoad = (data) =>
   apiCall({
-    url: '/loads',
+    url: '/load',
     data,
     method: 'post',
     onSuccess: slice.actions.saveFrom.type,

@@ -89,7 +89,7 @@ const Loads = ({
   }, [LoadReducer.current])
 
   const [data, setData] = useState([
-    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '', shipper: 'true' },
+    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '', shipper: true },
   ])
 
   const formInput = [
@@ -127,7 +127,7 @@ const Loads = ({
       })
     } else {
       addLoad({
-        shipperConsigneeDtoList: { ...data },
+        shipperConsigneeDtoList: [...data],
         trailerId,
         truckId,
         dispatcherId,
@@ -524,8 +524,8 @@ const Loads = ({
                           onChange={(e) => setShipper(e.target.value)}
                           className={'form-control'}
                         >
-                          <option value="true">SHIPPER</option>
-                          <option value="false">CONSIGNEE</option>
+                          <option value={'true'}>SHIPPER</option>
+                          <option value={'false'}>CONSIGNEE</option>
                         </select>
                       </div>
                       <div className="col-4">
