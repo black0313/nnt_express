@@ -74,7 +74,8 @@ export const addDispatchTeam = (data) =>
   })
 export const editDispatchTeam = (data) =>
   apiCall({
-    url: '/dispatchers-team/' + data.id,
+    // url: '/dispatchers-team/' + data.id,
+    url: `/dispatchers-team/${data.id}?name=${data.name}&groupId=${data?.groupId}`,
     method: 'put',
     data,
     onSuccess: slice.actions.editFrom.type,

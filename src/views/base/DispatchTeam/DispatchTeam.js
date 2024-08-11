@@ -137,12 +137,12 @@ const Collapses = ({
                     <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
                       Edit
                     </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className={'btn btn-danger text-light ms-2'}
-                    >
-                      Delete
-                    </button>
+                    {/*<button*/}
+                    {/*  onClick={() => handleDelete(item.id)}*/}
+                    {/*  className={'btn btn-danger text-light ms-2'}*/}
+                    {/*>*/}
+                    {/*  Delete*/}
+                    {/*</button>*/}
                   </td>
                 </tr>
               ))}
