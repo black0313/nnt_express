@@ -6,6 +6,7 @@ export const slice = createSlice({
   name: 'loads',
   initialState: {
     loads: null,
+    shipper: null,
     load: null,
     current: false,
   },
@@ -46,7 +47,7 @@ export const slice = createSlice({
 
 export const getLoads = (data) =>
   apiCall({
-    url: '/loads',
+    url: '/load',
     method: 'get',
     onSuccess: slice.actions.get.type,
     onFail: slice.actions.get.type,
@@ -68,7 +69,7 @@ export const addLoad = (data) =>
   })
 export const editLoad = (data) =>
   apiCall({
-    url: '/loads/' + data.id,
+    url: '/load/' + data.id,
     method: 'put',
     data,
     onSuccess: slice.actions.editFrom.type,
@@ -76,7 +77,7 @@ export const editLoad = (data) =>
   })
 export const deleteLoad = (data) =>
   apiCall({
-    url: '/loads/' + data,
+    url: '/load/' + data,
     method: 'delete',
     onSuccess: slice.actions.deleteFrom.type,
     onFail: slice.actions.deleteFrom.type,

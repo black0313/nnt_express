@@ -210,13 +210,24 @@ const Loads = ({
       {LoadReducer.loads ? (
         <table
           className={
-            'table overflow-scroll rounded table-bordered text-light  table-hover table-striped'
+            'table overflow-scroll overflow-x rounded table-bordered text-light  table-hover table-striped'
           }
         >
           <thead className={'bg-secondary'}>
             <th className={'text-center'}>T/R</th>
-            <th className={'text-center'}>Name</th>
-            <th className={'text-center'}>Last name</th>
+            <th className={'text-center'}>Load num</th>
+            <th className={'text-center'}>Team</th>
+            <th className={'text-center'}>Dispatcher</th>
+            <th className={'text-center'}>Trailer</th>
+            <th className={'text-center'}>Driver</th>
+            <th className={'text-center'}>Price</th>
+            <th className={'text-center'}>Weight</th>
+            <th className={'text-center'}>Broker</th>
+            <th className={'text-center'}>Note</th>
+            <th className={'text-center'}>Pick up facility</th>
+            <th className={'text-center'}>Pick up address</th>
+            <th className={'text-center'}>Pick up date</th>
+            <th className={'text-center'}>Delivery date</th>
             <th className={'text-center'}>Actions</th>
           </thead>
           <hr />
@@ -225,14 +236,55 @@ const Loads = ({
             {LoadReducer.loads.map((item, index) => (
               <tr key={index}>
                 <td className={'text-center'}>{index + 1}</td>
-                <td className={'text-center'}>{item?.firstname}</td>
-                <td className={'text-center'}>{item?.lastname}</td>
+                <td className={'text-center'}>{item?.load?.internalLoadNumber}</td>
+                <td className={'text-center'}>{item?.load?.dispatchersTeam?.name}</td>
+                <td className={'text-center'}>{item?.load?.dispatchers?.firstname}</td>
+                <td className={'text-center'}>{item?.load?.trailers?.trailerNumber}</td>
+                <td className={'text-center'}>{item?.load?.driver?.driverName}</td>
                 <td className={'text-center'}>
-                  <button onClick={() => edit_(item.id)} className={'btn btn-info text-light'}>
+                  {item?.shipperConsignees?.map((i, innerIndex) => (
+                    <div key={innerIndex}>
+                      <p>{i?.value}</p>
+                    </div>
+                  ))}
+                </td>
+                <td className={'text-center'}>
+                  {item?.shipperConsignees?.map((i, innerIndex) => (
+                    <div key={innerIndex}>
+                      <p>{i?.weight}</p>
+                    </div>
+                  ))}
+                </td>
+                <td className={'text-center'}>{item?.load?.broker?.customerName}</td>
+                <td className={'text-center'}>
+                  {item?.shipperConsignees?.map((i, innerIndex) => (
+                    <div key={innerIndex}>
+                      <p>{i?.description}</p>
+                    </div>
+                  ))}
+                </td>
+                <td className={'text-center'}>{item?.load?.facility?.name}</td>
+                <td className={'text-center'}>{item?.load?.address?.address}</td>
+                <td className={'text-center'}>
+                  {item?.shipperConsignees?.map((i, innerIndex) => (
+                    <div key={innerIndex}>
+                      <p>{i?.pickDate}</p>
+                    </div>
+                  ))}
+                </td>
+                <td className={'text-center'}>
+                  {item?.shipperConsignees?.map((i, innerIndex) => (
+                    <div key={innerIndex}>
+                      <p>{i?.deliveryDate}</p>
+                    </div>
+                  ))}
+                </td>
+                <td className={'text-center'}>
+                  <button onClick={() => edit_(item?.id)} className={'btn btn-info text-light'}>
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(item?.load?.id)}
                     className={'btn btn-danger text-light ms-2'}
                   >
                     Delete
