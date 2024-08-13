@@ -75,9 +75,6 @@ const Loads = ({
   const [trailerId, setTrailerId] = useState(null)
   const [dispatcherId, setDispatcherId] = useState(null)
   const [customsBrokerId, setCustomerBrokerId] = useState(null)
-  const [addressId, setAdressId] = useState(null)
-  const [facilityId, setFacilityId] = useState(null)
-  const [shipper, setShipper] = useState(true)
   const [dispatcherTeamId, setDispatcherTeamId] = useState(null)
   const [shipperConsigneeDtoList, setShipperConsigneeDtoList] = useState([])
   useEffect(() => {
@@ -89,7 +86,28 @@ const Loads = ({
   }, [LoadReducer.current])
 
   const [data, setData] = useState([
-    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '', shipper },
+    {
+      pickDate: '',
+      deliveryDate: '',
+      description: '',
+      weight: '',
+      value: '',
+      addressId: '',
+      facilityId: '',
+      shipper: true,
+    },
+  ])
+  const [consigneeData, setConsigneeData] = useState([
+    {
+      pickDate: '',
+      deliveryDate: '',
+      description: '',
+      weight: '',
+      value: '',
+      addressId: '',
+      facilityId: '',
+      shipper: false,
+    },
   ])
 
   const formInput = [
@@ -127,13 +145,11 @@ const Loads = ({
       })
     } else {
       addLoad({
-        shipperConsigneeDtoList: [...data],
+        shipperConsigneeDtoList: data.concat(consigneeData),
         trailerId,
         truckId,
         dispatcherId,
         brokerId: customsBrokerId,
-        facilityId,
-        addressId,
         dispatcherTeamId,
         driverId,
         internalLoadNumber: loadNumber,
@@ -150,6 +166,14 @@ const Loads = ({
     const onChangeVal = [...data]
     onChangeVal[i][name] = value
     setData(onChangeVal)
+    console.log(onChangeVal)
+  }
+
+  function handleChangeConsignee(e, i) {
+    const { name, value } = e.target
+    const onChangeVal = [...consigneeData]
+    onChangeVal[i][name] = value
+    setConsigneeData(onChangeVal)
     console.log(onChangeVal)
   }
 
@@ -172,10 +196,31 @@ const Loads = ({
     setData(newData)
   }
 
+  function handleClickConsignee() {
+    const newData = [
+      ...consigneeData,
+      {
+        pickDate: null,
+        deliveryDate: null,
+        description: null,
+        weight: null,
+        value: null,
+        shipper: false,
+      },
+    ]
+    setConsigneeData(newData)
+  }
+
   function handleDeleteInput(i) {
     const deleteVal = [...data]
     deleteVal.splice(i, 1)
     setData(deleteVal)
+  }
+
+  function handleDeleteInputConsignee(i) {
+    const deleteVal = [...consigneeData]
+    deleteVal.splice(i, 1)
+    setConsigneeData(deleteVal)
   }
 
   function edit_(id) {
@@ -196,6 +241,9 @@ const Loads = ({
     }, 100)
     // eslint-disable-next-line react/prop-types
   }, [LoadReducer.current])
+
+  console.log(data)
+  console.log(consigneeData)
 
   const toggle = () => setIsModal(!isModal)
   return (
@@ -302,7 +350,6 @@ const Loads = ({
           TABLE IS EMPTY
         </h1>
       )}
-      {console.log(shipper)}
       {
         <Modal isOpen={isModal} toggle={toggle} size={'xl'} scrollable={true}>
           <ModalHeader>
@@ -409,13 +456,6 @@ const Loads = ({
                     }
                   </select>
                 </div>
-                {/*<div className="col-2">*/}
-                {/*  <label htmlFor="">Shipper</label>*/}
-                {/*  <select name="" className={'form-control mt-2'}>*/}
-                {/*    <option value="true">Shipper</option>*/}
-                {/*    <option value="false">Consignee</option>*/}
-                {/*  </select>*/}
-                {/*</div>*/}
                 <div className="col-3">
                   <label htmlFor="">Dispatcher</label>
                   <select
@@ -471,57 +511,58 @@ const Loads = ({
                   +
                 </button>
               </div>
-              <div className="col-6">
-                <label htmlFor="">Address</label>
-                <select
-                  value={addressId}
-                  onChange={(e) => setAdressId(e.target.value)}
-                  className={'form-control mt-2'}
-                >
-                  <option value="choose">Choose address</option>
-                  {
-                    // eslint-disable-next-line react/prop-types
-                    PickUpAdressReducer?.pickups ? (
-                      // eslint-disable-next-line react/prop-types
-                      PickUpAdressReducer?.pickups.map((item) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <option value={item.id}>{item?.address}</option>
-                      ))
-                    ) : (
-                      <option value="choose">NOT FOUND</option>
-                    )
-                  }
-                </select>
-              </div>
-              <div className="col-6">
-                <label htmlFor="">Facility</label>
-                <select
-                  value={facilityId}
-                  onChange={(e) => setFacilityId(e.target.value)}
-                  className={'form-control mt-2'}
-                >
-                  <option value="choose">Choose facility</option>
-                  {
-                    // eslint-disable-next-line react/prop-types
-                    FacilityReducer?.facilities ? (
-                      // eslint-disable-next-line react/prop-types
-                      FacilityReducer?.facilities.map((item) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <option value={item.id}>{item?.name}</option>
-                      ))
-                    ) : (
-                      <option value="choose">NOT FOUND</option>
-                    )
-                  }
-                </select>
-              </div>
-              {console.log(data)}
               {
                 // eslint-disable-next-line react/jsx-key
                 data?.map((val, i) => (
                   // eslint-disable-next-line react/jsx-key
                   <div className={'col-12 mt-2'}>
                     <div className="row">
+                      <div className="col-3">
+                        <label htmlFor="addressId">Address</label>
+                        <select
+                          name="addressId"
+                          value={val.addressId}
+                          onChange={(e) => handleChange(e, i)}
+                          className={'form-control mt-2'}
+                        >
+                          <option value="choose">Choose address</option>
+                          {
+                            // eslint-disable-next-line react/prop-types
+                            PickUpAdressReducer?.pickups ? (
+                              // eslint-disable-next-line react/prop-types
+                              PickUpAdressReducer?.pickups.map((item) => (
+                                // eslint-disable-next-line react/jsx-key
+                                <option value={item.id}>{item?.address}</option>
+                              ))
+                            ) : (
+                              <option value="choose">NOT FOUND</option>
+                            )
+                          }
+                        </select>
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="facilityId">Facility</label>
+                        <select
+                          name="facilityId"
+                          value={val.facilityId}
+                          onChange={(e) => handleChange(e, i)}
+                          className={'form-control mt-2'}
+                        >
+                          <option value="choose">Choose facility</option>
+                          {
+                            // eslint-disable-next-line react/prop-types
+                            FacilityReducer?.facilities ? (
+                              // eslint-disable-next-line react/prop-types
+                              FacilityReducer?.facilities.map((item) => (
+                                // eslint-disable-next-line react/jsx-key
+                                <option value={item.id}>{item?.name}</option>
+                              ))
+                            ) : (
+                              <option value="choose">NOT FOUND</option>
+                            )
+                          }
+                        </select>
+                      </div>
                       <div className="col-3">
                         <label htmlFor="">Pick date</label>
                         <input
@@ -572,19 +613,6 @@ const Loads = ({
                           className={'form-control'}
                         />
                       </div>
-                      <div className="col-3">
-                        <label>Shipper</label>
-                        <select
-                          name={'shipper'}
-                          value={shipper}
-                          onChange={(e) => setShipper(e.target.value)}
-                          // onChange={(e) => handleChange(e, i)}
-                          className={'form-control'}
-                        >
-                          <option value={'true'}>SHIPPER</option>
-                          <option value={'false'}>CONSIGNEE</option>
-                        </select>
-                      </div>
                       <div className="col-4">
                         <button
                           onClick={() => handleDeleteInput(i)}
@@ -612,6 +640,129 @@ const Loads = ({
               {/*    />*/}
               {/*  </div>*/}
               {/*))}*/}
+              <div className={'d-flex'}>
+                <h3>Consignee</h3>
+                <button
+                  onClick={handleClickConsignee}
+                  className="btn ms-2 rounded rounded-bottom-circle btn-secondary"
+                >
+                  +
+                </button>
+              </div>
+              {
+                // eslint-disable-next-line react/jsx-key
+                consigneeData?.map((val, i) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <div className={'col-12 mt-2'}>
+                    <div className="row">
+                      <div className="col-3">
+                        <label htmlFor="addressId">Address</label>
+                        <select
+                          name="addressId"
+                          value={val.addressId}
+                          onChange={(e) => handleChangeConsignee(e, i)}
+                          className={'form-control mt-2'}
+                        >
+                          <option value="choose">Choose address</option>
+                          {
+                            // eslint-disable-next-line react/prop-types
+                            PickUpAdressReducer?.pickups ? (
+                              // eslint-disable-next-line react/prop-types
+                              PickUpAdressReducer?.pickups.map((item) => (
+                                // eslint-disable-next-line react/jsx-key
+                                <option value={item.id}>{item?.address}</option>
+                              ))
+                            ) : (
+                              <option value="choose">NOT FOUND</option>
+                            )
+                          }
+                        </select>
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="facilityId">Facility</label>
+                        <select
+                          name={'facilityId'}
+                          value={val.facilityId}
+                          onChange={(e) => handleChangeConsignee(e, i)}
+                          className={'form-control mt-2'}
+                        >
+                          <option value="choose">Choose facility</option>
+                          {
+                            // eslint-disable-next-line react/prop-types
+                            FacilityReducer?.facilities ? (
+                              // eslint-disable-next-line react/prop-types
+                              FacilityReducer?.facilities.map((item) => (
+                                // eslint-disable-next-line react/jsx-key
+                                <option value={item.id}>{item?.name}</option>
+                              ))
+                            ) : (
+                              <option value="choose">NOT FOUND</option>
+                            )
+                          }
+                        </select>
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="">Pick date</label>
+                        <input
+                          name={'pickDate'}
+                          value={val.pickDate}
+                          onChange={(e) => handleChangeConsignee(e, i)}
+                          type="datetime-local"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="">Delivery date</label>
+                        <input
+                          value={val.deliveryDate}
+                          name={'deliveryDate'}
+                          onChange={(e) => handleChangeConsignee(e, i)}
+                          type="datetime-local"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="">Description P.O</label>
+                        <input
+                          value={val.description}
+                          name={'description'}
+                          onChange={(e) => handleChangeConsignee(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label htmlFor="">Weight</label>
+                        <input
+                          value={val.weight}
+                          name={'weight'}
+                          onChange={(e) => handleChangeConsignee(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-3">
+                        <label>Price $</label>
+                        <input
+                          name={'value'}
+                          value={val.value}
+                          onChange={(e) => handleChangeConsignee(e, i)}
+                          type="text"
+                          className={'form-control'}
+                        />
+                      </div>
+                      <div className="col-4">
+                        <button
+                          onClick={() => handleDeleteInputConsignee(i)}
+                          className={'btn mt-4 btn-danger text-light'}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              }
             </div>
           </ModalBody>
           <ModalFooter>
