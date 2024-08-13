@@ -77,7 +77,7 @@ const Loads = ({
   const [customsBrokerId, setCustomerBrokerId] = useState(null)
   const [addressId, setAdressId] = useState(null)
   const [facilityId, setFacilityId] = useState(null)
-  const [shipper, setShipper] = useState('true')
+  const [shipper, setShipper] = useState(true)
   const [dispatcherTeamId, setDispatcherTeamId] = useState(null)
   const [shipperConsigneeDtoList, setShipperConsigneeDtoList] = useState([])
   useEffect(() => {
@@ -89,7 +89,7 @@ const Loads = ({
   }, [LoadReducer.current])
 
   const [data, setData] = useState([
-    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '', shipper: true },
+    { pickDate: '', deliveryDate: '', description: '', weight: '', value: '', shipper },
   ])
 
   const formInput = [
@@ -166,6 +166,7 @@ const Loads = ({
         description: null,
         weight: null,
         value: null,
+        shipper: true,
       },
     ]
     setData(newData)
@@ -208,97 +209,100 @@ const Loads = ({
       <br />
       {/* eslint-disable-next-line react/prop-types */}
       {LoadReducer.loads ? (
-        <table
-          className={
-            'table overflow-scroll overflow-x rounded table-bordered text-light  table-hover table-striped'
-          }
-        >
-          <thead className={'bg-secondary'}>
-            <th className={'text-center'}>T/R</th>
-            <th className={'text-center'}>Load num</th>
-            <th className={'text-center'}>Team</th>
-            <th className={'text-center'}>Dispatcher</th>
-            <th className={'text-center'}>Trailer</th>
-            <th className={'text-center'}>Driver</th>
-            <th className={'text-center'}>Price</th>
-            <th className={'text-center'}>Weight</th>
-            <th className={'text-center'}>Broker</th>
-            <th className={'text-center'}>Note</th>
-            <th className={'text-center'}>Pick up facility</th>
-            <th className={'text-center'}>Pick up address</th>
-            <th className={'text-center'}>Pick up date</th>
-            <th className={'text-center'}>Delivery date</th>
-            <th className={'text-center'}>Actions</th>
-          </thead>
-          <hr />
-          <tbody>
-            {/* eslint-disable-next-line react/prop-types */}
-            {LoadReducer.loads.map((item, index) => (
-              <tr key={index}>
-                <td className={'text-center'}>{index + 1}</td>
-                <td className={'text-center'}>{item?.load?.internalLoadNumber}</td>
-                <td className={'text-center'}>{item?.load?.dispatchersTeam?.name}</td>
-                <td className={'text-center'}>{item?.load?.dispatchers?.firstname}</td>
-                <td className={'text-center'}>{item?.load?.trailers?.trailerNumber}</td>
-                <td className={'text-center'}>{item?.load?.driver?.driverName}</td>
-                <td className={'text-center'}>
-                  {item?.shipperConsignees?.map((i, innerIndex) => (
-                    <div key={innerIndex}>
-                      <p>{i?.value}</p>
-                    </div>
-                  ))}
-                </td>
-                <td className={'text-center'}>
-                  {item?.shipperConsignees?.map((i, innerIndex) => (
-                    <div key={innerIndex}>
-                      <p>{i?.weight}</p>
-                    </div>
-                  ))}
-                </td>
-                <td className={'text-center'}>{item?.load?.broker?.customerName}</td>
-                <td className={'text-center'}>
-                  {item?.shipperConsignees?.map((i, innerIndex) => (
-                    <div key={innerIndex}>
-                      <p>{i?.description}</p>
-                    </div>
-                  ))}
-                </td>
-                <td className={'text-center'}>{item?.load?.facility?.name}</td>
-                <td className={'text-center'}>{item?.load?.address?.address}</td>
-                <td className={'text-center'}>
-                  {item?.shipperConsignees?.map((i, innerIndex) => (
-                    <div key={innerIndex}>
-                      <p>{i?.pickDate}</p>
-                    </div>
-                  ))}
-                </td>
-                <td className={'text-center'}>
-                  {item?.shipperConsignees?.map((i, innerIndex) => (
-                    <div key={innerIndex}>
-                      <p>{i?.deliveryDate}</p>
-                    </div>
-                  ))}
-                </td>
-                <td className={'text-center'}>
-                  <button onClick={() => edit_(item?.id)} className={'btn btn-info text-light'}>
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item?.load?.id)}
-                    className={'btn btn-danger text-light ms-2'}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className={'table-responsive-lg'}>
+          <table
+            className={
+              'table overflow-scroll overflow-x rounded table-bordered text-light  table-hover table-striped'
+            }
+          >
+            <thead className={'bg-secondary'}>
+              <th className={'text-center'}>T/R</th>
+              <th className={'text-center'}>Load num</th>
+              <th className={'text-center'}>Team</th>
+              <th className={'text-center'}>Dispatcher</th>
+              <th className={'text-center'}>Trailer</th>
+              <th className={'text-center'}>Driver</th>
+              <th className={'text-center'}>Price</th>
+              <th className={'text-center'}>Weight</th>
+              <th className={'text-center'}>Broker</th>
+              <th className={'text-center'}>Note</th>
+              <th className={'text-center'}>Pick up facility</th>
+              <th className={'text-center'}>Pick up address</th>
+              <th className={'text-center'}>Pick up date</th>
+              <th className={'text-center'}>Delivery date</th>
+              <th className={'text-center'}>Actions</th>
+            </thead>
+            <hr />
+            <tbody>
+              {/* eslint-disable-next-line react/prop-types */}
+              {LoadReducer.loads.map((item, index) => (
+                <tr key={index}>
+                  <td className={'text-center'}>{index + 1}</td>
+                  <td className={'text-center'}>{item?.load?.internalLoadNumber}</td>
+                  <td className={'text-center'}>{item?.load?.dispatchersTeam?.name}</td>
+                  <td className={'text-center'}>{item?.load?.dispatchers?.firstname}</td>
+                  <td className={'text-center'}>{item?.load?.trailers?.trailerNumber}</td>
+                  <td className={'text-center'}>{item?.load?.driver?.driverName}</td>
+                  <td className={'text-center'}>
+                    {item?.shipperConsignees?.map((i, innerIndex) => (
+                      <div key={innerIndex}>
+                        <p>{i?.value}</p>
+                      </div>
+                    ))}
+                  </td>
+                  <td className={'text-center'}>
+                    {item?.shipperConsignees?.map((i, innerIndex) => (
+                      <div key={innerIndex}>
+                        <p>{i?.weight}</p>
+                      </div>
+                    ))}
+                  </td>
+                  <td className={'text-center'}>{item?.load?.broker?.customerName}</td>
+                  <td className={'text-center'}>
+                    {item?.shipperConsignees?.map((i, innerIndex) => (
+                      <div key={innerIndex}>
+                        <p>{i?.description}</p>
+                      </div>
+                    ))}
+                  </td>
+                  <td className={'text-center'}>{item?.load?.facility?.name}</td>
+                  <td className={'text-center'}>{item?.load?.address?.address}</td>
+                  <td className={'text-center'}>
+                    {item?.shipperConsignees?.map((i, innerIndex) => (
+                      <div key={innerIndex}>
+                        <p>{i?.pickDate}</p>
+                      </div>
+                    ))}
+                  </td>
+                  <td className={'text-center'}>
+                    {item?.shipperConsignees?.map((i, innerIndex) => (
+                      <div key={innerIndex}>
+                        <p>{i?.deliveryDate}</p>
+                      </div>
+                    ))}
+                  </td>
+                  <td className={'text-center'}>
+                    <button onClick={() => edit_(item?.id)} className={'btn btn-info text-light'}>
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item?.load?.id)}
+                      className={'btn btn-danger text-light ms-2'}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <h1 className={'text-center bg-secondary-subtle mt-5 text-light w-50 mx-auto'}>
           TABLE IS EMPTY
         </h1>
       )}
+      {console.log(shipper)}
       {
         <Modal isOpen={isModal} toggle={toggle} size={'xl'} scrollable={true}>
           <ModalHeader>
@@ -574,6 +578,7 @@ const Loads = ({
                           name={'shipper'}
                           value={shipper}
                           onChange={(e) => setShipper(e.target.value)}
+                          // onChange={(e) => handleChange(e, i)}
                           className={'form-control'}
                         >
                           <option value={'true'}>SHIPPER</option>
