@@ -313,8 +313,22 @@ const Loads = ({
                       </div>
                     ))}
                   </td>
-                  <td className={'text-center'}>{item?.load?.facility?.name}</td>
-                  <td className={'text-center'}>{item?.load?.address?.address}</td>
+                  {/*<td className={'text-center'}>{item?.load?.facility?.name}</td>*/}
+                  <td className={'text-center'}>
+                    {item?.shipperConsignees?.map((i, innerIndex) => (
+                      <div key={innerIndex}>
+                        <p>{i?.facility?.name}</p>
+                      </div>
+                    ))}
+                  </td>
+                  {/*<td className={'text-center'}>{item?.load?.address?.address}</td>*/}
+                  <td className={'text-center'}>
+                    {item?.shipperConsignees?.map((i, innerIndex) => (
+                      <div key={innerIndex}>
+                        <p>{i?.pickupAddress?.address}</p>
+                      </div>
+                    ))}
+                  </td>
                   <td className={'text-center'}>
                     {item?.shipperConsignees?.map((i, innerIndex) => (
                       <div key={innerIndex}>

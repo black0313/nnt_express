@@ -50,12 +50,12 @@ function Colors({
 
   const formInput = [
     {
-      name: 'firstName',
+      name: 'firstname',
       title: 'First name',
       type: 'text',
     },
     {
-      name: 'lastName',
+      name: 'lastname',
       title: 'Last name',
       type: 'text',
     },
