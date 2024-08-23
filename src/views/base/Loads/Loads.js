@@ -238,6 +238,8 @@ const Loads = ({
       getTrailer()
       getDispatchers()
       getDrivers()
+      // setData([])
+      // setConsigneeData([])
     }, 100)
     // eslint-disable-next-line react/prop-types
   }, [LoadReducer.current])

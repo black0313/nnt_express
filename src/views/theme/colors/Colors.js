@@ -249,7 +249,7 @@ function Colors({
               </div>
             </div>
           </ModalBody>
-          {console.log(userId)}
+          {console.log(post)}
           <ModalFooter>
             {userId === null || userId === 'choose' ? (
               <button onClick={send} disabled className={'btn btn-success text-light w-25'}>
