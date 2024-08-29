@@ -54,7 +54,7 @@ export const getLoads = (data) =>
   })
 export const getLoad = (data) =>
   apiCall({
-    url: '/loads/' + data,
+    url: '/load/' + data,
     method: 'get',
     onSuccess: slice.actions.getOne.type,
     onFail: slice.actions.getOne.type,

@@ -136,12 +136,15 @@ const Loads = ({
   function send() {
     if (loadId) {
       editLoad({
-        firstname: post.firstname,
-        lastname: post.lastname,
-        password: post.password,
-        username: post.username,
+        shipperConsigneeDtoList: data.concat(consigneeData),
         id: loadId,
+        trailerId,
+        truckId,
+        dispatcherId,
         brokerId: customsBrokerId,
+        driverId,
+        dispatcherTeamId,
+        internalLoadNumber: loadNumber,
       })
     } else {
       addLoad({
@@ -238,8 +241,30 @@ const Loads = ({
       getTrailer()
       getDispatchers()
       getDrivers()
-      // setData([])
-      // setConsigneeData([])
+      setData([
+        {
+          pickDate: '',
+          deliveryDate: '',
+          description: '',
+          weight: '',
+          value: '',
+          addressId: '',
+          facilityId: '',
+          shipper: true,
+        },
+      ])
+      setConsigneeData([
+        {
+          pickDate: '',
+          deliveryDate: '',
+          description: '',
+          weight: '',
+          value: '',
+          addressId: '',
+          facilityId: '',
+          shipper: false,
+        },
+      ])
     }, 100)
     // eslint-disable-next-line react/prop-types
   }, [LoadReducer.current])
@@ -346,7 +371,10 @@ const Loads = ({
                     ))}
                   </td>
                   <td className={'text-center'}>
-                    <button onClick={() => edit_(item?.id)} className={'btn btn-info text-light'}>
+                    <button
+                      onClick={() => edit_(item?.load.id)}
+                      className={'btn btn-info text-light'}
+                    >
                       Edit
                     </button>
                     <button
